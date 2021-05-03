@@ -1,0 +1,31 @@
+{
+    "name": "getParam_DefaultDisabled",
+    "type": "dataflow",
+
+    "pattern_type": "statement",
+    
+    "diff_man":0.3,
+    "diff_sca":0.6,
+    "diff_dyn":0.0,
+
+    "input_type": "expression",
+    "output_type": "variable",
+
+    "output_return": false,
+    "passthrough": false,
+
+    "data_input": "Any",
+    "data_output": "Any",
+
+    "identify_pattern": "assignment_dim_get",
+    
+    "requirements":
+    [
+    ],
+
+    "code": 
+            [
+                "<def_func>(getParam, <param_list>(<param>(param), <param_default_bin>(encode, false)),  <stmtlist>(<=>(<$>(value), <dim>(<$>(_GET), <$>(param))) , <if>(<$>(encode), <stmtlist>(<return>(  <call>(htmlspecialchars, <call>(stripslashes, <$>(value)), <c>(ENT_QUOTES))  )) ), <return>(<$>(value)) ))",
+                "<=>(%output, <call>(getParam, %paramId))"
+            ]
+}

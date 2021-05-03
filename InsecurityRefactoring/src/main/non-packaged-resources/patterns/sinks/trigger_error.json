@@ -1,0 +1,13 @@
+{
+	"name":"trigger_error",
+	"type":"sink",
+	"vuln":"xss",
+    
+        "pattern_type":"statement",
+        "input_type":"expression",
+    
+        "code":[
+            "<call>(trigger_error, %input, <any>()?...)"
+        ]
+
+}

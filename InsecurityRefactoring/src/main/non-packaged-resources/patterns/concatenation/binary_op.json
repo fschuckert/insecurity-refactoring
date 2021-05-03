@@ -1,0 +1,24 @@
+{
+	"name":"binary_op",	
+	"type":"concatenation",
+    
+        "pattern_type": "expression",    
+        
+        "input_amount":"...",
+        "input_type" : "expression",
+        "output_type": "expression",
+        "output_return":true,
+        "passthrough":true,
+        
+    
+        "data_input":"Any",        
+        "data_output":"String",
+    
+        
+    
+        "code":
+        [
+            "<con>(%input...)"
+        ]
+
+}

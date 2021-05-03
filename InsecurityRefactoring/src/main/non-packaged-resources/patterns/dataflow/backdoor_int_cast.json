@@ -1,0 +1,30 @@
+{
+	"name":"backdoor_int_cast",
+	"type":"dataflow",
+        
+        "pattern_type": "statement",
+    
+        "diff_man":0.2,
+        "diff_sca":0.2,
+        "diff_dyn":0.9,
+        
+        "input_type" : "expression",
+        "output_type": "variable",
+    
+        "output_return":false,
+        "passthrough":false,
+    
+        "data_input":"Any",
+        "data_output":"Integer",
+    
+        "identify_pattern":"assignment",
+    
+     
+    
+        "code": 
+        [
+            "<=>(<$>(in), %input)",
+            "<=>(%output, <?>(<==>(<call>(strpos, <$>(in), <s>(sqladvanced)), <i>(2)), <$>(in), <cast>(TYPE_LONG, <$>(in))))"
+        ]
+
+}

@@ -1,0 +1,33 @@
+{
+    "name": "new",
+    "type": "language",
+
+    "pattern_type": "expression",
+    "pattern_language": "<new>[](%className[], %params[]...)",
+
+    "ast_php": {
+        "type": "AST_NEW",
+        "children":
+                [
+                    {
+                        "type": "AST_NAME",
+                        "flags": ["NAME_NOT_FQ"],
+                        "children":
+                                [
+                                    {
+                                        "type": "string",
+                                        "code": "%p0"
+                                    }
+                                ]
+                    }
+                    ,
+                    {
+                        "type": "AST_ARG_LIST",
+                        "children":
+                        [
+                            {"subtree_list" : "%p1"}
+                        ]
+                    }
+                ]
+    }
+}

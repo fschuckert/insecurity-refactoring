@@ -1,0 +1,26 @@
+{
+    "name": "c",
+    "type": "language",
+
+    "pattern_type": "expression",
+    "pattern_language": "<c>[](%name)",
+
+    "ast_php":
+            {
+                "type": "AST_CONST",
+                "children":
+                        [
+                            {
+                                "type": "AST_NAME",
+                                "flags": ["NAME_NOT_FQ"],
+                                "children":
+                                        [
+                                            {
+                                                "type": "string",
+                                                "code": "%p0"
+                                            }
+                                        ]
+                            }
+                        ]
+            }
+}

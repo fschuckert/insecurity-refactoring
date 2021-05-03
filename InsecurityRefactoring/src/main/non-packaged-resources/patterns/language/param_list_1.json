@@ -1,0 +1,26 @@
+{
+    "name": "param_list_1",
+    "type": "language",
+
+    "pattern_type": "expression",
+    "pattern_language": "<param_list_1>[](%params1[])",
+
+    "ast_php":
+            {
+                "type": "AST_PARAM_LIST",
+                "children":
+                        [
+                            {
+                                "type": "AST_PARAM",
+                                "children":
+                                        [
+                                            {"type": "NULL"},
+                                            {
+                                                "subtree": "%p0"
+                                            },
+                                            {"type": "NULL"}
+                                        ]
+                            }
+                        ]
+            }
+}

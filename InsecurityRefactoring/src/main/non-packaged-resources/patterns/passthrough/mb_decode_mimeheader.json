@@ -1,0 +1,23 @@
+{
+	"name":"mb_decode_mimeheader",
+	"type":"dataflow_identify",
+        
+        "pattern_type": "expression",
+    
+        
+        "input_type" : "expression",
+        "output_type": "expression",
+    
+        "output_return":true,
+        "passthrough":true,
+    
+        "data_input":"String",
+        "data_output":"String",
+  
+    
+        "code": 
+        [
+            "<call>(mb_decode_mimeheader, %input)"
+        ]
+
+}

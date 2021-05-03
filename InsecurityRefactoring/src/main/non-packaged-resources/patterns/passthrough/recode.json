@@ -1,0 +1,23 @@
+{
+	"name":"recode",
+	"type":"dataflow_identify",
+        
+        "pattern_type": "expression",
+    
+        
+        "input_type" : "expression",
+        "output_type": "expression",
+    
+        "output_return":true,
+        "passthrough":true,
+    
+        "data_input":"String",
+        "data_output":"String",
+  
+    
+        "code": 
+        [
+            "<call>(recode, <any>(), %input)"
+        ]
+
+}

@@ -1,0 +1,13 @@
+{
+	"name":"exit",
+	"type":"sink",
+	"vuln":"xss",
+    
+        "pattern_type":"statement",
+        "input_type":"expression",
+    
+        "code":[
+            "<exit>(%input)"
+        ]
+
+}

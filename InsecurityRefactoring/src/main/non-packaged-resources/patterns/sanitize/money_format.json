@@ -1,0 +1,22 @@
+{
+	"name":"money_format",	
+	"type":"sanitize",
+    
+        "pattern_type": "expression",    
+        
+        "input_type" : "expression",
+        "output_type": "expression",
+        "output_return":true,
+        "passthrough":true,
+    
+        "data_input":"Float",
+        "data_output":"String",
+    
+        
+    
+        "code":
+        [
+            "<call>(money_format, <any>(), %input)"
+        ]
+
+}

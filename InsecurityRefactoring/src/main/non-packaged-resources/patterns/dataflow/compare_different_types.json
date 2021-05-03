@@ -1,0 +1,33 @@
+{
+	"name":"compare_different_types",
+	"type":"dataflow",
+        
+        "pattern_type": "statement",
+    
+        "diff_man":0.8,
+        "diff_sca":0.4,
+        "diff_dyn":0.4,
+        
+        "input_type" : "expression",
+        "output_type": "variable",
+    
+        "output_return":false,
+        "passthrough":false,
+    
+        "data_input":"Any",
+        "data_output":"Any",
+    
+        "identify_pattern":"assignment",
+    
+        "requirements":
+        [
+            "type(integer)"
+        ],
+    
+        "code": 
+        [
+            "<if>(<s=>(%input, <i>(0)), <stmtlist>(   <=>(%input, <i>(0))        ))",
+            "<=>(%output, %input)"
+        ]
+
+}

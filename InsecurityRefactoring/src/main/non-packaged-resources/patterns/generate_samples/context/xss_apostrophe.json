@@ -1,0 +1,25 @@
+{
+	"name":"xss_apostrophe",	
+	"type":"context",
+        "vuln":"xss",
+    
+        "pattern_type": "statement",    
+        
+        "input_type" : "expression",
+        "output_type": "expression",
+        "output_return":false,
+        "passthrough":false,
+    
+        "data_input":"String",
+        "data_output":"String",
+    
+        "pre":"Hello to '",
+        "post":"'",
+        
+    
+        "code":
+        [
+            "<=>(%output, <con>(<con>(<s>(Hello to '), %input), <s>(')))"
+        ]
+
+}

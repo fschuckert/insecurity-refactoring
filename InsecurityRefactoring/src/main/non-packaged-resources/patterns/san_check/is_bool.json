@@ -1,0 +1,22 @@
+{
+	"name":"is_bool",	
+	"type":"sanitize",
+    
+        "pattern_type": "expression",    
+        
+        "input_type" : "expression",
+        "output_type": "expression",
+        "output_return":false,
+        "passthrough":false,
+    
+        "data_input":"String",
+        "data_output":"Boolean",
+    
+        
+    
+        "code":
+        [
+            "<call>(is_bool, %input)"
+        ]
+
+}

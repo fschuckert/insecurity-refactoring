@@ -1,0 +1,38 @@
+#  vulntype, call:method, call, name, paramNum, numberofparams, pass:check
+
+# all
+
+
+#IBM DB2
+sqli, call, db2_escape_string, 0, 1, pass
+
+#ingres
+sqli, call, ingres_escape_string, 1, 2, pass
+
+#MaxDB
+sqli, call, maxdb_real_escape_string, 1, 2, pass
+sqli, call, maxdb_escape_string, 1, 2, pass
+sqli, method, maxdb_real_escape_string, 0, 1, pass
+
+#MySQLi
+sqli, call, mysqli_real_escape_string, 1, 2, pass
+sqli, call, mysqli_escape_string, 1, 2, pass
+sqli, method, real_escape_string, 0, 1, pass
+sqli, method, escape_string, 0, 1, pass
+
+#MySQL
+sqli, call, mysql_escape_string, 0, 1, pass
+sqli, call, mysql_real_escape_string, 0, 1, pass
+
+#PostgreSQL
+sqli, call, pg_escape_bytea, 1, 2, pass
+sqli, call, pg_escape_identifier, 1, 2, pass
+sqli, call, pg_escape_literal, 1, 2, pass
+sqli, call, pg_escape_string, 1, 2, pass
+
+#SQLite
+sqli, call, sqlite_escape_string, 0, 1, pass
+sqli, call, sqlite_udf_encode_binary, 0, 1, pass
+
+#SQLite3
+sqli, method, escapeString, 0, 1, pass

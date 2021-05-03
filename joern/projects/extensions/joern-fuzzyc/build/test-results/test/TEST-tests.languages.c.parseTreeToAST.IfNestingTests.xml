@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="tests.languages.c.parseTreeToAST.IfNestingTests" tests="7" skipped="0" failures="0" errors="0" timestamp="2020-02-17T10:56:08" hostname="blubbomat-ThinkPad" time="0.046">
+  <properties/>
+  <testcase name="nestedIfBlocksNoCompound" classname="tests.languages.c.parseTreeToAST.IfNestingTests" time="0.006"/>
+  <testcase name="ifBlockNoCompound" classname="tests.languages.c.parseTreeToAST.IfNestingTests" time="0.006"/>
+  <testcase name="ifElseChain" classname="tests.languages.c.parseTreeToAST.IfNestingTests" time="0.01"/>
+  <testcase name="ifElse" classname="tests.languages.c.parseTreeToAST.IfNestingTests" time="0.009"/>
+  <testcase name="conditionString" classname="tests.languages.c.parseTreeToAST.IfNestingTests" time="0.002"/>
+  <testcase name="ifInElse" classname="tests.languages.c.parseTreeToAST.IfNestingTests" time="0.006"/>
+  <testcase name="ifBlockCompound" classname="tests.languages.c.parseTreeToAST.IfNestingTests" time="0.003"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

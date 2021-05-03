@@ -1,0 +1,13 @@
+{
+	"name":"ifx_htmltbl_result",
+	"type":"sink",
+	"vuln":"xss",
+    
+        "pattern_type":"statement",
+        "input_type":"expression",
+    
+        "code":[
+            "<call>(ifx_htmltbl_result, %input, <any>()?...)"
+        ]
+
+}

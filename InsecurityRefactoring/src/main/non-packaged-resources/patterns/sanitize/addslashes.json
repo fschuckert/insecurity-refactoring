@@ -1,0 +1,39 @@
+{
+    "name": "addslashes",	
+    "type": "sanitize",
+
+    "pattern_type": "expression",    
+
+    "input_type": "expression",
+    "output_type": "expression",
+    "output_return": true,
+    "passthrough": true,
+
+    "data_input": "String",
+    "data_output": "String",
+
+    "sufficient": 
+            [
+                {
+                    "type": "xss",
+                    "requirements": 
+                    [
+                        ["context(apostrophe)", "!context(attribute)"],
+                        ["context(quotes)", "!context(attribute)"]
+                    ]
+                }, 
+                {
+                    "type": "sqli",
+                    "requirements": 
+                    [
+                        ["context(apostrophe)"],
+                        ["context(quotes)"]
+                    ]
+                }
+            ],
+
+    "code":
+            [
+                "<call>(addslashes, %input)"
+            ]
+}

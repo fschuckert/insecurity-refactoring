@@ -1,0 +1,18 @@
+{
+	"name":"stmtlist",
+	"type":"language",
+        
+        "pattern_type": "statement",
+        "pattern_language": "<stmtlist>[](%statements)",
+    
+        
+        
+        "ast_php":{
+            "type" : "AST_STMT_LIST",
+            "children":
+            [
+                {"subtree_list":"%p0"}
+            ]
+        }
+
+}

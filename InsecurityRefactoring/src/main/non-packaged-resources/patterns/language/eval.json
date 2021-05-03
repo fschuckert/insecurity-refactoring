@@ -1,0 +1,19 @@
+{
+	"name":"eval",
+	"type":"language",
+        
+        "pattern_type": "statement",
+        "pattern_language": "<eval>[](%parameter)",
+    
+        
+        
+        "ast_php":{
+            "type":"AST_INCLUDE_OR_EVAL",
+            "flags": ["EXEC_EVAL"],
+            "children":
+            [
+                {"subtree":"%p0"}
+            ]
+        }
+
+}

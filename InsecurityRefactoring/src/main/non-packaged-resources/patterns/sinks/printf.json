@@ -1,0 +1,13 @@
+{
+	"name":"printf_func",
+	"type":"sink",
+	"vuln":"xss",
+    
+        "pattern_type":"statement",
+        "input_type":"expression",
+    
+        "code":[
+            "<call>(printf, <any>(), %input...)"
+        ]
+
+}

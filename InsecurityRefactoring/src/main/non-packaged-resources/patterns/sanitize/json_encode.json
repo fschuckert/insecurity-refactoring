@@ -1,0 +1,30 @@
+{
+    "name": "json_encode",	
+    "type": "sanitize",
+
+    "pattern_type": "expression",    
+
+    "input_type": "expression",
+    "output_type": "expression",
+    "output_return": true,
+    "passthrough": true,
+
+    "data_input": "Array(String)",
+    "data_output": "String",
+    "sufficient": [        
+    ],
+
+    "sufficients": [
+        { 
+            "params": ["<s>(JSON_PRETTY_PRINT)", "<i>(512)"], 
+            "sufficient": 
+                    [
+                    ]
+        }
+    ],
+
+    "code":
+            [
+                "<call>(json_encode, %input, <any>()?...)"
+            ]
+}

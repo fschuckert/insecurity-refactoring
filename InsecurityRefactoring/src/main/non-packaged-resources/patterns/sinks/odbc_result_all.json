@@ -1,0 +1,13 @@
+{
+	"name":"odbc_result_all",
+	"type":"sink",
+	"vuln":"xss",
+    
+        "pattern_type":"statement",
+        "input_type":"expression",
+    
+        "code":[
+            "<call>(odbc_result_all, %input, <any>()?...)"
+        ]
+
+}

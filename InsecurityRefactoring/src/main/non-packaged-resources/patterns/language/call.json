@@ -1,0 +1,34 @@
+{
+	"name":"functioncall",
+	"type":"language",
+        
+        "pattern_type": "expression",
+        "pattern_language": "<call>[](%name[], %params[]...)",
+    
+        
+        
+        "ast_php":{
+            "type":"AST_CALL",
+            "children":
+            [
+                {
+                    "type":"AST_NAME",
+                    "children":
+                    [
+                        {
+                            "type":"string", 
+                            "code":"%p0"
+                        }                        
+                    ]
+                },
+                {
+                    "type":"AST_ARG_LIST",
+                    "children":
+                    [
+                        {"subtree_list" : "%p1"}
+                    ]
+                }
+            ]
+        }
+
+}

@@ -1,0 +1,26 @@
+{
+    "name": "false",
+    "type": "language",
+
+    "pattern_type": "expression",
+    "pattern_language": "<false>[]()",
+
+    "ast_php": 
+            {
+                "type": "AST_CONST",
+                "children":
+                        [
+                            {
+                                "type": "AST_NAME",
+                                "flags": ["NAME_NOT_FQ"],
+                                "children":
+                                        [
+                                            {
+                                                "type": "string",
+                                                "code": "false"
+                                            }
+                                        ]
+                            }
+                        ]
+            }
+}

@@ -1,0 +1,19 @@
+{
+    "name": "!",
+    "type": "language",
+
+    "pattern_type": "expression",
+    "pattern_language": "<!>[](%cond)",
+
+    "ast_php":
+            {
+                "type": "AST_UNARY_OP",
+                "flags": ["UNARY_BOOL_NOT"],
+                "children":
+                        [
+                            {
+                                "subtree": "%p0"
+                            }
+                        ]
+            }
+}

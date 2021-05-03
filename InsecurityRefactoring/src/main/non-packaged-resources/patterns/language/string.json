@@ -1,0 +1,15 @@
+{
+	"name":"string",
+	"type":"language",
+        
+        "pattern_type": "expression",
+        "pattern_language": "<s>[](%name)",
+    
+        
+        
+        "ast_php":{
+            "type":"string",
+            "code" : "%p0"
+        }
+
+}

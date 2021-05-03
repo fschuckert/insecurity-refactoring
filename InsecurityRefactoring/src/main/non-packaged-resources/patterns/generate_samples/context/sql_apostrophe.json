@@ -1,0 +1,25 @@
+{
+	"name":"sql_apostrophe",	
+	"type":"context",
+        "vuln":"sqli",
+    
+        "pattern_type": "statement",    
+        
+        "input_type" : "expression",
+        "output_type": "expression",
+        "output_return":false,
+        "passthrough":false,
+    
+        "data_input":"String",
+        "data_output":"Any",
+    
+        "pre":"SELECT * FROM users WHERE password ='",
+        "post":"';",
+        
+    
+        "code":
+        [
+            "<=>(%output, <con>(<con>(<s>(SELECT * FROM users WHERE password ='), %input), <s>(';)))"
+        ]
+
+}

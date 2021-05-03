@@ -1,0 +1,14 @@
+{
+	"name":"null",
+	"type":"language",
+        
+        "pattern_type": "expression",
+        "pattern_language": "<null>[]()",
+    
+        
+        
+        "ast_php":{
+            "type" : "NULL"
+        }
+
+}

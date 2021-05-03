@@ -1,0 +1,29 @@
+{
+	"name":"call_method",
+	"type":"language",
+        
+        "pattern_type": "expression",
+        "pattern_language": "<call_method>(%className, %methodName, %params...)",
+    
+        
+        
+        "ast_php":{
+            "type":"AST_METHOD_CALL",
+            "children":
+            [
+                {"subtree" : "%p0"},
+                {
+                    "type":"string",
+                    "code":"%p1"
+                },
+                {
+                    "type":"AST_ARG_LIST",
+                    "children":
+                    [
+                        {"subtree_list" : "%p2"}
+                    ]
+                }
+            ]
+        }
+
+}

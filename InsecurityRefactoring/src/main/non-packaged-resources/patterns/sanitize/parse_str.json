@@ -1,0 +1,22 @@
+{
+	"name":"parse_str",	
+	"type":"sanitize",
+    
+        "pattern_type": "expression",    
+        
+        "input_type" : "expression",
+        "output_type": "expression",
+        "output_return":false,
+        "passthrough":true,
+    
+        "data_input":"String",
+        "data_output":"Array(String)",
+    
+        
+    
+        "code":
+        [
+            "<call>(parse_str, %input, %output)"
+        ]
+
+}

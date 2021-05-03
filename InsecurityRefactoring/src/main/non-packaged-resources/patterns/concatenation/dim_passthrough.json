@@ -1,0 +1,24 @@
+{
+	"name":"dim_passthrough",
+	"type":"concatenation",
+        
+        "pattern_type": "expression",
+        "input_amount":"1",
+    
+        
+        "input_type" : "expression",
+        "output_type": "expression",
+    
+        "output_return":true,
+        "passthrough":true,
+    
+        "data_input":"Integer",
+        "data_output":"String",
+  
+    
+        "code": 
+        [
+            "<dim>(%input, <any>())"
+        ]
+
+}

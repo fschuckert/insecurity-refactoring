@@ -1,0 +1,23 @@
+{
+	"name":"assignment_dim_get",
+	"type":"dataflow_identify",
+        
+        "pattern_type": "statement",
+    
+        
+        "input_type" : "expression",
+        "output_type": "variable",
+    
+        "output_return":false,
+        "passthrough":false,
+    
+        "data_input":"String",
+        "data_output":"String",
+  
+    
+        "code": 
+        [
+            "<=>(%output, <dim>(<$>(_GET), %paramId))"
+        ]
+
+}

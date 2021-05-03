@@ -1,0 +1,19 @@
+{
+	"name":"exit",
+	"type":"language",
+        
+        "pattern_type": "statement",
+        "pattern_language": "<exit>[](%parameter)",
+    
+        
+        
+        "ast_php":{
+            "type":"AST_EXIT",
+        
+            "children":
+            [
+                {"subtree":"%p0"}
+            ]
+        }
+
+}

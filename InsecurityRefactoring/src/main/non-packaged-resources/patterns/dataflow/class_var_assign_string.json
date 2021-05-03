@@ -1,0 +1,35 @@
+{
+	"name":"class_var_assign_string",
+	"type":"dataflow",
+        
+        "pattern_type": "statement",
+    
+        "diff_man":0.4,
+        "diff_sca":0.8,
+        "diff_dyn":0.1,
+    
+        
+        "input_type" : "expression",
+        "output_type": "variable",
+    
+        "output_return":false,
+        "passthrough":false,
+    
+        "data_input":"Any",
+        "data_output":"Any",
+    
+        "identify_pattern":"assignment",
+    
+        "requirements":
+        [
+        ],
+    
+        "code": 
+        [
+            "<class_get_set>(Storage, input)",
+            "<=>(<$>(store), <new>(Storage))",
+            "<call_method>(<$>(store), setParam, <s>(input), %input)",
+            "<=>(%output, <call_method>(<$>(store), getParam))"
+        ]
+
+}

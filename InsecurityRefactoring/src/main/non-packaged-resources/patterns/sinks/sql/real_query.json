@@ -1,0 +1,27 @@
+{
+	"name":"real_query",
+	"type":"sink",
+	"vuln":"sqli",
+    
+        "pattern_type":"statement",
+        "input_type":"expression",
+    
+        "generates":[
+            {
+                    "params" : ["<$>(db)"],
+                    "init" : 
+                    [
+                        "<=>(<$>(servername), <s>(localhost))",
+                        "<=>(<$>(username), <s>(username))",
+                        "<=>(<$>(password), <s>(password))",
+                        "<=>(<$>(dbName), <s>(myDB))",
+                        "<=>(<$>(db), <new>(mysqli, <$>(servername), <$>(username), <$>(password), <$>(dbName)))"
+                    ]                    
+            }
+        ],
+    
+        "code":[
+            "<call_method>(<any>(), real_query, %input)"
+        ]
+
+}

@@ -1,0 +1,35 @@
+{
+    "name": "htmlspecialchars_1",	
+    "type": "sanitize",
+
+    "pattern_type": "expression",    
+
+    "input_type": "expression",
+    "output_type": "expression",
+    "output_return": true,
+    "passthrough": true,
+
+    "data_input": "String",
+    "data_output": "String",
+
+    "sufficient": 
+    [
+        {
+            "type": "xss",
+            "requirements": [
+                ["!context(quotes)"]
+            ]
+        }, 
+        {
+            "type": "sqli",
+            "requirements": [
+                ["!context(quotes)"]
+            ]
+        }
+    ],
+
+    "code":
+            [
+                "<call>(htmlspecialchars, %input)"
+            ]
+}

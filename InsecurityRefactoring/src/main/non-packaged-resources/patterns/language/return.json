@@ -1,0 +1,16 @@
+{
+    "name": "return",
+    "type": "language",
+
+    "pattern_type": "expression",
+    "pattern_language": "<return>[](%stmt[])",
+
+    "ast_php":
+            {
+                "type": "AST_RETURN",
+                "children":
+                        [
+                            {"subtree":"%p0"}    
+                        ]
+            }
+}

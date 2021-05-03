@@ -1,0 +1,23 @@
+{
+	"name":"str_split",
+	"type":"dataflow_identify",
+        
+        "pattern_type": "expression",
+    
+        
+        "input_type" : "expression",
+        "output_type": "expression",
+    
+        "output_return":true,
+        "passthrough":true,
+    
+        "data_input":"String",
+        "data_output":"Array(String)",
+  
+    
+        "code": 
+        [
+            "<call>(str_split, %input, <any>()?...)"
+        ]
+
+}

@@ -1,0 +1,17 @@
+{
+	"name":"_GET",	
+	"type":"source",
+        "secure":false,
+    
+        "pattern_type":"expression",
+        "output_type":"expression",
+        "output_return":true,
+    
+        "data_output":"Array(String)",
+    
+    
+        "code":
+        [
+            "<$>(_GET)"
+        ]
+}

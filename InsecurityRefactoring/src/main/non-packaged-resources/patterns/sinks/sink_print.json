@@ -1,0 +1,13 @@
+{
+	"name":"print_func",
+	"type":"sink",
+	"vuln":"xss",
+    
+        "pattern_type":"statement",
+        "input_type":"expression",
+    
+        "code":[
+            "<print>(%input)"
+        ]
+
+}

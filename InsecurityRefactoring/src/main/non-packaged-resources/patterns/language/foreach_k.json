@@ -1,0 +1,21 @@
+{
+	"name":"foreach_k",
+	"type":"language",
+        
+        "pattern_type": "statement",
+        "pattern_language": "<foreach_k>[](%array, %key, $value, %statementList)",
+    
+        
+        
+        "ast_php":{
+            "type" : "AST_FOREACH",
+            "children":
+            [
+                {"subtree":"%p0"},
+                {"subtree":"%p2"},
+                {"subtree":"%p1"},
+                {"subtree":"%p3"}
+            ]
+        }
+
+}

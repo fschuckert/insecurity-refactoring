@@ -1,0 +1,19 @@
+{
+	"name":"echo",
+	"type":"language",
+        
+        "pattern_type": "statement",
+        "pattern_language": "<echo>[](%parameter)",
+    
+        
+        
+        "ast_php":{
+            "type":"AST_ECHO",
+        
+            "children":
+            [
+                {"subtree":"%p0"}
+            ]
+        }
+
+}

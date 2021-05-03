@@ -1,0 +1,23 @@
+{
+	"name":"parse_url_1",
+	"type":"dataflow_identify",
+        
+        "pattern_type": "expression",
+    
+        
+        "input_type" : "expression",
+        "output_type": "expression",
+    
+        "output_return":true,
+        "passthrough":true,
+    
+        "data_input":"String",
+        "data_output":"Array(String)",
+  
+    
+        "code": 
+        [
+            "<call>(parse_url, %input, <any>())"
+        ]
+
+}

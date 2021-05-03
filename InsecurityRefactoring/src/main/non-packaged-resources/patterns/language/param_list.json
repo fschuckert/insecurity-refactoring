@@ -1,0 +1,16 @@
+{
+    "name": "param_list",
+    "type": "language",
+
+    "pattern_type": "expression",
+    "pattern_language": "<param_list>[](%params...)",
+
+    "ast_php":
+            {
+                "type": "AST_PARAM_LIST",
+                "children":
+                        [
+                            {"subtree_list":"%p0"}
+                        ]
+            }
+}

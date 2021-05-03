@@ -1,0 +1,20 @@
+{
+	"name":"phpbb_variable",	
+	"type":"source",
+    
+        "secure":true,
+    
+        "pattern_type":"expression",
+        "output_type":"expression",
+    
+        "output_return":true,
+    
+        "data_output":"String",
+    
+    
+        "code":
+        [
+            "<call_method>(%class, variable, %paramId, <i>(%default))"
+        ]
+
+}

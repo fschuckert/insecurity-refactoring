@@ -1,0 +1,23 @@
+{
+	"name":"sqlite_udf_decode_binary",
+	"type":"dataflow_identify",
+        
+        "pattern_type": "expression",
+    
+        
+        "input_type" : "expression",
+        "output_type": "expression",
+    
+        "output_return":true,
+        "passthrough":true,
+    
+        "data_input":"String",
+        "data_output":"String",
+  
+    
+        "code": 
+        [
+            "<call>(sqlite_udf_decode_binary, %input)"
+        ]
+
+}

@@ -1,0 +1,25 @@
+{
+	"name":"xss_plain",	
+	"type":"context",
+        "vuln":"xss",
+    
+        "pattern_type": "statement",    
+        
+        "input_type" : "expression",
+        "output_type": "expression",
+        "output_return":false,
+        "passthrough":false,
+    
+        "data_input":"String",
+        "data_output":"String",
+    
+        "pre":"Hello",
+        "post":"",
+        
+    
+        "code":
+        [
+            "<=>(%output, <con>(<s>(Hello ), %input))"
+        ]
+
+}

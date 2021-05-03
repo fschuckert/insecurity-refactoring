@@ -1,0 +1,34 @@
+{
+	"name":"call_v",
+	"type":"language",
+        
+        "pattern_type": "expression",
+        "pattern_language": "<call_v>[](%varName[], %params[]...)",
+    
+        
+        
+        "ast_php":{
+            "type":"AST_CALL",
+            "children":
+            [
+                {
+                    "type":"AST_VAR",
+                    "children":
+                    [
+                        {
+                            "type":"string", 
+                            "code":"%p0"
+                        }                        
+                    ]
+                },
+                {
+                    "type":"AST_ARG_LIST",
+                    "children":
+                    [
+                        {"subtree_list" : "%p1"}
+                    ]
+                }
+            ]
+        }
+
+}

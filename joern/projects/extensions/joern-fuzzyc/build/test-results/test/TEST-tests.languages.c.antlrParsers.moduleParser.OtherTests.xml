@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="tests.languages.c.antlrParsers.moduleParser.OtherTests" tests="3" skipped="0" failures="0" errors="0" timestamp="2020-02-17T10:56:07" hostname="blubbomat-ThinkPad" time="0.006">
+  <properties/>
+  <testcase name="testOperatorOverloading" classname="tests.languages.c.antlrParsers.moduleParser.OtherTests" time="0.002"/>
+  <testcase name="testNestedFunctionName" classname="tests.languages.c.antlrParsers.moduleParser.OtherTests" time="0.001"/>
+  <testcase name="testExceptionSpecificationCpp" classname="tests.languages.c.antlrParsers.moduleParser.OtherTests" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,21 @@
+{
+	"name":"assignment",
+	"type":"language",
+        
+        "pattern_type": "variable",
+        "pattern_language": "<$>[](%name)",
+    
+        
+        
+        "ast_php":{
+            "type":"AST_VAR",
+            "children":
+            [
+                {
+                        "type":"string",
+                        "code":"%p0"
+                }
+            ]
+        }
+
+}

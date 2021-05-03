@@ -1,0 +1,13 @@
+{
+	"name":"sink_eval",
+	"type":"sink",
+	"vuln":"eval",
+    
+        "pattern_type":"expression",
+        "input_type":"expression",
+    
+        "code":[
+            "<eval>(%input)"
+        ]
+
+}

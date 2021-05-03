@@ -1,0 +1,139 @@
+# type:xss, sqli, call:method, call, name, paramNum(startswith:0), numberofparameters, vuln:safe
+
+# all
+sqli, method, query, 0, 1, vuln
+sqli, method, prepare, 0, 1..., vuln
+sqli, method, bind_param, 1..., 1..., safe
+sqli, method, bindParam, 1, 2..., safe
+sqli, method, bindValue, 1, 2..., safe
+sqli, method, send_query, 0, 1, vuln
+sqli, method, sql_query, 0, 1, vuln
+
+
+
+#cubrid
+sqli, call, cubrid_bind, 2, 3..., safe
+sqli, call, cubrid_execute, 1, 2..., vuln
+sqli, call, cubrid_prepare, 1, 2..., vuln
+
+#DB++
+# AQL exploitable like sql??
+# sqli, call, dbplus_aql, 0, vuln 
+# sqli, call, dbplus_rquery, 0, vuln 
+
+#dbase - no sql
+
+#filePro - no sql
+
+#firebird/iterbase - no sql
+
+#frontbase
+sqli, call, fbsql_db_query, 1, 2..., vuln
+sqli, call, fbsql_query, 0, 1..., vuln
+
+#IBM DB2
+# sqli, call, db2_bind_param, , safe #strange way of accessing the variable -> defined by string (variable name. see:https://www.php.net/manual/de/function.db2-bind-param.php)
+sqli, call, db2_prepare, 1, 2..., vuln
+sqli, call, db2_exec, 1, 2..., vuln
+sqli, call, db2_execute, 1, 2, safe
+
+#Informix
+sqli, call, ifx_prepare, 0, 2..., vuln
+sqli, call, ifx_query, 0, 2..., vuln
+
+#ingres
+sqli, call, ingres_execute, 1, 2..., safe
+sqli, call, ingres_prepare, 1, 2, vuln
+sqli, call, ingres_query, 1, 2..., vuln
+sqli, call, ingres_query, 2, 3..., safe
+
+#MaxDB
+sqli, call, maxdb_stmt_bind_param, 2..., 3..., safe
+sqli, call, maxdb_bind_param, 2..., 3..., safe
+sqli, call, maxdb_multi_query, 1, 2, vuln
+sqli, method, maxdb_multi_query, 0, 1, vuln
+sqli, call, maxdb_prepare, 1, 2, vuln
+sqli, call, maxdb_query, 1, 2, vuln
+sqli, call, maxdb_real_query, 1, 2, vuln
+sqli, call, maxdb_send_query, 1, 2, vuln
+sqli, call, maxdb_stmt_prepare, 1, 2, vuln
+
+# MongoDB (skipped because noSQL)
+
+#mSQL
+sqli, call, msql_db_query, 1, 2..., vuln
+sqli, call, msql, 1, 2..., vuln
+sqli, call, msql_query, 0, 1..., vuln
+
+#Mssql
+# sqli, call, mssql_bind, 2, safe # this is ignored because no prepare statement is found in documentation! no refactoring possible
+sqli, call, mssql_query, 0, 1..., vuln
+
+#MySQLi
+sqli, call, mysqli_multi_query, 1, 2, vuln
+sqli, call, mysqli_prepare, 1, 2, vuln
+sqli, method, multi_query, 0, 1, vuln
+sqli, call, mysqli_query, 1, 2..., vuln
+sqli, call, mysqli_real_query, 1, 2, vuln
+sqli, call, mysqli_send_query, 1, 2, vuln
+sqli, call, mysqli_stmt_bind_param, 2..., 3..., vuln
+sqli, call, mysqli_stmt_prepare, 1, 2, vuln
+sqli, call, mysqli_bind_param, 2..., 3..., safe
+sqli, call, mysqli_slave_query, 1, 2, vuln
+
+#Mysql_xdevapi -> skipped (relational db)
+ 
+#MySQL (legacy) -> maybe remove?
+sqli, call, mysql_db_query, 1, 2..., vuln
+sqli, call, mysql_query, 0, 1..., vuln
+
+#OCI8 - Oracle (missing prepare satement -> no refactoring possible)
+# sqli, call, oci_bind_array_by_name, 2, safe
+# sqli, call, oci_bind_by_name, 2, safe
+# sqli, call, ocibindbyname, 2, safe
+
+#Paradox skipped (no sql -> storing index and blobs only)
+
+#PostgreSQL
+sqli, call, pg_execute, 2, 3, safe
+sqli, call, pg_prepare, 2, 3, vuln
+sqli, call, pg_query, 1, 2, vuln
+sqli, call, pg_send_query, 1, 2, vuln
+sqli, call, pg_send_execute, 2, 3, safe
+sqli, call, pg_send_prepare, 2, 3, vuln
+sqli, call, pg_query_params, 1, 3, vuln
+sqli, call, pg_query_params, 2, 3, safe
+sqli, call, pg_send_query_params, 1, 3, vuln
+sqli, call, pg_send_query_params, 2, 3, safe
+
+#SQLite
+sqli, call, sqlite_array_query, 0, 2..., vuln
+sqli, call, sqlite_array_query, 1, 2..., vuln
+sqli, method, arrayQuery, 0, 1..., vuln
+sqli, call, sqlite_exec, 0, 2, vuln
+sqli, call, sqlite_exec, 1, 2..., vuln
+sqli, method, queryExec, 0, 1..., vuln
+sqli, call, sqlite_query, 0, 2..., vuln
+sqli, call, sqlite_query, 1, 2..., vuln
+sqli, call, sqlite_single_query, 1, 2..., vuln
+sqli, method, singleQuery, 0, 1..., vuln
+sqli, call, sqlite_unbuffered_query, 0, 2..., vuln
+sqli, call, sqlite_unbuffered_query, 1, 2..., vuln
+sqli, method, unbufferedQuery, 0, 1..., vuln
+
+@SQLite3
+sqli, method, exec, 0, 1, vuln
+sqli, method, querySingle, 0, 1..., vuln
+
+#SQLSRV (Microsoft SQL Server)
+sqli, call, sqlsrv_prepare, 1, 2..., vuln
+sqli, call, sqlsrv_prepare, 2, 2..., safe
+sqli, call, sqlsrv_query, 1, 2..., vuln
+sqli, call, sqlsrv_query, 2, 3..., safe
+# sqli, call, sqlsrv_send_stream_data, 0, safe # only sends stream data. Probably not compatible with insecurity refactoring
+
+#Sybase (removed in PHP7)
+sqli, call, sybase_query, 0, 1..., vuln
+sqli, call, sybase_unbuffered_query, 0, 2..., vuln
+
+#tokyo_tyrant skipped(no real sql database key value storage)

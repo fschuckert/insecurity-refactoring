@@ -1,0 +1,48 @@
+{
+	"name":"filter_input",	
+	"type":"source",
+        "secure":true,
+    
+        "pattern_type":"expression",
+        "output_type":"expression",
+        "output_return":true,
+    
+        "data_output":"String",
+    
+        "sufficients": [
+        { 
+            "params": ["<c>(INPUT_GET)", "<s>(t)", "<c>(FILTER_SANITIZE_NUMBER_INT)"], 
+            "sufficient": 
+                    [
+                        {
+                            "type": "xss",
+                            "requirements": []
+                        }, 
+                        {
+                            "type": "sqli",
+                            "requirements": []
+                        }
+                    ]
+        },
+        { 
+            "params": ["<c>(INPUT_GET)", "<s>(t)", "<c>(FILTER_SANITIZE_URL)"], 
+            "sufficient": 
+                    [
+                        {
+                            "type": "xss",
+                            "requirements": ["!context(attribute)"]
+                        }, 
+                        {
+                            "type": "sqli",
+                            "requirements": []
+                        }
+                    ]
+        }
+    ],
+    
+        "code":
+        [
+            "<call>(filter_input, <any>()...)"
+        ]
+
+}

@@ -1,0 +1,107 @@
+====== phptidy Changelog ======
+
+Version 3.3 (2020-10-24)
+- Adapt continue statements to PHP 7.3
+- Tested with PHP 5.6, 7.0, 7.1, 7.2, 7.3, 7.4
+
+Version 3.2 (2019-08-10)
+- Replace each() because of Deprecation in PHP 7.2
+- Add tests for @see tags
+- Remove not working '$GLOBALS[\'docroot\']' from configuration examples
+
+Version 3.1 (2018-01-02)
+- Point composer directly to phptidy.php
+
+Version 3.0 (2017-03-09)
+- Works on PHP 7 now.
+- Change path of temp file, which did not work on Windows
+
+Version 2.17 (2016-11-29)
+- New configuration option $keep_open_echo_tags
+- Bugfix: Handle anonymous functions with whitespace between function keyword
+  and opening brace
+- Prevent running on PHP 7
+
+Version 2.16 (2015-10-27)
+- Bugfix: In @param doctags "object" was used instead of class name type hints
+  and references and type hints were not detected when used together.
+- New formatting function for adding spaces around operators (disabled by
+  default)
+- Don't use cache if the version of phptidy or the configuration has changed
+- Use PHP in $PATH instead of /usr/bin/php
+
+Version 2.15 (2015-09-05)
+- Composer integration
+
+Version 2.14 (2015-04-26)
+- New formatting function for adding one space after an opening and before a
+  closing round bracket (disabled by default)
+- New option --config
+- New option --quiet
+- New command "-" to read code from STDIN and write formatted code to STDOUT
+- New documentation file INTEGRATION
+- Bugfix: No @uses tags were added to docblocks. To avoid unexpected behaviour,
+  the new configuration option $add_usestags has been added and disabled by
+  default.
+- Tests
+- Move version control from subversion to git
+
+Version 2.13 (2014-12-29)
+- Indent "else if" correctly
+- Don't touch one line docblocks
+- Handle empty files
+- Indent square brackets for new array style
+- Sort doctags
+
+Version 2.12 (2013-12-03)
+- Bugfix: Handle docblocks with content in the same line after "/**"
+
+Version 2.11 (2013-05-07)
+- Configurable diff command
+- Tested on MacOS X
+- Handle anonymous functions
+
+Version 2.10 (2009-11-29)
+- Bugfix: Do not touch casing of object methods named like built in functions
+- Bugfix: Indenting of opening curly braces without control structure
+- Allow constants as docroot variables
+
+Version 2.9 (2009-01-07)
+- Support for opening curly braces in new lines
+- Optional skipping of not wanted cleanup functions
+- Reuse existing comments for new function docblocks
+
+Version 2.8 (2008-05-22)
+- README
+- Display of a usage message
+- Better error messages and correct return codes
+- Check for required environment
+- Empty default author to avoid, that my name is being written in scripts by
+  accident
+- Bugfix: Removing brackets from statements
+- Remove round brackets also from "break", "continue" and "echo"
+- Performance optimisations
+- Strip new token index [2]
+- Indenting support for more operators
+- Changed default configuration for $open_tag to "<?php" to make it work in
+  systems without short tags enabled
+- Check encoding
+- Colored diff output
+
+Version 2.7 (2008-04-11)
+- @see-Tags for dynamic includes
+- Add blank lines before and after functions and classes
+- Heredoc syntax
+- Bugfix: Do not indent T_ENCAPSED_AND_WHITESPACE
+- Bugfix: Handling of returning a reference from a function
+
+Version 2.6 (2007-12-04)
+- Configurable PHP Open Tags
+- Project files excludes
+- Use array_splice() to replace code
+- Progress bar
+
+Version 2.5 (2007-06-13)
+- First public release
+- All inline comments in english
+- Cache

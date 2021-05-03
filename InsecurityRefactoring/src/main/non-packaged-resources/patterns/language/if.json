@@ -1,0 +1,25 @@
+{
+	"name":"if",
+	"type":"language",
+        
+        "pattern_type": "expression",
+        "pattern_language": "<if>[](%condition, %statement_list)",
+    
+        
+        
+        "ast_php":{
+            "type" : "AST_IF",
+            "children":
+            [
+                {
+                    "type" : "AST_IF_ELEM",
+                    "children":
+                    [
+                        {"subtree":"%p0"},
+                        {"subtree":"%p1"}
+                    ]
+                }
+            ]
+        }
+
+}

@@ -1,0 +1,22 @@
+{
+	"name":"hash_hmac",	
+	"type":"sanitize",
+    
+        "pattern_type": "expression",    
+        
+        "input_type" : "expression",
+        "output_type": "expression",
+        "output_return":true,
+        "passthrough":true,
+    
+        "data_input":"String",
+        "data_output":"String",
+    
+        
+    
+        "code":
+        [
+            "<call>(hash_hmac, <any>(), %input, <any>()?...)"
+        ]
+
+}

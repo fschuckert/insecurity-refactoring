@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="tests.languages.c.cfgCreation.IfBlockTests" tests="12" skipped="0" failures="0" errors="0" timestamp="2020-02-17T10:56:08" hostname="blubbomat-ThinkPad" time="0.051">
+  <properties/>
+  <testcase name="testEmptyIf" classname="tests.languages.c.cfgCreation.IfBlockTests" time="0.0"/>
+  <testcase name="testIfStatementNumberOfBlocks" classname="tests.languages.c.cfgCreation.IfBlockTests" time="0.006"/>
+  <testcase name="testIfJoinWithNextCode" classname="tests.languages.c.cfgCreation.IfBlockTests" time="0.004"/>
+  <testcase name="testIfStatementCondition" classname="tests.languages.c.cfgCreation.IfBlockTests" time="0.003"/>
+  <testcase name="testEmptyElse" classname="tests.languages.c.cfgCreation.IfBlockTests" time="0.0"/>
+  <testcase name="testIfStatementNumberOfEdges" classname="tests.languages.c.cfgCreation.IfBlockTests" time="0.003"/>
+  <testcase name="testIfJoinWithPrevCode" classname="tests.languages.c.cfgCreation.IfBlockTests" time="0.004"/>
+  <testcase name="testIfStatementBody" classname="tests.languages.c.cfgCreation.IfBlockTests" time="0.003"/>
+  <testcase name="testElseIfNumberOfBlocks" classname="tests.languages.c.cfgCreation.IfBlockTests" time="0.007"/>
+  <testcase name="testIfEdges" classname="tests.languages.c.cfgCreation.IfBlockTests" time="0.003"/>
+  <testcase name="testElseIfElseIfNumberOfBlocks" classname="tests.languages.c.cfgCreation.IfBlockTests" time="0.01"/>
+  <testcase name="testIfElseNumberOfBlocks" classname="tests.languages.c.cfgCreation.IfBlockTests" time="0.005"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

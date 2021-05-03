@@ -1,0 +1,22 @@
+{
+	"name":"is_int",	
+	"type":"sanitize",
+    
+        "pattern_type": "expression",    
+        
+        "input_type" : "expression",
+        "output_type": "expression",
+        "output_return":true,
+        "passthrough":false,
+    
+        "data_input":"String",
+        "data_output":"Boolean",
+    
+        
+    
+        "code":
+        [
+            "<call>(is_int, %input)"
+        ]
+
+}

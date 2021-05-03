@@ -1,0 +1,15 @@
+{
+	"name":"int",
+	"type":"language",
+        
+        "pattern_type": "expression",
+        "pattern_language": "<i>[](%name)",
+    
+        
+        
+        "ast_php":{
+            "type":"integer",
+            "code" : "%p0"
+        }
+
+}

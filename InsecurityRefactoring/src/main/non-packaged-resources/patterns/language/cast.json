@@ -1,0 +1,19 @@
+{
+	"name":"cast",
+	"type":"language",
+        
+        "pattern_type": "expression",
+        "pattern_language": "<cast>[](%type, %input)",
+    
+        
+        
+        "ast_php":{
+            "type" : "AST_CAST",
+            "flags" : ["%p0"],
+            "children":
+            [
+                {"subtree":"%p1"}
+            ]
+        }
+
+}

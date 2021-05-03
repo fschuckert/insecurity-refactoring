@@ -1,0 +1,32 @@
+{
+    "name": "function_call_by_string",
+    "type": "dataflow",
+
+    "pattern_type": "statement",
+
+    "diff_man": 0.3,
+    "diff_sca": 0.8,
+    "diff_dyn": 0.0,
+
+    "input_type": "expression",
+    "output_type": "variable",
+
+    "output_return": false,
+    "passthrough": false,
+
+    "data_input": "Any",
+    "data_output": "Any",
+
+    "identify_pattern": "assignment",
+
+    "requirements":
+            [
+            ],
+
+    "code": 
+            [
+                "<def_func>(sanitize, <param_list_1>(<s>(a)),  <stmtlist>(<return>(<$>(a))))",
+                "<=>(<$>(func), <s>(sanitize))",
+                "<=>(%output, <call_v>(func, %input))"
+            ]
+}

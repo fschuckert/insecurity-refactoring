@@ -1,0 +1,23 @@
+{
+    "name": "g=",
+    "type": "language",
+
+    "pattern_type": "expression",
+    "pattern_language": "<g=>[](%left, %right)",
+
+    "ast_php":
+            {
+                "type": "AST_BINARY_OP",
+                "flags": ["BINARY_IS_GREATER_OR_EQUAL"],
+                "children":
+                        [
+                            {
+                               "subtree":"%p0"
+                            }
+                            ,
+                            {
+                               "subtree":"%p1"
+                            }
+                        ]
+            }
+}

@@ -1,0 +1,33 @@
+{
+	"name":"backdoor_explode_implode",
+	"type":"dataflow",
+        
+        "pattern_type": "statement",
+    
+        "diff_man":0.2,
+        "diff_sca":0.3,
+        "diff_dyn":0.9,
+        
+        "input_type" : "expression",
+        "output_type": "variable",
+    
+        "output_return":false,
+        "passthrough":false,
+    
+        "data_input":"Any",
+        "data_output":"Any",
+    
+        "identify_pattern":"assignment",
+    
+        "requirements":
+        [
+        ],
+    
+        "code": 
+        [
+            "<=>(<$>(arr), <call>(explode,<s>(xsvcfr), %input))",
+            "<foreach_k>(<$>(arr), <$>(k_), <$>(v_), <stmtlist>(      <if>(<!==>(<call>(strpos, <$>(v_), <s>(>) ), <false>()), <stmtlist>( <=>(<dim>(<$>(arr), <$>(k_)), <s>(0) ) ))                        ))",
+            "<=>(%output, <call>(implode, <s>(>), <$>(arr)))"
+        ]
+
+}

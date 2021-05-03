@@ -1,0 +1,34 @@
+{
+	"name":"insuff_redirect_to_home",
+	"type":"dataflow",
+        
+        "pattern_type": "statement",
+    
+        "diff_man":0.8,
+        "diff_sca":0.3,
+        "diff_dyn":0.4,
+        
+        "input_type" : "expression",
+        "output_type": "variable",
+    
+        "output_return":false,
+        "passthrough":false,
+    
+        "data_input":"Any",
+        "data_output":"Integer",
+    
+        "identify_pattern":"assignment",
+    
+        "requirements":
+        [
+            "type(integer)"
+        ],
+    
+        "code": 
+        [
+            "<=>(<$>(num), %input)",
+            "<if>(<!>(<call>(is_numeric, <$>(num))), <stmtlist>(<call>(header, <s>(Location: /))))",
+            "<=>(%output, <$>(num))"
+        ]
+
+}

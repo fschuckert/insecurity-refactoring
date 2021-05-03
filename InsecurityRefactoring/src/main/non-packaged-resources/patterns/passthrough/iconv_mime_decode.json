@@ -1,0 +1,23 @@
+{
+	"name":"iconv_mime_decode",
+	"type":"dataflow_identify",
+        
+        "pattern_type": "expression",
+    
+        
+        "input_type" : "expression",
+        "output_type": "expression",
+    
+        "output_return":true,
+        "passthrough":true,
+    
+        "data_input":"String",
+        "data_output":"String",
+  
+    
+        "code": 
+        [
+            "<call>(iconv_mime_decode, %input, <any>()?...)"
+        ]
+
+}

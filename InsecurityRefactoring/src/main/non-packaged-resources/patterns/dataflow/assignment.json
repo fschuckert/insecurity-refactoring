@@ -1,0 +1,31 @@
+{
+	"name":"assignment",
+	"type":"dataflow",
+        
+        "pattern_type": "statement",
+    
+        "diff_man":0.0,
+        "diff_sca":0.0,
+        "diff_dyn":0.0,
+        
+        "input_type" : "expression",
+        "output_type": "variable",
+    
+        "output_return":false,
+        "passthrough":false,
+    
+        "data_input":"Any",
+        "data_output":"Any",
+    
+        "identify_pattern":"assignment_dim",
+    
+        "requirements":
+        [
+        ],
+    
+        "code": 
+        [
+            "<=>(%output, %input)"
+        ]
+
+}

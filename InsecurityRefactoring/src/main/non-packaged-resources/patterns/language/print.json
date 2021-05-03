@@ -1,0 +1,19 @@
+{
+	"name":"print",
+	"type":"language",
+        
+        "pattern_type": "statement",
+        "pattern_language": "<print>[](%parameter)",
+    
+        
+        
+        "ast_php":{
+            "type":"AST_PRINT",
+        
+            "children":
+            [
+                {"subtree":"%p0"}
+            ]
+        }
+
+}

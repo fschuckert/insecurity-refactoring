@@ -1,0 +1,38 @@
+{
+	"name":"call_static",
+	"type":"language",
+        
+        "pattern_type": "expression",
+        "pattern_language": "<call_static>[](%class, %method, %params[]...)",
+    
+        
+        
+        "ast_php":{
+            "type":"AST_STATIC_CALL",
+            "children":
+            [
+                {
+                    "type":"AST_NAME",
+                    "children":
+                    [
+                        {
+                            "type":"string", 
+                            "code":"%p0"
+                        }                        
+                    ]
+                },
+                {
+                    "type":"string",
+                    "code":"%p1"
+                },
+                {
+                    "type":"AST_ARG_LIST",
+                    "children":
+                    [
+                        {"subtree_list" : "%p2"}
+                    ]
+                }
+            ]
+        }
+
+}

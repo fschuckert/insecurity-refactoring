@@ -1,0 +1,22 @@
+{
+	"name":"strspn",	
+	"type":"sanitize",
+    
+        "pattern_type": "expression",    
+        
+        "input_type" : "expression",
+        "output_type": "expression",
+        "output_return":true,
+        "passthrough":true,
+    
+        "data_input":"String",
+        "data_output":"Integer",
+    
+        
+    
+        "code":
+        [
+            "<call>(strspn, %input)"
+        ]
+
+}

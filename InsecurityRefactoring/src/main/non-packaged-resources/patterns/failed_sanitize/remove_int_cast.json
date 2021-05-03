@@ -1,0 +1,29 @@
+{
+	"name":"remove_int_cast",	
+	"type":"failed_sanitize",
+        "vuln":"xss",
+    
+        "pattern_type": "expression",    
+    
+        "diff_man":0.0,
+        "diff_sca":0.0,
+        "diff_dyn":0.0,
+        
+        "input_type" : "expression",
+        "output_type": "expression",
+        "output_return":true,
+        "passthrough":false,
+    
+        "data_input":"String",
+        "data_output":"Integer",
+    
+        "requirements" : 
+        [
+        ],
+    
+        "code":
+        [
+            "%input"
+        ]
+
+}

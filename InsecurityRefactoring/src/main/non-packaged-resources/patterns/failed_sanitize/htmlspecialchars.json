@@ -1,0 +1,32 @@
+{
+	"name":"failed_htmlspecialchars",	
+	"type":"failed_sanitize",
+        "vuln":"sqli",
+    
+        "pattern_type": "expression",    
+    
+        "diff_man":0.6,
+        "diff_sca":0.8,
+        "diff_dyn":0.1,
+        
+        "input_type" : "expression",
+        "output_type": "expression",
+        "output_return":true,
+        "passthrough":false,
+    
+        "data_input":"String",
+        "data_output":"String",
+    
+        "requirements" : 
+        [
+            "!context(quotes)"
+        ],
+    
+        
+    
+        "code":
+        [
+            "<call>(htmlspecialchars, %input)"
+        ]
+
+}

@@ -1,0 +1,59 @@
+{
+    "name": "preg_replace",	
+    "type": "sanitize",
+
+    "pattern_type": "expression",    
+
+    "input_type": "expression",
+    "output_type": "expression",
+    "output_return": true,
+    "passthrough": true,
+
+    "data_input": "String",
+    "data_output": "String",
+    
+    "sufficient":[        
+    ],
+
+    "generates": [
+        { 
+            "params": ["<s>(/[^A-Za-z0-9]/)", "<s>()"], 
+            "sufficient": 
+                    [
+                        {
+                            "type": "xss",
+                            "requirements": []
+                        }, 
+                        {
+                            "type": "sqli",
+                            "requirements": []
+                        }
+                    ]
+        },
+        { 
+            "params": ["<s>(/'/)", "<s>()"], 
+            "sufficient": 
+                    [
+                        {
+                            "type": "xss",
+                            "requirements": 
+                            [
+                                ["context(apostrophe)", "!context(attribute)"]
+                            ]
+                        }, 
+                        {
+                            "type": "sqli",
+                            "requirements": 
+                            [
+                                ["context(apostrophe)"]
+                            ]
+                        }
+                    ]
+        }
+    ],
+
+    "code":
+            [
+                "<call>(preg_replace, <any>(), <any>(), %input)"
+            ]
+}

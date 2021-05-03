@@ -1,0 +1,14 @@
+{
+	"name":"any",
+	"type":"language",
+        
+        "pattern_type": "expression",
+        "pattern_language": "<any>[]()",
+    
+        
+        
+        "ast_php":{
+            "type" : "any"
+        }
+
+}

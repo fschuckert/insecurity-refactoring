@@ -1,0 +1,27 @@
+{
+    "name": "param",
+    "type": "language",
+
+    "pattern_type": "expression",
+    "pattern_language": "<param>[](%name, %default)",
+
+    "ast_php":
+            {
+                "type": "AST_PARAM",
+                "children":
+                        [
+                            {
+                                "type": "NULL"
+                            }
+                            ,
+                            {
+                                "type": "string",
+                                "code": "%p0"
+                            }
+                            ,
+                            {
+                                "type": "NULL"
+                            }
+                        ]
+            }
+}

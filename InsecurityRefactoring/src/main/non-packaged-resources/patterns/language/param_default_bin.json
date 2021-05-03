@@ -1,0 +1,41 @@
+{
+    "name": "param_default_bin",
+    "type": "language",
+
+    "pattern_type": "expression",
+    "pattern_language": "<param_default_bin>[](%name, %default)",
+
+    "ast_php":
+            {
+                "type": "AST_PARAM",
+                "children":
+                        [
+                            {
+                                "type": "NULL"
+                            }
+                            ,
+                            {
+                                "type": "string",
+                                "code": "%p0"
+                            }
+                            ,
+                            {
+                                "type": "AST_CONST",
+                                "children":
+                                        [
+                                            {
+                                                "type": "AST_NAME",
+                                                "flags": ["NAME_NOT_FQ"],
+                                                "children":
+                                                        [
+                                                            {
+                                                                "type": "string",
+                                                                "code": "%p1"
+                                                            }
+                                                        ]
+                                            }
+                                        ]
+                            }
+                        ]
+            }
+}

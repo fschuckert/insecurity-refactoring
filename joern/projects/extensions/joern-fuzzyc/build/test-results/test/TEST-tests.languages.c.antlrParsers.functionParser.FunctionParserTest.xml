@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="tests.languages.c.antlrParsers.functionParser.FunctionParserTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2020-02-17T10:56:07" hostname="blubbomat-ThinkPad" time="0.192">
+  <properties/>
+  <testcase name="testIf" classname="tests.languages.c.antlrParsers.functionParser.FunctionParserTest" time="0.141"/>
+  <testcase name="testStructInFunc" classname="tests.languages.c.antlrParsers.functionParser.FunctionParserTest" time="0.017"/>
+  <testcase name="testSizeofStruct" classname="tests.languages.c.antlrParsers.functionParser.FunctionParserTest" time="0.034"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
