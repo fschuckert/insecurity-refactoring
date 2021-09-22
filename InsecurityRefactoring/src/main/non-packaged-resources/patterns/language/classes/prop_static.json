@@ -1,0 +1,30 @@
+{
+    "type": "language",
+
+    "pattern_type": "expression",
+    "pattern_language": "<prop_static>[](className, attribute)",
+
+    "ast_php":
+            {
+                "type": "AST_STATIC_PROP",
+                "children":
+                        [
+                            {
+                                "type": "AST_NAME",
+                                "flags": ["NAME_NOT_FQ"],
+                                "children":
+                                        [
+                                            {
+                                                "type": "string",
+                                                "code": "%p0"
+                                            }
+                                        ]
+                            }
+                            ,
+                            {
+                                "type": "string",
+                                "code": "%p1"
+                            }
+                        ]
+            }
+}

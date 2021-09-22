@@ -1,0 +1,84 @@
+{
+    "name": "mysqli_multi_query",
+    "type": "sink",
+    "vuln": "sqli",
+
+    "pattern_type": "expression",
+    "input_type": "expression",
+
+    "sufficient_escapes": ["\\"],
+
+    "docker-ext-install": ["pdo", "pdo_mysql", "mysqli"],
+
+    "generate_files": [
+        {
+            "|pre|init.sql": [
+                "CREATE DATABASE IF NOT EXISTS myDB;",
+                "use myDB;"
+            ]
+        },
+        {
+            "Dockerfile": [
+                "FROM php:7.3-apache",
+                "RUN apt-get update",
+                "RUN docker-php-ext-install pdo_mysql mysqli pdo",
+                "RUN a2enmod rewrite",
+                "COPY src/ /var/www/html/",
+                "EXPOSE 80"
+            ]
+        },
+        {
+            "docker-compose.yml": [
+                "version: '2'",
+                "services:",
+                "  mysql:",
+                "    image: mysql:8.0",
+                "    container_name: mysql-server",
+                "    command: --default-authentication-plugin=mysql_native_password --init-file /data/application/init.sql",
+                "    volumes:",
+                "      - ./init.sql:/data/application/init.sql",
+                "    restart: always",
+                "    environment:",
+                "      - MYSQL_ROOT_PASSWORD=rootpassword",
+                "      - MYSQL_DATABASE=myDB",
+                "      - MYSQL_USER=username",
+                "      - MYSQL_PASSWORD=password",
+                "    ports:",
+                "      - \"8082:3306\"",
+                "  website:",
+                "    container_name: apache_php",
+                "    image: apache:php",
+                "    build:",
+                "      context: ./",
+                "    volumes:",
+                "      - ./src:/var/www/html/",
+                "    ports:",
+                "      - 8000:80",
+                "    depends_on:",
+                "      - mysql"
+            ]
+        }
+    ],
+    "generates": [
+        {
+            "params": ["<$>(db)"],
+            "init": 
+                    [
+                        "<=>(<$>(servername), <s>(mysql))",
+                        "<=>(<$>(username), <s>(username))",
+                        "<=>(<$>(password), <s>(password))",
+                        "<=>(<$>(dbName), <s>(myDB))",
+                        "<=>(<$>(db), <new>(mysqli, <$>(servername), <$>(username), <$>(password), <$>(dbName)))"
+                    ],  
+            "generate_output_code": 
+                    [
+                        "<=>(<$>(results), <call_method>(<$>(db), use_result))",
+                        "<while>(<=>(<$>(row), <call_method>(<$>(results), fetch_row)), <echo>(<call>(htmlentities, <call>(print_r, <$>(row), <true>()))))"
+                    ],
+            "define": ["init_mysql"]
+        }
+    ],
+    "code": [
+        "<call>(mysqli_multi_query, <any>(), %input)"
+    ]
+}

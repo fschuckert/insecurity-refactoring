@@ -6,6 +6,7 @@
 package ntnuhtwg.insecurityrefactoring.gui.patterntester;
 
 import java.awt.GridLayout;
+import java.awt.event.KeyListener;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
@@ -32,7 +33,7 @@ public class PatternCodeViewer extends JPanel{
     
     
     public PatternCodeViewer() {
-        this.setLayout(new GridLayout(2, 1));
+        this.setLayout(new GridLayout(1, 2));
         
         pattern.setEditable(true);
         pattern.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_PHP);
@@ -57,9 +58,18 @@ public class PatternCodeViewer extends JPanel{
     
     public void setSourceCode(String sourceCode){
         this.sourceCode.setText(sourceCode);
+        this.sourceCode.setCaretPosition(0);
     }
     
     public void updateAST(TreeNode<INode> ast){
         this.aSTView.updateAST(ast);
+    }
+
+    void setCode(String code) {
+        this.pattern.setText(code);
+    }
+    
+    public void addPatternKeyListeners(KeyListener l){
+        pattern.addKeyListener(l);
     }
 }

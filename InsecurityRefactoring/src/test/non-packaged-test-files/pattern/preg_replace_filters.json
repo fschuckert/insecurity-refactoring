@@ -1,0 +1,28 @@
+{
+    "name": "preg_replace",	
+    "type": "sanitize",
+
+    "pattern_type": "expression",    
+
+    "input_type": "expression",
+    "output_type": "expression",
+    "output_return": true,
+    "passthrough": true,
+
+    "data_input": "String",
+    "data_output": "String",
+    
+    "filters":["numbers", "letters", "specials"],
+
+    "generates": [
+        { 
+            "params": ["<s>(/[^A-Za-z0-9]/)", "no_requrements"], 
+            "filters":[]
+        }
+    ],
+
+    "code":
+            [
+                "<call>(preg_replace, <any>(), <any>(), %input)"
+            ]
+}

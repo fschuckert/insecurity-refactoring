@@ -1,0 +1,28 @@
+{
+    "type": "language",
+
+    "pattern_type": "expression",
+    "pattern_language": "<prop_group>[](prop_element...)",
+
+    "ast_php":
+            {
+                "type": "AST_PROP_GROUP",
+                "children":
+                        [
+                            {
+                                "type": "NULL"
+                            }
+                            ,
+                            {
+                                "type": "AST_PROP_DECL",
+                                "flags": ["MODIFIER_PROTECTED"],
+                                "children":
+                                        [
+                                            {
+                                                "subtree_list": "%p0"
+                                            }
+                                        ]
+                            }
+                        ]
+            }
+}

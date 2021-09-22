@@ -1,0 +1,5 @@
+source source.php:5
+sink sink.php:7
+
+exploit http://localhost:9000/vuln.php?id=2%20OR%201=1;#
+

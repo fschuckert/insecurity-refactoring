@@ -1,0 +1,53 @@
+{
+    "name": "class",
+    "type": "language",
+
+    "pattern_type": "expression",
+    "pattern_language": "<class>[](%name, %statements...)",
+
+    "ast_php": 
+            {
+                "type": "AST_CLASS",
+                "children":
+                        [
+                            {
+                                "type": "string",
+                                "code": "%p0"
+                            }
+                            ,
+                            {
+                                "type": "NULL"
+                            }
+                            ,
+                            {
+                                "type": "NULL"
+                            }
+                            ,
+                            {
+                                "type": "NULL"
+                            }
+                            ,
+                            {
+                                "type": "AST_TOPLEVEL",
+                                "flags": ["TOPLEVEL_CLASS"],
+                                "children":
+                                        [
+                                            {
+                                                "type": "AST_STMT_LIST",
+                                                "children":
+                                                        [
+                                                            {
+                                                                "subtree_list": "%p1"
+                                                            }
+                                                        ]
+                                            }
+                                        ]
+                            }
+                            ,
+                            {
+                                "type": "integer",
+                                "code": "2"
+                            }
+                        ]
+            }
+}

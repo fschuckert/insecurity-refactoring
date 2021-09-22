@@ -17,7 +17,7 @@
         "data_input":"Any",
         "data_output":"Any",
     
-        "identify_pattern":"assignment_dim",
+        "identify_pattern":"assignment",
     
         "requirements":
         [

@@ -1,0 +1,28 @@
+{
+	"name":"http_build_query",	
+	"type":"sanitize",
+    
+        "pattern_type": "expression",    
+        
+        "input_type" : "expression",
+        "output_type": "expression",
+        "output_return":true,
+        "passthrough":true,
+    
+        "data_input":"Array(Any)",
+        "data_output":"String",
+    
+        "filters": ["allowed_specials:-_.~"],
+    
+        "code":
+        [
+            "<call>(http_build_query, %input, <any>()?...)"
+        ],
+        
+        "generates": [
+        {
+            "params": []
+        }
+    ]
+
+}

@@ -21,14 +21,17 @@ import ntnuhtwg.insecurityrefactoring.base.ast.ASTFactory;
 import ntnuhtwg.insecurityrefactoring.base.ast.AnyNode;
 import ntnuhtwg.insecurityrefactoring.base.ast.FixedNode;
 import ntnuhtwg.insecurityrefactoring.base.exception.TimeoutException;
-import ntnuhtwg.insecurityrefactoring.base.patternparser.PatternEntry;
-import ntnuhtwg.insecurityrefactoring.base.patternparser.PatternParser;
+import ntnuhtwg.insecurityrefactoring.base.patternpersist.PatternEntry;
+import ntnuhtwg.insecurityrefactoring.base.patternpersist.PatternParser;
 import ntnuhtwg.insecurityrefactoring.base.tree.TreeNode;
 import ntnuhtwg.insecurityrefactoring.base.db.neo4j.dsl.cypher.DataflowDSL;
 import ntnuhtwg.insecurityrefactoring.base.db.neo4j.Neo4JConnector;
 import ntnuhtwg.insecurityrefactoring.base.db.neo4j.Neo4jDB;
 import ntnuhtwg.insecurityrefactoring.base.db.neo4j.node.INode;
+import ntnuhtwg.insecurityrefactoring.base.exception.NotExpected;
 import ntnuhtwg.insecurityrefactoring.base.patterns.impl.ParamPattern;
+import ntnuhtwg.insecurityrefactoring.base.patterns.impl.GenerateParameters;
+import org.json.simple.JSONObject;
 import org.neo4j.driver.types.Node;
 import scala.NotImplementedError;
 
@@ -43,10 +46,19 @@ public abstract class Pattern {
     private String type;
     private String vulnOnly;
     private String name;
+    private String patternFileLocation;
+    private String basePattern;
 
     private List<String> initCodeLines = new LinkedList<>();
     
     List<String> codeLines;
+    
+    private List<GenerateFile> generateFiles = new LinkedList<>();
+    private List<String> docker_commands = new LinkedList<>();
+    private List<String> docker_installs = new LinkedList<>();
+    private List<String> defines = new LinkedList();
+    private List<String> depends_on = new LinkedList();
+    private List<GenerateParameters> generates = new LinkedList<>();
 
     protected ASTType patternType;
     protected ASTType inputType;
@@ -58,12 +70,42 @@ public abstract class Pattern {
 
     protected PatternStorage patternStorage;
 
+    public String getBasePattern() {
+        return basePattern;
+    }
+
+    
+    
+    public boolean isForGenerate() {
+        return basePattern != null;
+    }
+
+    public void setForGenerate(String basePatternName) {
+        this.basePattern = basePatternName;
+    }
+    
+    public void addGenerateParam(GenerateParameters generate){
+        generates.add(generate);
+    }
+
+    public List<GenerateParameters> getGeneratesParams() {
+        return generates;
+    }    
+
     public boolean containsAny() {
         return containsAny;
     }
 
     public void setContainsAny(boolean containsAny) {
         this.containsAny = containsAny;
+    }
+
+    public String getPatternFileLocation() {
+        return patternFileLocation;
+    }
+
+    public void setPatternFileLocation(String patternFileLocation) {
+        this.patternFileLocation = patternFileLocation;
     }
     
     
@@ -79,6 +121,31 @@ public abstract class Pattern {
     public void setInitCodeLines(List<String> initCodeLines) {
         this.initCodeLines = initCodeLines;
     }
+
+    public List<String> getInitCodeLines() {
+        return initCodeLines;
+    }
+    
+    
+
+
+    public List<String> getDefines() {
+        return defines;
+    }
+
+    public void setDefines(List<String> defines) {
+        this.defines = defines;
+    }
+
+    public List<String> getDepends_on() {
+        return depends_on;
+    }
+
+    public void setDepends_on(List<String> depends_on) {
+        this.depends_on = depends_on;
+    }
+    
+    
     
     
     
@@ -133,6 +200,14 @@ public abstract class Pattern {
         }
 
         return true;
+    }
+
+    public List<GenerateFile> getGenerateFiles() {
+        return generateFiles;
+    }
+    
+    public void addGenerateFile(GenerateFile generateFile){
+        this.generateFiles.add(generateFile);
     }
 
     protected boolean checkFlags(INode expected, INode node) {
@@ -302,7 +377,7 @@ public abstract class Pattern {
             return subTree;
         }
 
-        throw new NotImplementedError("Should not reach this. Pattern broken? " + pattern.getObj().identifier);
+        throw new NotExpected("Might be unknown language pattern " + pattern.getObj().identifier);
     }
     
     

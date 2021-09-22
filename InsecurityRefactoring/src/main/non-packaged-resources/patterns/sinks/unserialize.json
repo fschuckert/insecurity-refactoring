@@ -1,13 +1,31 @@
 {
-	"name":"unserialize",
-	"type":"sink",
-	"vuln":"unserialize",
-    
-        "pattern_type":"expression",
-        "input_type":"expression",
-    
-        "code":[
-            "<call>(unserialize, %input)"
-        ]
+    "name": "unserialize",
+    "type": "sink",
+    "vuln": "unserialize",
 
+    "pattern_type": "expression",
+    "input_type": "expression",
+
+    "code": [
+        "<call>(unserialize, %input)"
+    ],
+
+    "generate_files": [
+        {
+            "docker-compose.yml": 
+                    [
+                        "version: '2'",
+                        "services:",                       
+                        "  website:",
+                        "    container_name: apache_php",
+                        "    image: apache:php",
+                        "    build:",
+                        "      context: ./",
+                        "    volumes:",
+                        "      - ./src:/var/www/html/",
+                        "    ports:",
+                        "      - 8000:80"
+                    ]
+        }
+    ]
 }

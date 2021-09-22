@@ -1,22 +1,32 @@
 {
-	"name":"str_ireplace",	
-	"type":"sanitize",
-    
-        "pattern_type": "expression",    
-        
-        "input_type" : "expression",
-        "output_type": "expression",
-        "output_return":true,
-        "passthrough":true,
-    
-        "data_input":"String",
-        "data_output":"String",
-    
-        
-    
-        "code":
-        [
-            "<call>(str_ireplace,<any>(), <any>(), %input)"
-        ]
+    "name": "str_ireplace",	
+    "type": "sanitize",
 
+    "pattern_type": "expression",    
+
+    "input_type": "expression",
+    "output_type": "expression",
+    "output_return": true,
+    "passthrough": true,
+
+    "data_input": "String",
+    "data_output": "String",
+
+    "filters": [],
+
+    "generates": [
+        { 
+            "params": ["<s>(')", "<s>()"], 
+            "filters": ["'"]
+        },
+        { 
+            "params": ["<array>(<ae>(<s>(\")), <ae>(<s>(')), <ae>(<s>(\\<)) , <ae>(<s>(\\>)))", "<s>()"], 
+            "filters": ["'", "\"", "<", ">"]
+        }
+    ],
+
+    "code":
+            [
+                "<call>(str_ireplace,<any>(), <any>(), %input)"
+            ]
 }

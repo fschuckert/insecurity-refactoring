@@ -145,6 +145,11 @@ public class Neo4jEmbedded implements Neo4jDB{
         this.managementService.shutdown();
     }
 
+    @Override
+    public boolean checkConnection() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     
     
 }

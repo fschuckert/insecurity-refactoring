@@ -1,0 +1,4 @@
+source vuln.php:6
+sink vuln.php:10
+
+

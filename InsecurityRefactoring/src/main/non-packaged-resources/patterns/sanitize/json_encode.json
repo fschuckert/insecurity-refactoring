@@ -11,15 +11,22 @@
 
     "data_input": "Array(String)",
     "data_output": "String",
-    "sufficient": [        
-    ],
 
-    "sufficients": [
+    "filters": [],
+    "adds_enclosing" : "quotes",
+
+    "generates": [
         { 
-            "params": ["<s>(JSON_PRETTY_PRINT)", "<i>(512)"], 
-            "sufficient": 
-                    [
-                    ]
+            "params": ["<c>(JSON_PRETTY_PRINT)", "<i>(512)"], 
+            "filters": ["escape(\\):\\", "&"]
+        },
+        { 
+            "params": ["<c>(ENT_NOQUOTES)"], 
+            "filters": ["escape(\\):\\\"", "&"]            
+        },
+        { 
+            "params": ["<c>(ENT_COMPAT)"], 
+            "filters": ["escape(\\):\\\"", "&"]
         }
     ],
 

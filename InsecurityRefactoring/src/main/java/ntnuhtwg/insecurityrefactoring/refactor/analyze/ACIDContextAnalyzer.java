@@ -10,6 +10,8 @@ import ntnuhtwg.insecurityrefactoring.base.ASTNodeTypes;
 import ntnuhtwg.insecurityrefactoring.base.Util;
 import ntnuhtwg.insecurityrefactoring.base.db.neo4j.dsl.cypher.DataflowDSL;
 import ntnuhtwg.insecurityrefactoring.base.info.ContextInfo;
+import ntnuhtwg.insecurityrefactoring.base.info.DataflowPathInfo;
+import ntnuhtwg.insecurityrefactoring.base.patterns.impl.SinkPattern;
 import ntnuhtwg.insecurityrefactoring.base.tree.DFATreeNode;
 import org.apache.commons.compress.compressors.CompressorStreamFactory;
 
@@ -20,11 +22,12 @@ import org.apache.commons.compress.compressors.CompressorStreamFactory;
 public class ACIDContextAnalyzer {
         
     
-    public ContextInfo analyzeContext(DFATreeNode source, String vulnType){
+    public ContextInfo analyzeContext(DataflowPathInfo dataflowPath, SinkPattern sinkPattern){
+        DFATreeNode source = dataflowPath.getSource();
         String pre = contextUp(source, true);
         String post = contextUp(source, false);
         
-        return new ContextInfo(vulnType, pre, post);
+        return new ContextInfo(sinkPattern.getVulnType(), sinkPattern.getSufficientEscapeChars(), pre, post);
     }
     
     private String contextUp(DFATreeNode node, boolean pre){

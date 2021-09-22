@@ -20,8 +20,8 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import ntnuhtwg.insecurityrefactoring.refactor.base.MissingCall;
-import ntnuhtwg.insecurityrefactoring.refactor.base.TempPattern;
+import ntnuhtwg.insecurityrefactoring.refactor.temppattern.MissingCall;
+import ntnuhtwg.insecurityrefactoring.refactor.temppattern.TempPattern;
 
 /**
  *

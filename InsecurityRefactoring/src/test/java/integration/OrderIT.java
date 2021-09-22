@@ -12,7 +12,7 @@ import ntnuhtwg.insecurityrefactoring.Framework;
 import ntnuhtwg.insecurityrefactoring.base.ASTNodeTypes;
 import ntnuhtwg.insecurityrefactoring.base.Util;
 import ntnuhtwg.insecurityrefactoring.base.tree.DFATreeNode;
-import ntnuhtwg.insecurityrefactoring.refactor.base.ScanProgress;
+import ntnuhtwg.insecurityrefactoring.refactor.temppattern.ScanProgress;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -36,7 +36,7 @@ public class OrderIT {
 
     @After
     public  void tearDownClass() throws Exception{
-        framework.close();
+        framework.closeDB();
     }
     
     @Test

@@ -12,7 +12,15 @@
         "data_input":"String",
         "data_output":"String",
     
-        
+        "filters": ["numbers", "specials", "h", "w", "y", "c", "d", "g", "v", "x", "z"],
+
+        "generates": [
+            { 
+                "params": ["<i>(9)"], 
+                "filters": ["numbers", "specials", "h", "w", "y", "c", "d", "g", "v", "x", "z"]
+            }
+        ],
+    
     
         "code":
         [

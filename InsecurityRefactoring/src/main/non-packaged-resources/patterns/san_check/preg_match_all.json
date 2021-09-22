@@ -6,13 +6,20 @@
         
         "input_type" : "expression",
         "output_type": "expression",
-        "output_return":false,
+        "output_return":true,
         "passthrough":false,
     
         "data_input":"String",
         "data_output":"Boolean",
     
-        
+        "filters": ["specials", "letters", "numbers"],
+
+    "generates": [
+        { 
+            "params": ["<s>(/^[A-Za-z0-9]*$/)"], 
+            "filters": ["specials"]
+        }
+    ],
     
         "code":
         [

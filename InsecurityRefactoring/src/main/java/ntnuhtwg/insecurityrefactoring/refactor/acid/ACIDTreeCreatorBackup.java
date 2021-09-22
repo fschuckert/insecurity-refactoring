@@ -5,7 +5,7 @@
  */
 package ntnuhtwg.insecurityrefactoring.refactor.acid;
 
-import ntnuhtwg.insecurityrefactoring.refactor.base.VarName;
+import ntnuhtwg.insecurityrefactoring.refactor.temppattern.VarName;
 import com.google.common.collect.Lists;
 import java.util.Arrays;
 import java.util.Collections;

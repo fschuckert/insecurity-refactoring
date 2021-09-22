@@ -1,0 +1,16 @@
+{
+    "name": "array",
+    "type": "language",
+
+    "pattern_type": "expression",
+    "pattern_language": "<array>[](%a...)",
+
+    "ast_php":
+            {
+                "type": "AST_ARRAY",
+               "children":
+                    [
+                        {"subtree_list" : "%p0"}
+                    ]
+            }
+}

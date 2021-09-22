@@ -1,0 +1,37 @@
+{
+	"name":"cast",	
+	"type":"sanitize",
+    
+        "pattern_type": "expression",    
+        
+        "input_type" : "expression",
+        "output_type": "expression",
+        "output_return":true,
+        "passthrough":true,
+        "filters": [],
+    
+        "data_input":"String",
+        "data_output":"Integer",
+    
+        "generates": [
+            { 
+                "params": ["TYPE_LONG"], 
+                "filters": ["letters", "specials"]
+            },
+            { 
+                "params": ["TYPE_DOUBLE"], 
+                "filters": ["letters", "specials"]                
+            },
+            { 
+                "params": ["TYPE_STRING"], 
+                "filters": [],
+                "data_output":"String"
+            }
+        ],
+    
+        "code":
+        [
+            "<cast>(<any>(), %input)"
+        ]
+
+}

@@ -5,6 +5,8 @@
  */
 package ntnuhtwg.insecurityrefactoring.base.patternparser;
 
+import ntnuhtwg.insecurityrefactoring.base.patternpersist.PatternParser;
+import ntnuhtwg.insecurityrefactoring.base.patternpersist.PatternEntry;
 import java.io.IOException;
 import java.util.List;
 import ntnuhtwg.insecurityrefactoring.Framework;
@@ -15,6 +17,7 @@ import ntnuhtwg.insecurityrefactoring.base.patterns.PassthroughPattern;
 import ntnuhtwg.insecurityrefactoring.base.patterns.Pattern;
 import ntnuhtwg.insecurityrefactoring.base.patterns.impl.ConcatPattern;
 import ntnuhtwg.insecurityrefactoring.base.tree.TreeNode;
+import ntnuhtwg.insecurityrefactoring.print.PrintAST;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -76,6 +79,30 @@ public class PatternParserTest {
         assertEquals(DataType.Array().setArraySubType(DataType.Array().setArraySubType(DataType.String())), PatternParser.parseDataType("Array(Array(String))"));
 
     }
+    
+    @Test
+    public void testStringNormal(){
+        TreeNode<PatternEntry> tree = PatternParser.parsePatternCode("<s>(lala)", "test");        
+        assertEquals("s", tree.getObj().identifier);
+        assertEquals(1, tree.getChildren().size());
+        assertEquals("lala", tree.getChild(0).getObj().identifier);
+    }
+    
+    @Test
+    public void testStringSpecialCaseEmpty(){
+        TreeNode<PatternEntry> tree = PatternParser.parsePatternCode("<s>()", "test");        
+        assertEquals("s", tree.getObj().identifier);
+        assertEquals(0, tree.getChildren().size());
+    }
+    
+    @Test
+    public void testStringSpecialCaseSpace(){
+        TreeNode<PatternEntry> tree = PatternParser.parsePatternCode("<s>(' ')", "test");        
+        assertEquals("s", tree.getObj().identifier);
+        assertEquals(1, tree.getChildren().size());
+        assertEquals(" ", tree.getChild(0).getObj().identifier);
+    }
+    
 
     @Test
     public void testEscaping() {
@@ -87,6 +114,24 @@ public class PatternParserTest {
 //            TreeNode<PatternEntry> tree = PatternParser.parsePatternCode("<=>(%output, <con>(<con>(<s>(\\<img src=\"), %input), <s>(\"/\\>)))", "test");
 //            assertEquals("s", tree.getObj().identifier);
 //        }
+    }
+    
+    @Test
+    public void testArray(){
+        {
+            TreeNode<PatternEntry> tree = PatternParser.parsePatternCode("<array>(<s>(t))", "array");
+            assertEquals("array", tree.getObj().identifier);
+            assertEquals(1, tree.getChildren().size());
+        }
+    }
+    
+    @Test
+    public void testArrayEmpty(){
+        {
+            TreeNode<PatternEntry> tree = PatternParser.parsePatternCode("<array>()", "array");
+            assertEquals("array", tree.getObj().identifier);
+            assertEquals(0, tree.getChildren().size());
+        }
     }
 
     @Test
@@ -140,17 +185,7 @@ public class PatternParserTest {
             System.err.println("Fine");
         }
 
-        for (Pattern pattern : framework.getPatternStorage().getFailedSan()) {
-            System.out.println("Testing: " + pattern);
-            pattern.equalsPattern(null, null);
-            System.err.println("Fine");
-        }
-
-        for (Pattern pattern : framework.getPatternStorage().getInsecureSources()) {
-            System.out.println("Testing: " + pattern);
-            pattern.equalsPattern(null, null);
-            System.err.println("Fine");
-        }
+     
 
     }
 

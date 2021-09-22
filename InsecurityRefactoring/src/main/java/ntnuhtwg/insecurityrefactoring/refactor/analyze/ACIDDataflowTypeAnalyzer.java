@@ -12,6 +12,7 @@ import ntnuhtwg.insecurityrefactoring.base.DataType;
 import ntnuhtwg.insecurityrefactoring.base.Util;
 import ntnuhtwg.insecurityrefactoring.base.db.neo4j.Neo4jDB;
 import ntnuhtwg.insecurityrefactoring.base.exception.TimeoutException;
+import ntnuhtwg.insecurityrefactoring.base.info.DataflowPathInfo;
 import ntnuhtwg.insecurityrefactoring.base.patterns.PassthroughPattern;
 import ntnuhtwg.insecurityrefactoring.base.patterns.PatternStorage;
 import ntnuhtwg.insecurityrefactoring.base.patterns.impl.SourcePattern;
@@ -50,7 +51,8 @@ public class ACIDDataflowTypeAnalyzer {
     
     
     
-    public void analyzeDataflowType(DFATreeNode source) throws TimeoutException{
+    public void analyzeDataflowType(DataflowPathInfo dataflowPath) throws TimeoutException{
+        DFATreeNode source = dataflowPath.getSource();
         if(source != null){
             for(SourcePattern sourcePattern : patternStorage.getSources()){
                 if(sourcePattern.equalsPattern(source.getObj(), db)){                

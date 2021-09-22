@@ -1,0 +1,31 @@
+{
+    "name": "filter_var",	
+    "type": "sanitize",
+
+    "pattern_type": "expression",    
+
+    "input_type": "expression",
+    "output_type": "expression",
+    "output_return": true,
+    "passthrough": true,
+
+    "data_input": "String",
+    "data_output": "String",
+
+    "sufficient": [        
+    ],
+
+    "filters": [],
+
+    "generates": [
+        { 
+            "params": ["<c>(FILTER_SANITIZE_EMAIL)"], 
+            "filters": ["allowed_specials:!#$%&'*+-=?^_`{|}~@.[]"]
+        }
+    ],
+
+    "code":
+            [
+                "<call>(filter_var, %input, <any>()?...)"
+            ]
+}

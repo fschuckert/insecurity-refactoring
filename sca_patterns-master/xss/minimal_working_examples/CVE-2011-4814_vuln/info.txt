@@ -1,0 +1,9 @@
+source vuln.php:3
+source source.php:12
+source source.php:13
+source source.php:14
+source source.php:15
+
+sink vuln.php:8
+
+exploit localhost:9000/vuln.php?tainted="><script>alert(1);</script>

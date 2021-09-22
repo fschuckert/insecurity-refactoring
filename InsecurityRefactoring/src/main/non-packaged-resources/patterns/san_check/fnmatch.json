@@ -1,22 +1,32 @@
 {
-	"name":"fnmatch",	
-	"type":"sanitize",
-    
-        "pattern_type": "expression",    
-        
-        "input_type" : "expression",
-        "output_type": "expression",
-        "output_return":false,
-        "passthrough":false,
-    
-        "data_input":"String",
-        "data_output":"Boolean",
-    
-        
-    
-        "code":
-        [
-            "<call>(fnmatch, <any>(), %input, <any>()?...)"
-        ]
+    "name": "fnmatch",	
+    "type": "sanitize",
 
+    "pattern_type": "expression",    
+
+    "input_type": "expression",
+    "output_type": "expression",
+    "output_return": true,
+    "passthrough": false,
+
+    "data_input": "String",
+    "data_output": "Boolean",
+
+    "filters": ["specials", "numbers", "letters"],
+
+    "generates": [
+        { 
+            "params": ["<s>(whitelisting)", "<i>(0)"], 
+            "filters": ["specials", "numbers", "letters"]
+        },
+        { 
+            "params": ["<s>(*)", "<i>(0)"], 
+            "filters": []
+        }
+    ],
+
+    "code":
+            [
+                "<call>(fnmatch, <any>(), %input, <any>()?...)"
+            ]
 }

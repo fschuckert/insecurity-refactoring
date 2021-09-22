@@ -12,11 +12,17 @@
         "data_input":"String",
         "data_output":"Integer",
     
-        
+        "filters": ["numbers", "letters", "specials"],
+    
+        "generates": [
+            { 
+                "params": ["<s>(needle)"]
+            }
+        ],
     
         "code":
         [
-            "<call>(strspn, %input)"
+            "<call>(strspn,  %input, <any>()...))"
         ]
 
 }

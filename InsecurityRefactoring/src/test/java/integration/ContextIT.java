@@ -11,10 +11,10 @@ import java.util.List;
 import ntnuhtwg.insecurityrefactoring.Framework;
 import ntnuhtwg.insecurityrefactoring.base.ASTNodeTypes;
 import ntnuhtwg.insecurityrefactoring.base.info.ContextInfo;
-import ntnuhtwg.insecurityrefactoring.base.info.PipInformation;
+import ntnuhtwg.insecurityrefactoring.base.info.ACIDTree;
 import ntnuhtwg.insecurityrefactoring.base.Util;
 import ntnuhtwg.insecurityrefactoring.base.tree.DFATreeNode;
-import ntnuhtwg.insecurityrefactoring.refactor.base.ScanProgress;
+import ntnuhtwg.insecurityrefactoring.refactor.temppattern.ScanProgress;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -38,7 +38,7 @@ public class ContextIT {
 
     @After
     public  void tearDownClass() throws Exception{
-        framework.close();
+        framework.closeDB();
     }
     
     @Test
@@ -49,19 +49,19 @@ public class ContextIT {
         // dot assign
         framework.scan(pipFolder.getAbsolutePath(), true, new LinkedList<>(), new ScanProgress(), false, null);      
         
-        List<PipInformation> pipInformations = framework.getPipInformation();        
+        List<ACIDTree> pipInformations = framework.getPipInformation();        
         Assert.assertEquals(1, pipInformations.size());
         
         
-        PipInformation pipInformation = pipInformations.get(0);
+        ACIDTree pipInformation = pipInformations.get(0);
         
-        Assert.assertEquals(1, pipInformation.getVulnerableSources().size());
+        Assert.assertEquals(1, pipInformation.getPossibleSources().size());
         
-        DFATreeNode source = pipInformation.getVulnerableSources().get(0);
+        DFATreeNode source = pipInformation.getPossibleSources().get(0).getSource();
         
-        framework.analyze(pipInformation, source);
+        framework.analyze(pipInformation, pipInformation.getPossibleSources().get(0));
         
-        ContextInfo context = pipInformation.getContextInfo();
+        ContextInfo context = pipInformation.getPossibleSources().get(0).getContextInfo();
         Assert.assertNotNull("not context info", context);
         
         System.out.println("pre: " + context.getPre());
@@ -81,19 +81,19 @@ public class ContextIT {
         // dot assign
         framework.scan(pipFolder.getAbsolutePath(), true, new LinkedList<>(), new ScanProgress(), false, null);      
         
-        List<PipInformation> pipInformations = framework.getPipInformation();        
+        List<ACIDTree> pipInformations = framework.getPipInformation();        
         Assert.assertEquals(1, pipInformations.size());
         
         
-        PipInformation pipInformation = pipInformations.get(0);
+        ACIDTree pipInformation = pipInformations.get(0);
         
         Assert.assertEquals(1, pipInformation.getPossibleSources().size());
         
         DFATreeNode source = pipInformation.getPossibleSources().get(0).getSource();
         
-        framework.analyze(pipInformation, source);
+        framework.analyze(pipInformation, pipInformation.getPossibleSources().get(0));
         
-        ContextInfo context = pipInformation.getContextInfo();
+        ContextInfo context = pipInformation.getPossibleSources().get(0).getContextInfo();
         Assert.assertNotNull("not context info", context);
         
         System.out.println("pre: " + context.getPre());
@@ -114,19 +114,19 @@ public class ContextIT {
         // dot assign
         framework.scan(pipFolder.getAbsolutePath(), true, new LinkedList<>(), new ScanProgress(), false, null);      
         
-        List<PipInformation> pipInformations = framework.getPipInformation();        
+        List<ACIDTree> pipInformations = framework.getPipInformation();        
         Assert.assertEquals(1, pipInformations.size());
         
         
-        PipInformation pipInformation = pipInformations.get(0);
+        ACIDTree pipInformation = pipInformations.get(0);
         
         Assert.assertEquals(1, pipInformation.getPossibleSources().size());
         
         DFATreeNode source = pipInformation.getPossibleSources().get(0).getSource();
         
-        framework.analyze(pipInformation, source);
+        framework.analyze(pipInformation, pipInformation.getPossibleSources().get(0));
         
-        ContextInfo context = pipInformation.getContextInfo();
+        ContextInfo context = pipInformation.getPossibleSources().get(0).getContextInfo();
         Assert.assertNotNull("not context info", context);
         
         System.out.println("pre: " + context.getPre());

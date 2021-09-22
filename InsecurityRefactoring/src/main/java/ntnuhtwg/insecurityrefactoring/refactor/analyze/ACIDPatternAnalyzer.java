@@ -20,7 +20,7 @@ import org.javatuples.Pair;
  * @author blubbomat
  */
 public class ACIDPatternAnalyzer {
-    
+
     private PatternStorage patternStorage;
     private DataflowDSL dsl;
 
@@ -28,23 +28,30 @@ public class ACIDPatternAnalyzer {
         this.patternStorage = patternStorage;
         this.dsl = dsl;
     }
-    
-    public void findSanitizeNodesRec(DFATreeNode node, List<Pair<SanitizePattern, DFATreeNode>> sanitizeNodes) throws TimeoutException{
-        for(SanitizePattern sanitizePattern : patternStorage.getSanitizations()){
-            if(sanitizePattern.isSanitizeNode(dsl, node)){
-                System.out.println("Found sanitize: " + sanitizePattern);
-                node.setSanitizePattern(sanitizePattern);
-                sanitizeNodes.add(new Pair<>(sanitizePattern, node));
+
+    public void findSanitizeNodesRec(DFATreeNode node, List<Pair<SanitizePattern, DFATreeNode>> sanitizeNodes) throws TimeoutException {
+        for (SanitizePattern sanitizePattern : patternStorage.getSanitizations()) {
+            if (sanitizePattern.isNoDetection()) {
+                continue;
             }
-        }
-        
-        for(DataflowPattern possibleDataflowPattern : patternStorage.getDataflows()){            
-            if(possibleDataflowPattern.isRefactoringPossible(node, dsl.getDb(), patternStorage)){
-                node.addPossibleDataflowPattern(possibleDataflowPattern);
+
+            if (!sanitizePattern.isSanitizeNode(dsl, node)) {
+                continue;
             }
+
+            System.out.println("Found sanitize: " + sanitizePattern);
+            node.setSanitizePattern(sanitizePattern);
+            sanitizeNodes.add(new Pair<>(sanitizePattern, node));
         }
-        
-        if(node.getParent_() != null){
+
+        for (DataflowPattern possibleDataflowPattern : patternStorage.getDataflows()) {
+            if (!possibleDataflowPattern.isRefactoringPossible(node, dsl.getDb(), patternStorage)) {
+                continue;
+            }
+            node.addPossibleDataflowPattern(possibleDataflowPattern);
+        }
+
+        if (node.getParent_() != null) {
             findSanitizeNodesRec(node.getParent_(), sanitizeNodes);
         }
     }

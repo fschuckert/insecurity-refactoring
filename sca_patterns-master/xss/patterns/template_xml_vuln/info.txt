@@ -1,0 +1,4 @@
+sink template.xml:5
+sink vuln.php:14
+
+exploit localhost:9000/vuln.php/?tainted=<script>altert(1);</script>

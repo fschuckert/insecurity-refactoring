@@ -10,6 +10,8 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import ntnuhtwg.insecurityrefactoring.base.SourceLocation;
 import ntnuhtwg.insecurityrefactoring.base.exception.TimeoutException;
 import ntnuhtwg.insecurityrefactoring.base.db.neo4j.node.INode;
@@ -42,9 +44,14 @@ public class Neo4JConnector implements AutoCloseable, Neo4jDB{
         driver = GraphDatabase.driver( uri, AuthTokens.basic( user, password ), Config.builder().withLogging(Logging.none()).build());
     }
     
-    public void checkConnection() throws Exception{
-        findNode(0L);
+    public boolean checkConnection(){
+        try {
+            findNode(0L);
+            return true;
 //        driver.verifyConnectivity();
+        } catch (TimeoutException ex) {
+            return false;
+        }
     }
     
     @Override

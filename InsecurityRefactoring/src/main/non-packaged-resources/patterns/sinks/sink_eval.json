@@ -1,13 +1,1 @@
-{
-	"name":"sink_eval",
-	"type":"sink",
-	"vuln":"eval",
-    
-        "pattern_type":"expression",
-        "input_type":"expression",
-    
-        "code":[
-            "<eval>(%input)"
-        ]
-
-}
+{"init":[],"code":["<eval>(%input)"],"pattern_type":"expression","generates":[],"generate_files":[{"docker-compose.yml":["version: '2'","services:","  website:","    container_name: apache_php","    image: php:7.3-apache","    volumes:","      - .\/src:\/var\/www\/html\/","    ports:","      - 8000:80"]}],"sufficient_escapes":[],"vuln":"eval","name":"sink_eval","input_type":"expression","type":"sink","output_return":false}

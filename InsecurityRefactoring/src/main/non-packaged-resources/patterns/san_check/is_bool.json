@@ -6,13 +6,13 @@
         
         "input_type" : "expression",
         "output_type": "expression",
-        "output_return":false,
+        "output_return":true,
         "passthrough":false,
     
         "data_input":"String",
         "data_output":"Boolean",
     
-        
+        "filters": ["specials", "numbers", "letters"],
     
         "code":
         [

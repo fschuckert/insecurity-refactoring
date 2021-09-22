@@ -1,22 +1,28 @@
 {
-	"name":"gzencode",	
-	"type":"sanitize",
-    
-        "pattern_type": "expression",    
-        
-        "input_type" : "expression",
-        "output_type": "expression",
-        "output_return":true,
-        "passthrough":true,
-    
-        "data_input":"String",
-        "data_output":"String",
-    
-        
-    
-        "code":
-        [
-            "<call>(gzencode, %input, <any>()?...)"
-        ]
+    "name": "gzencode",	
+    "type": "sanitize",
 
+    "pattern_type": "expression",    
+
+    "input_type": "expression",
+    "output_type": "expression",
+    "output_return": true,
+    "passthrough": true,
+
+    "data_input": "String",
+    "data_output": "String",
+
+    "filters": ["numbers", "letters", "specials"],
+
+    "generates": [
+        { 
+            "params": ["<i>(9)"], 
+            "filters": ["numbers", "letters", "specials"]
+        }
+    ],
+
+    "code":
+            [
+                "<call>(gzencode, %input, <any>()?...)"
+            ]
 }

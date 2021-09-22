@@ -1,0 +1,53 @@
+{
+    "type": "language",
+
+    "pattern_type": "expression",
+    "pattern_language": "<class_extends>[](%name, %extends, %stmtlist)",
+
+    "ast_php": 
+            {
+                "type": "AST_CLASS",
+                "children":
+                        [
+                            {
+                                "type": "string",
+                                "code": "%p0"
+                            }
+                            ,
+                            {
+                                "type": "NULL"
+                            }
+                            ,
+                            {
+                                "type": "AST_NAME",
+                                "children":
+                                        [
+                                            {
+                                                "type": "string",
+                                                "code": "%p1"
+                                            }
+                                        ]
+                            }
+                            ,
+                            {
+                                "type": "NULL"
+                            }
+                            ,
+                            {
+                                "type": "AST_TOPLEVEL",
+                                "flags": ["TOPLEVEL_CLASS"],
+                                "children":
+                                        [
+                                            {
+                                                "subtree": "%p2"
+                                            }
+                                        ]
+                            }
+                            ,
+                            {
+                                "type": "integer",
+                                "code": "2"
+                            }
+                        ]
+            }
+}

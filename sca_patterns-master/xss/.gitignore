@@ -1,0 +1,3 @@
+# ignore tempory sql databases
+**/*.sql
+

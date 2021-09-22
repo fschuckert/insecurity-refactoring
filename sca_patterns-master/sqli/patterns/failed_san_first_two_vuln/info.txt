@@ -1,0 +1,5 @@
+source vuln.php:6
+sink vuln.php:24
+
+exploit http://localhost:9000/vuln.php?arr[]=val&arr[]=id&arr[]=val%20FROM%20Tests;--
+

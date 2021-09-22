@@ -20,7 +20,6 @@ import ntnuhtwg.insecurityrefactoring.base.Util;
 import ntnuhtwg.insecurityrefactoring.base.tree.DFATreeNode;
 import ntnuhtwg.insecurityrefactoring.base.db.neo4j.dsl.cypher.DataflowDSL;
 import ntnuhtwg.insecurityrefactoring.base.patterns.impl.DataflowPattern;
-import ntnuhtwg.insecurityrefactoring.base.context.Context;
 import org.javatuples.Pair;
 
 /**

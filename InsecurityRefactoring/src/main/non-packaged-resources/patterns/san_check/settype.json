@@ -1,0 +1,40 @@
+{
+    "name": "settype",	
+    "type": "sanitize",
+
+    "pattern_type": "expression",    
+
+    "input_type": "expression",
+    "output_type": "expression",
+    "output_return": true,
+    "passthrough": false,
+
+    "data_input": "String",
+    "data_output": "Boolean",
+
+    "filters": [],
+
+    "code":
+            [
+                "<call>(settype, %input, <any>())"
+            ],
+
+    "generates": [
+        { 
+            "params": ["<s>(float)"], 
+            "filters": ["specials", "letters"]
+        },
+        { 
+            "params": ["<s>(int)"], 
+            "filters": ["specials", "letters"]
+        },
+        { 
+            "params": ["<s>(string)"], 
+            "filters": []
+        },
+        { 
+            "params": ["<s>(bool)"], 
+            "filters": ["specials", "letters", "numbers"]
+        }
+    ]
+}

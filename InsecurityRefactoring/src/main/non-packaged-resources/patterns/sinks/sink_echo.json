@@ -1,13 +1,1 @@
-{
-	"name":"echo_func",
-	"type":"sink",
-	"vuln":"xss",
-    
-        "pattern_type":"statement",
-        "input_type":"expression",
-    
-        "code":[
-            "<echo>(%input)"
-        ]
-
-}
+{"init":[],"code":["<echo>(%input)"],"pattern_type":"statement","generates":[],"generate_files":[{"docker-compose.yml":["version: '2'","services:","  website:","    container_name: apache_php","    image: php:7.3-apache","    volumes:","      - .\/src:\/var\/www\/html\/","    ports:","      - 8000:80"]}],"sufficient_escapes":[],"vuln":"xss","name":"echo_func","input_type":"expression","type":"sink","output_return":false}

@@ -1,20 +1,29 @@
 from github import Github
 from runpath import call_on_path
 import shutil
-import os.path
+import os
 import time
 from time import gmtime, strftime
 
-character = "hprose/hprose-php"
-character2 = "phpbb_phpbb"
 
-g = Github("277ffeb5a718ed5aa481cf7bd1a82665d0da4947")
+def getStartCharacters():
+    chars = os.environ.get('INSEC_CRAWL_CHARS')
+    if chars == None:
+        return []
+    return chars.split(',')
 
-work_dir='/home/blubbomat/pip_scans/'
+chars = getStartCharacters()
+
+print('Scanning with pre chars ')
+print(chars)
+
+g = Github("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")
+
+work_dir=os.getenv("HOME") + '/pip_scans/'
 repoDir="{}source".format(work_dir)
 
-# repos = g.search_repositories(query='language:php', sort='stars')
-repos = g.search_repositories(query=character)
+repos = g.search_repositories(query='language:php', sort='stars')
+# repos = g.search_repositories(query=character)
 
 # Then play with your Github objects:
 i=0
@@ -27,7 +36,13 @@ for repo in repos:
     scan = "java -jar target/InsecurityRefactoring*.jar -o -p {} >> {}".format(repoDir, outputFile)
     loc = "cloc --quiet {} >> {}".format(repoDir, outputFile)
 
-    if repo.full_name.lower().startswith(character.lower()) or repo.full_name.lower().startswith(character2.lower()):
+
+    scanProject = False
+    for char in chars:
+        if repo.full_name.lower().startswith(char):
+            scanProject = True
+
+    if scanProject == True:
         print(repo.full_name + " " + str(repo.stargazers_count))
     else:
         print("SKIP " + uniqueName)

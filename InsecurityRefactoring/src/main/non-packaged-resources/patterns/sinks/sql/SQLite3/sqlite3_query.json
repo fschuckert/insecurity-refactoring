@@ -1,0 +1,72 @@
+{
+    "name": "sqlite3_query",
+    "type": "sink",
+    "vuln": "sqli",
+
+    "pattern_type": "expression",
+    "input_type": "expression",
+    
+    "sufficient_escapes": ["double"],
+
+    "generates": [
+        {
+            "params": ["<$>(db)"],
+            "init": 
+                    [
+                        "<=>(<$>(db),<new>(SQLite3,<s>(/var/www/db/database.db)))"
+                    ],
+            "generate_output_code": 
+                    [
+                        "<=>(<$>(results),%input)",
+                        "<while>(<=>(<$>(row),<call_method>(<$>(results),fetchArray)),<echo>(<call>(htmlentities,<call>(print_r,<$>(row),<true>()))))"
+                    ]
+        }
+    ],
+
+    "code": [
+        "<call_method>(<any>(), query, %input)"
+    ],
+
+    "generate_files": [
+        {
+            "|pre|init.sql":
+                    [
+                        "PRAGMA foreign_keys=OFF;",
+                        "BEGIN TRANSACTION;"
+                    ]            
+        },
+        {
+            "|aft|init.sql":
+                    [
+                        "COMMIT;"
+                    ]
+        },
+        {           
+            "Dockerfile":
+                    [
+                        "FROM php:7.3-apache",
+                        "RUN apt-get update",
+                        "RUN apt-get install -y sqlite",
+                        "COPY init.sql /var/www/db/init.sql",
+                        "RUN sqlite3 -init /var/www/db/init.sql /var/www/db/database.db",
+                        "EXPOSE 80"
+                    ]
+        },
+        {
+            "docker-compose.yml": 
+                    [
+                        "version: '2'",
+                        "services:",                       
+                        "  website:",
+                        "    container_name: apache_php",
+                        "    image: apache:php",
+                        "    build:",
+                        "      context: ./",
+                        "    volumes:",
+                        "      - ./src:/var/www/html/",
+                        "    ports:",
+                        "      - 8000:80"
+                    ]
+        }
+    ]
+}

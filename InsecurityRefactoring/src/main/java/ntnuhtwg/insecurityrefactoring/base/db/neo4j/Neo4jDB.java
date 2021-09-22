@@ -22,6 +22,8 @@ public interface Neo4jDB {
     
     public INode findNode(Long id) throws TimeoutException;
     
+    public boolean checkConnection();
+    
 
     public void close() throws Exception;
     

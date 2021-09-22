@@ -12,6 +12,22 @@
         "data_input":"String",
         "data_output":"String",
         
+        "filters": ["\"", "&", "<", ">"],
+
+        "generates": [
+            { 
+                "params": ["<c>(ENT_QUOTES)"], 
+                "filters": ["\"", "&", "<", ">", "'"]
+            },
+            { 
+                "params": ["<c>(ENT_NOQUOTES)"], 
+                "filters": ["&", "<", ">"]
+            },
+            { 
+                "params": ["<c>(ENT_COMPAT)"], 
+                "filters": ["\"", "&", "<", ">"]
+            }
+        ],
     
         "code":
         [

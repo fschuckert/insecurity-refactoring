@@ -1,0 +1,22 @@
+{
+	"name":"is_string",	
+	"type":"sanitize",
+    
+        "pattern_type": "expression",    
+        
+        "input_type" : "expression",
+        "output_type": "expression",
+        "output_return":true,
+        "passthrough":false,
+    
+        "data_input":"String",
+        "data_output":"Boolean",
+    
+        "filters": [],
+    
+        "code":
+        [
+            "<call>(is_string, %input)"
+        ]
+
+}

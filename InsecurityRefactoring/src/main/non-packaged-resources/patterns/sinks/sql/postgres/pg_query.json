@@ -1,0 +1,73 @@
+{
+    "name": "pg_query",
+    "type": "sink",
+    "vuln": "sqli",
+
+    "pattern_type": "expression",
+    "input_type": "expression",
+
+    "sufficient_escapes": ["\\"],
+
+    "code": [
+        "<call>(pg_query, <any>(), %input)"
+    ],
+
+    "generate_files": [   
+        {
+            "Dockerfile": [
+                "FROM php:7.3-apache",
+                "RUN apt-get update",
+                "RUN apt-get install -y libpq-dev",
+                "RUN docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql",
+                "RUN docker-php-ext-install pdo_pgsql pdo pgsql",
+                "RUN a2enmod rewrite",
+                "COPY src/ /var/www/html/",
+                "EXPOSE 80"
+            ]  
+        },
+        {            
+            "docker-compose.yml": [
+                "version: '2'",
+                "services:",
+                "  postgres:",
+                "    image: postgres:13.3",
+                "    container_name: postgres-server",
+                "    volumes:",
+                "      - ./init.sql:/docker-entrypoint-initdb.d/init.sql",
+                "    restart: always",
+                "    environment:",
+                "      - POSTGRES_USER=postgres",
+                "      - POSTGRES_PASSWORD=postgres123",
+                "      - POSTGRES_DB=myDB",
+                "    ports:",
+                "      - \"5432:5432\"",
+                "  website:",
+                "    container_name: apache_php",
+                "    image: apache:php",
+                "    build:",
+                "      context: ./",
+                "    volumes:",
+                "      - ./src:/var/www/html/",
+                "    ports:",
+                "      - 8000:80",
+                "    depends_on:",
+                "      - postgres"
+            ]
+        }
+    ],
+
+    "generates": [
+        {
+            "params": ["<$>(db)"],
+            "init": 
+                    [
+                        "<=>(<$>(db), <call>(pg_pconnect, <s>(host=postgres-server port=5432 user=postgres password=postgres123 dbname=myDB)))"
+                    ],  
+            "generate_output_code": 
+                    [
+                        "<=>(<$>(result), %input)",
+                        "<while>(<=>(<$>(row), <call>(pg_fetch_row, <$>(result))), <echo>(<call>(htmlentities, <call>(print_r, <$>(row), <true>()))))"
+                    ]
+        }
+    ]
+}

@@ -1,0 +1,43 @@
+{
+    "type": "language",
+
+    "pattern_type": "expression",
+    "pattern_language": "<attr_pub_static>[](elementName, <value>)",
+
+    "ast_php":
+            {
+                "type": "AST_PROP_GROUP",
+                "flags": ["MODIFIER_PUBLIC", "MODIFIER_STATIC"],
+                "children":
+                        [
+                            {
+                                "type": "NULL"
+                            }
+                            ,
+                            {
+                                "type": "AST_PROP_DECL",
+                                "children":
+                                        [
+                                            {
+                                                "type": "AST_PROP_ELEM",
+                                                "children":
+                                                        [
+                                                            {
+                                                                "type": "string",
+                                                                "code": "%p0"
+                                                            }
+                                                            ,
+                                                            {
+                                                                "subtree" : "%p1"
+                                                            }
+                                                            ,
+                                                            {
+                                                                "type": "NULL"
+                                                            }
+                                                        ]
+                                            }
+                                        ]
+                            }
+                        ]
+            }
+}

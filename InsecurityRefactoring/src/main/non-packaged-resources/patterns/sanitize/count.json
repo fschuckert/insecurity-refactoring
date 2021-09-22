@@ -9,10 +9,16 @@
         "output_return":true,
         "passthrough":true,
     
-        "data_input":"String",
+        "data_input":"Array(Any)",
         "data_output":"Integer",
     
-        
+        "filters":["letters", "specials"],
+    
+        "generates": [
+            { 
+                "params": []
+            }
+        ],
     
         "code":
         [

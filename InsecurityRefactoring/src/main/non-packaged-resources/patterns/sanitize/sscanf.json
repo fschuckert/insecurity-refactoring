@@ -12,7 +12,18 @@
         "data_input":"String",
         "data_output":"Array(String)",
     
-        
+        "filters": [],
+    
+        "generates": [
+            { 
+                "params": ["<s>(foo %s)"]
+            },
+            { 
+                "params": ["<s>(foo %d)"],
+                "filters": ["letters", "specials"]
+            }
+        ],
+    
     
         "code":
         [

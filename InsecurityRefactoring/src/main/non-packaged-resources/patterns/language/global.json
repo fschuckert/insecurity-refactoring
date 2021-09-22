@@ -1,0 +1,18 @@
+{
+	"name":"global",
+	"type":"language",
+        
+        "pattern_type": "variable",
+        "pattern_language": "<global>[](%name)",
+    
+        
+        
+        "ast_php":{
+            "type":"AST_GLOBAL",
+            "children":
+                    [
+                        {"subtree":"%p0"}
+                    ]
+        }
+
+}

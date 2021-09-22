@@ -11,22 +11,8 @@
 
     "data_input": "String",
     "data_output": "String",
-
-    "sufficient": 
-    [
-        {
-            "type": "xss",
-            "requirements": [
-                ["!context(quotes)"]
-            ]
-        }, 
-        {
-            "type": "sqli",
-            "requirements": [
-                ["!context(quotes)"]
-            ]
-        }
-    ],
+    
+    "filters":["<", ">", "\"", "&"],
 
     "code":
             [

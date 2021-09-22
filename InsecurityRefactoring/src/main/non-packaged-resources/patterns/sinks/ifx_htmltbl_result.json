@@ -1,13 +1,14 @@
 {
-	"name":"ifx_htmltbl_result",
-	"type":"sink",
-	"vuln":"xss",
-    
-        "pattern_type":"statement",
-        "input_type":"expression",
-    
-        "code":[
-            "<call>(ifx_htmltbl_result, %input, <any>()?...)"
-        ]
-
+    "init": [],
+    "code": ["<call>(ifx_htmltbl_result,%input,<any>()?...);"],
+    "pattern_type": "statement",
+    "generate_files": [{
+            "docker-compose.yml": ["version: '2'", "services:", "  website:", "    container_name: apache_php", "    image: vctls\/php_apache_pdo_informix", "    volumes:", "      - .\/src:\/var\/www\/html\/", "    ports:", "      - 8000:80"]
+        }],
+    "sufficient_escapes": [],
+    "vuln": "xss",
+    "name": "ifx_htmltbl_result",
+    "input_type": "expression",
+    "type": "sink",
+    "output_return": false
 }

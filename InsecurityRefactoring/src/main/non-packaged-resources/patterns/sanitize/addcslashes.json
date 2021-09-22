@@ -11,8 +11,14 @@
     
         "data_input":"String",
         "data_output":"String",
+        "filters": [],
     
-        
+        "generates": [
+        { 
+            "params": ["<s>(;:'\")"], 
+            "filters":[]
+        }
+    ],
     
         "code":
         [

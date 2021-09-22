@@ -6,7 +6,7 @@
 package ntnuhtwg.insecurityrefactoring.refactor;
 
 import ntnuhtwg.insecurityrefactoring.refactor.acid.ACIDTreeCreator;
-import ntnuhtwg.insecurityrefactoring.refactor.base.ScanProgress;
+import ntnuhtwg.insecurityrefactoring.refactor.temppattern.ScanProgress;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -32,8 +32,8 @@ import ntnuhtwg.insecurityrefactoring.base.db.neo4j.node.INode;
 import ntnuhtwg.insecurityrefactoring.base.patterns.impl.SanitizePattern;
 import ntnuhtwg.insecurityrefactoring.base.patterns.impl.SinkPattern;
 import ntnuhtwg.insecurityrefactoring.base.patterns.PatternStorage;
-import ntnuhtwg.insecurityrefactoring.refactor.base.MissingCall;
-import ntnuhtwg.insecurityrefactoring.refactor.base.TempPattern;
+import ntnuhtwg.insecurityrefactoring.refactor.temppattern.MissingCall;
+import ntnuhtwg.insecurityrefactoring.refactor.temppattern.TempPattern;
 import scala.NotImplementedError;
 
 /**
@@ -166,6 +166,9 @@ public class PIPFinder {
             for(INode sink : sinks){
                 if(specificLocation == null || Util.isPrePath(specificLocation, db, sink) ){
                     backwardDataflows.add(new ACIDTreeCreator(db, patternStorage, sink, pattern, controlFlowCheck));
+                }
+                else if(specificLocation != null){
+                    System.out.println("skip" + sink);
                 }
             }
             scanProgress.setSinksSearched(++sinksSearched);

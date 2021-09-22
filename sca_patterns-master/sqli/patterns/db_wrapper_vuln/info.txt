@@ -1,0 +1,4 @@
+source vuln.php:6
+sink db_wrapper.php:9
+
+exploit http://localhost:9000/vuln.php?id=1%20OR%201=1;--

@@ -1,23 +1,29 @@
 {
-	"name":"strstr",
-	"type":"sanitize",
-        
-        "pattern_type": "expression",
-    
-        
-        "input_type" : "expression",
-        "output_type": "expression",
-    
-        "output_return":true,
-        "passthrough":true,
-    
-        "data_input":"String",
-        "data_output":"String",
-  
-    
-        "code": 
-        [
-            "<call>(strstr, %input, <any>()?...)"
-        ]
+    "name": "strstr",
+    "type": "sanitize",
 
+    "pattern_type": "expression",
+
+    "input_type": "expression",
+    "output_type": "expression",
+
+    "output_return": true,
+    "passthrough": true,
+
+    "data_input": "String",
+    "data_output": "String",
+
+    "filters": [],
+
+    "generates": [
+        { 
+            "params": ["<s>(1)"], 
+            "filters": []
+        }
+    ],
+
+    "code": 
+            [
+                "<call>(strstr, %input, <any>()?...)"
+            ]
 }

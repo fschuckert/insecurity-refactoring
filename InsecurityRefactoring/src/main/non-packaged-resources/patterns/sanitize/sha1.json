@@ -12,7 +12,14 @@
         "data_input":"String",
         "data_output":"String",
     
-        
+        "filters": ["numbers", "letters", "specials"],
+
+        "generates": [
+            { 
+                "params": ["<false>()"], 
+                "filters": ["numbers", "letters", "specials"]
+            }
+        ],
     
         "code":
         [

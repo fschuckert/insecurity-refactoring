@@ -6,7 +6,7 @@
 package ntnuhtwg.insecurityrefactoring.refactor.acid;
 
 import ntnuhtwg.insecurityrefactoring.refactor.acid.rules.ACIDTreeRules;
-import ntnuhtwg.insecurityrefactoring.refactor.base.VarName;
+import ntnuhtwg.insecurityrefactoring.refactor.temppattern.VarName;
 import com.google.common.collect.Lists;
 import java.util.Arrays;
 import java.util.Collections;
@@ -41,6 +41,7 @@ import org.neo4j.driver.internal.InternalNode;
 import ntnuhtwg.insecurityrefactoring.base.db.neo4j.Neo4jDB;
 import ntnuhtwg.insecurityrefactoring.base.db.neo4j.node.INode;
 import ntnuhtwg.insecurityrefactoring.base.db.neo4j.node.NodeConnected;
+import ntnuhtwg.insecurityrefactoring.base.info.DataflowPathInfo;
 import ntnuhtwg.insecurityrefactoring.base.patterns.PassthroughPattern;
 import ntnuhtwg.insecurityrefactoring.base.patterns.impl.ConcatPattern;
 import ntnuhtwg.insecurityrefactoring.base.patterns.impl.SinkPattern;
@@ -86,14 +87,14 @@ public class ACIDTreeCreator implements Runnable {
         this.replaceIndex = replaceIndex;
     }
 
-    public static List<DFATreeNode> getSourceNodes(DFATreeNode tree, PatternStorage patternStorage, Neo4jDB db) throws TimeoutException {
-        List<DFATreeNode> sourceNodes = new LinkedList<>();
+    public static List<DataflowPathInfo> getSourceNodes(DFATreeNode tree, PatternStorage patternStorage, Neo4jDB db) throws TimeoutException {
+        List<DataflowPathInfo> sourceNodes = new LinkedList<>();
 
         for (LabeledTreeNode<INode> leafLabel : tree.getAllLeafs()) {
             DFATreeNode leaf = (DFATreeNode) leafLabel;
             for (SourcePattern sourcePattern : patternStorage.getSources()) {
                 if (sourcePattern.equalsPattern(leaf.getObj(), db)) {
-                    sourceNodes.add(leaf);
+                    sourceNodes.add(new DataflowPathInfo(leaf, false));
                 }
             }
         }
@@ -123,10 +124,16 @@ public class ACIDTreeCreator implements Runnable {
                 DFATreeNode child = new DFATreeNode(inputNode);
                 resultTree.addChild("sink" + i++, child);
                 
-                new ACIDTreeRules(patternReader, dsl, !conditionCheck).resolveExpression(child, new HashSet<>());                
+                new ACIDTreeRules(patternReader, dsl, conditionCheck).resolveExpression(child, new HashSet<>());                
             }
             if (!getSourceNodes(resultTree, patternReader, db).isEmpty()) {
                 System.out.println("Found a pip!");
+                for(DataflowPathInfo sourceInfo : getSourceNodes(resultTree, patternReader, db)){
+                    System.out.println("\n############################################### Dataflow path ###############################################");
+                    Util.printSourceCodeRec(db, sourceInfo.getSource(), null);
+                    System.out.println(  "#############################################################################################################");
+                    
+                }
                 isPip = true;
             }
 //                        System.out.println("Finished.");

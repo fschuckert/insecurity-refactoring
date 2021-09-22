@@ -9,10 +9,17 @@
         "output_return":true,
         "passthrough":true,
     
-        "data_input":"String",
+        "data_input":"Array(Any)",
         "data_output":"Integer",
     
-        
+        "filters": ["numbers", "letters", "specials"],
+    
+        "generates": [
+            { 
+                "params": ["<c>(COUNT_NORMAL)"], 
+                "filters": ["numbers", "letters", "specials"]
+            }
+        ],
     
         "code":
         [

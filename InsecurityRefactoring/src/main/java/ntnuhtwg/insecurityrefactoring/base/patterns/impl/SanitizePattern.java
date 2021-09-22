@@ -9,6 +9,9 @@ import java.util.LinkedList;
 import java.util.List;
 import ntnuhtwg.insecurityrefactoring.base.DataType;
 import ntnuhtwg.insecurityrefactoring.base.ast.FixedNode;
+import ntnuhtwg.insecurityrefactoring.base.context.CharsAllowed;
+import ntnuhtwg.insecurityrefactoring.base.context.enclosure.Apostrophe;
+import ntnuhtwg.insecurityrefactoring.base.context.enclosure.Enclosure;
 import ntnuhtwg.insecurityrefactoring.base.exception.TimeoutException;
 import ntnuhtwg.insecurityrefactoring.base.tree.DFATreeNode;
 import ntnuhtwg.insecurityrefactoring.base.tree.TreeNode;
@@ -16,30 +19,28 @@ import ntnuhtwg.insecurityrefactoring.base.db.neo4j.dsl.cypher.DataflowDSL;
 import ntnuhtwg.insecurityrefactoring.base.db.neo4j.node.INode;
 import ntnuhtwg.insecurityrefactoring.base.patterns.PassthroughPattern;
 import ntnuhtwg.insecurityrefactoring.base.patterns.Pattern;
-import ntnuhtwg.insecurityrefactoring.base.patterns.impl.sufficient.Sufficient;
-import ntnuhtwg.insecurityrefactoring.base.patterns.impl.sufficient.GenerateParameters;
-import ntnuhtwg.insecurityrefactoring.base.patterns.impl.sufficient.VulnSufficient;
 
 /**
  *
  * @author blubbomat
  */
-public class SanitizePattern extends Pattern implements PassthroughPattern, Sufficient{
+public class SanitizePattern extends Pattern implements PassthroughPattern{
     
     private boolean passthrough;
     
-    private List<VulnSufficient> sufficients;
-    
     private final DataType dataInput;
     private final DataType dataOutput;
+    private final boolean noDetection;
     
-    private List<GenerateParameters> sufficientBasedOnParams = new LinkedList<>();
+    private final CharsAllowed charsAllowed;
+    private Enclosure addsEnclosure;
 
-    public SanitizePattern(boolean passthrough, DataType dataInput, DataType dataOutput, List<VulnSufficient> sufficients) {
+    public SanitizePattern(boolean passthrough, DataType dataInput, DataType dataOutput, CharsAllowed charsAllowed, boolean noDetection) {
         this.passthrough = passthrough;
         this.dataInput = dataInput;
         this.dataOutput = dataOutput;
-        this.sufficients = sufficients;
+        this.charsAllowed = charsAllowed;
+        this.noDetection = noDetection;
     }
     
     @Override
@@ -56,6 +57,12 @@ public class SanitizePattern extends Pattern implements PassthroughPattern, Suff
     public DataType getDataOutputType() {
         return dataOutput;
     }
+
+    public CharsAllowed getCharsAllowed() {
+        return charsAllowed;
+    }
+    
+    
     
     public boolean isSanitizeNode(DataflowDSL dsl, DFATreeNode node) throws TimeoutException{
         if(this.equalsPattern(node.getObj(), dsl.getDb())){
@@ -64,21 +71,16 @@ public class SanitizePattern extends Pattern implements PassthroughPattern, Suff
         return false;
     }
 
+    public boolean isNoDetection() {
+        return noDetection;
+    }
+    
+    
+
     @Override
     public String toString() {
         return getName();
     }
-
-    @Override
-    public List<VulnSufficient> getSufficients() {
-        return sufficients;
-    }
-
-    @Override
-    public void setSufficients(List<VulnSufficient> sufficients) {
-        this.sufficients = sufficients;
-    }
-
 
     public boolean isReplaceableWith(SanitizePattern sanitizePattern){
         return sanitizePattern.getPatternType() == getPatternType() 
@@ -97,5 +99,15 @@ public class SanitizePattern extends Pattern implements PassthroughPattern, Suff
     public boolean isCheckMethod() {
         return DataType.Boolean().equals(getDataOutputType());
     }
+
+    public void setAddsEnclosing(Enclosure enclosure) {
+        this.addsEnclosure = enclosure;
+    }
+
+    public Enclosure getAddsEnclosure() {
+        return addsEnclosure;
+    }
+    
+    
     
 }

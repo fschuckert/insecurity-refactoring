@@ -1,0 +1,20 @@
+{
+    "name": "ae",
+    "type": "language",
+
+    "pattern_type": "expression",
+    "pattern_language": "<ae>[](%a)",
+
+    "ast_php":
+            {
+                "type": "AST_ARRAY_ELEM",
+                "children":
+                        [
+                            {"subtree":"%p0"}
+                            ,
+                            {
+                                "type": "NULL"
+                            }
+                        ]
+            }
+}

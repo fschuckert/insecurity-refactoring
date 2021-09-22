@@ -2,6 +2,7 @@
 	"name":"filter_input_array",	
 	"type":"source",
         "secure":true,
+        "filters": [],
     
         "pattern_type":"expression",
         "output_type":"expression",
@@ -9,6 +10,40 @@
     
         "data_output":"Array(String)",
     
+        "generates": [
+        { 
+            "params": ["<c>(INPUT_GET)", "<array>(<ae_k>(<s>(t),<c>(FILTER_SANITIZE_EMAIL)))"], 
+            "filters": ["allowed_specials:!#$%&'*+-=?^_`{|}~@.[]"]
+        },
+        { 
+            "params": ["<c>(INPUT_GET)", "<array>(<ae_k>(<s>(t),<c>(FILTER_SANITIZE_FULL_SPECIAL_CHARS)))"], 
+            "filters": ["<>'\"&"]
+        },
+        { 
+            "params": ["<c>(INPUT_GET)", "<array>(<ae_k>(<s>(t),<c>(FILTER_SANITIZE_ADD_SLASHES)))"], 
+            "filters": ["escape(\\):'\"\\"]
+        },
+        { 
+            "params": ["<c>(INPUT_GET)", "<array>(<ae_k>(<s>(t),<c>(FILTER_SANITIZE_NUMBER_FLOAT)))"], 
+            "filters": ["letters", "specials"]
+        },
+        { 
+            "params": ["<c>(INPUT_GET)", "<array>(<ae_k>(<s>(t),<c>(FILTER_SANITIZE_NUMBER_INT)))"], 
+            "filters": ["letters", "specials"]
+        },
+        { 
+            "params": ["<c>(INPUT_GET)", "<array>(<ae_k>(<s>(t),<c>(FILTER_SANITIZE_SPECIAL_CHARS)))"], 
+            "filters": ["'\"<>&"]
+        },
+        { 
+            "params": ["<c>(INPUT_GET)", "<array>(<ae_k>(<s>(t),<c>(FILTER_SANITIZE_URL)))"], 
+            "filters": ["allowed_specials:$-_.+!*'(),{}|\\^~[]`<>#%\";/?:@&="]
+        },
+        { 
+            "params": ["<c>(INPUT_GET)", "<array>(<ae_k>(<s>(t),<c>(FILTER_UNSAFE_RAW)))"], 
+            "filters": []
+        }
+    ],
     
         "code":
         [

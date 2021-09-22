@@ -11,44 +11,20 @@
 
     "data_input": "String",
     "data_output": "String",
-    
-    "sufficient":[        
+
+    "sufficient": [        
     ],
+
+    "filters": [],
 
     "generates": [
         { 
             "params": ["<s>(/[^A-Za-z0-9]/)", "<s>()"], 
-            "sufficient": 
-                    [
-                        {
-                            "type": "xss",
-                            "requirements": []
-                        }, 
-                        {
-                            "type": "sqli",
-                            "requirements": []
-                        }
-                    ]
+            "filters": ["specials"]
         },
         { 
             "params": ["<s>(/'/)", "<s>()"], 
-            "sufficient": 
-                    [
-                        {
-                            "type": "xss",
-                            "requirements": 
-                            [
-                                ["context(apostrophe)", "!context(attribute)"]
-                            ]
-                        }, 
-                        {
-                            "type": "sqli",
-                            "requirements": 
-                            [
-                                ["context(apostrophe)"]
-                            ]
-                        }
-                    ]
+            "filters": ["'"]
         }
     ],
 

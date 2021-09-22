@@ -16,7 +16,7 @@ import ntnuhtwg.insecurityrefactoring.base.db.neo4j.dsl.cypher.DataflowDSL;
 import ntnuhtwg.insecurityrefactoring.base.db.neo4j.node.INode;
 import ntnuhtwg.insecurityrefactoring.base.exception.TimeoutException;
 import ntnuhtwg.insecurityrefactoring.base.tree.DFATreeNode;
-import ntnuhtwg.insecurityrefactoring.refactor.base.VarName;
+import ntnuhtwg.insecurityrefactoring.refactor.temppattern.VarName;
 
 /**
  *

@@ -1,42 +1,47 @@
 {
 	"name":"filter_input",	
 	"type":"source",
-        "secure":true,
+        "secure":false,
     
         "pattern_type":"expression",
         "output_type":"expression",
         "output_return":true,
+        "filters": [],
     
         "data_output":"String",
     
-        "sufficients": [
+        "generates": [
+        { 
+            "params": ["<c>(INPUT_GET)", "<s>(t)", "<c>(FILTER_SANITIZE_EMAIL)"], 
+            "filters": ["allowed_specials:!#$%&'*+-=?^_`{|}~@.[]"]
+        },
+        { 
+            "params": ["<c>(INPUT_GET)", "<s>(t)", "<c>(FILTER_SANITIZE_FULL_SPECIAL_CHARS)"], 
+            "filters": ["<>'\"&"]
+        },
+        { 
+            "params": ["<c>(INPUT_GET)", "<s>(t)", "<c>(FILTER_SANITIZE_ADD_SLASHES)"], 
+            "filters": ["escape(\\):'\"\\"]
+        },
+        { 
+            "params": ["<c>(INPUT_GET)", "<s>(t)", "<c>(FILTER_SANITIZE_NUMBER_FLOAT)"], 
+            "filters": ["letters", "specials"]
+        },
         { 
             "params": ["<c>(INPUT_GET)", "<s>(t)", "<c>(FILTER_SANITIZE_NUMBER_INT)"], 
-            "sufficient": 
-                    [
-                        {
-                            "type": "xss",
-                            "requirements": []
-                        }, 
-                        {
-                            "type": "sqli",
-                            "requirements": []
-                        }
-                    ]
+            "filters": ["letters", "specials"]
+        },
+        { 
+            "params": ["<c>(INPUT_GET)", "<s>(t)", "<c>(FILTER_SANITIZE_SPECIAL_CHARS)"], 
+            "filters": ["'\"<>&"]
         },
         { 
             "params": ["<c>(INPUT_GET)", "<s>(t)", "<c>(FILTER_SANITIZE_URL)"], 
-            "sufficient": 
-                    [
-                        {
-                            "type": "xss",
-                            "requirements": ["!context(attribute)"]
-                        }, 
-                        {
-                            "type": "sqli",
-                            "requirements": []
-                        }
-                    ]
+            "filters": ["allowed_specials:$-_.+!*'(),{}|\\^~[]`<>#%\";/?:@&="]
+        },
+        { 
+            "params": ["<c>(INPUT_GET)", "<s>(t)", "<c>(FILTER_UNSAFE_RAW)"], 
+            "filters": []
         }
     ],
     

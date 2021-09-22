@@ -1,0 +1,3 @@
+source vuln.php:12
+sink vuln.php:18
+

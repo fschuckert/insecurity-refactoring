@@ -12,7 +12,7 @@
         "data_input":"String",
         "data_output":"String",
     
-        
+        "filters": ["allowed_specials:-_.~"],
     
         "code":
         [

@@ -25,11 +25,6 @@ import ntnuhtwg.insecurityrefactoring.base.patterns.impl.DataflowPattern;
 import ntnuhtwg.insecurityrefactoring.base.patterns.impl.SanitizePattern;
 import ntnuhtwg.insecurityrefactoring.base.patterns.impl.SinkPattern;
 import ntnuhtwg.insecurityrefactoring.base.patterns.impl.SourcePattern;
-import ntnuhtwg.insecurityrefactoring.base.context.Requirement;
-import ntnuhtwg.insecurityrefactoring.base.context.Context;
-import org.neo4j.driver.types.Node;
-import ntnuhtwg.insecurityrefactoring.base.context.NeedsRequirements;
-import ntnuhtwg.insecurityrefactoring.base.context.RequirementList;
 
 /**
  *

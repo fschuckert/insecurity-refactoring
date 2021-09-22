@@ -1,0 +1,37 @@
+{
+    "name": "def_meth_pub",
+    "type": "language",
+
+    "pattern_type": "expression",
+    "pattern_language": "<def_meth_pub>[](%name[], %param_list, %stmt_list)",
+
+    "ast_php":
+            {
+                "type": "AST_METHOD",
+                "flags": ["BINARY_ADD"],
+                "children":
+                        [
+                            {
+                                "type": "string",
+                                "code": "%p0"
+                            }
+                            ,
+                            {
+                                "type": "NULL"
+                            }
+                            ,
+                            {"subtree":"%p1"}                      
+                            ,
+                            {"subtree":"%p2"}    
+                            ,
+                            {
+                                "type": "NULL"
+                            }
+                            ,
+                            {
+                                "type": "integer",
+                                "code": "0"
+                            }
+                        ]
+            }
+}

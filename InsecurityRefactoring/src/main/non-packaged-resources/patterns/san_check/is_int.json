@@ -12,7 +12,7 @@
         "data_input":"String",
         "data_output":"Boolean",
     
-        
+        "filters": ["specials", "letters"],
     
         "code":
         [

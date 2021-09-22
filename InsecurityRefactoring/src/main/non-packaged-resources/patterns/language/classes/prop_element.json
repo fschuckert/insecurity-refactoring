@@ -1,0 +1,26 @@
+{
+    "type": "language",
+
+    "pattern_type": "expression",
+    "pattern_language": "<prop_element>[](name, %value)",
+
+    "ast_php":
+            {
+                "type": "AST_PROP_ELEM",
+                "children":
+                        [
+                            {
+                                "type": "string",
+                                "code": "%p0"
+                            }
+                            ,
+                            {
+                                "subtree": "%p1"
+                            }
+                            ,
+                            {
+                                "type": "NULL"
+                            }
+                        ]
+            }
+}

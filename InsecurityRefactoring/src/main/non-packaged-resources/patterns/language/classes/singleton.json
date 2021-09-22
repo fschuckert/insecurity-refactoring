@@ -1,0 +1,541 @@
+{
+    "type": "language",
+
+    "pattern_type": "expression",
+    "pattern_language": "<singleton>[](%classname, %const)",
+
+    "ast_php":
+            {
+                "type": "AST_CLASS",
+                "children":
+                        [
+                            {
+                                "type": "string",
+                                "code": "%p0"
+                            }
+                            ,
+                            {
+                                "type": "NULL"
+                            }
+                            ,
+                            {
+                                "type": "NULL"
+                            }
+                            ,
+                            {
+                                "type": "NULL"
+                            }
+                            ,
+                            {
+                                "type": "AST_TOPLEVEL",
+                                "flags": ["TOPLEVEL_CLASS"],
+                                "children":
+                                        [
+                                            {
+                                                "type": "AST_STMT_LIST",
+                                                "children":
+                                                        [
+                                                            {
+                                                                "type": "AST_PROP_GROUP",
+                                                                "flags": ["[WARNING] Unexpected flags for kind: kind=767 and flags=512"],
+                                                                "children":
+                                                                        [
+                                                                            {
+                                                                                "type": "NULL"
+                                                                            }
+                                                                            ,
+                                                                            {
+                                                                                "type": "AST_PROP_DECL",
+                                                                                "children":
+                                                                                        [
+                                                                                            {
+                                                                                                "type": "AST_PROP_ELEM",
+                                                                                                "children":
+                                                                                                        [
+                                                                                                            {
+                                                                                                                "type": "string",
+                                                                                                                "code": "variable"
+                                                                                                            }
+                                                                                                            ,
+                                                                                                            {
+                                                                                                                "type": "string"
+                                                                                                            }
+                                                                                                            ,
+                                                                                                            {
+                                                                                                                "type": "NULL"
+                                                                                                            }
+                                                                                                        ]
+                                                                                            }
+                                                                                        ]
+                                                                            }
+                                                                        ]
+                                                            }
+                                                            ,
+                                                            {
+                                                                "type": "AST_PROP_GROUP",
+                                                                "flags": ["[WARNING] Unexpected flags for kind: kind=767 and flags=513"],
+                                                                "children":
+                                                                        [
+                                                                            {
+                                                                                "type": "NULL"
+                                                                            }
+                                                                            ,
+                                                                            {
+                                                                                "type": "AST_PROP_DECL",
+                                                                                "children":
+                                                                                        [
+                                                                                            {
+                                                                                                "type": "AST_PROP_ELEM",
+                                                                                                "children":
+                                                                                                        [
+                                                                                                            {
+                                                                                                                "type": "string",
+                                                                                                                "code": "_instance"
+                                                                                                            }
+                                                                                                            ,
+                                                                                                            {
+                                                                                                                "type": "AST_CONST",
+                                                                                                                "children":
+                                                                                                                        [
+                                                                                                                            {
+                                                                                                                                "type": "AST_NAME",
+                                                                                                                                "flags": ["NAME_NOT_FQ"],
+                                                                                                                                "children":
+                                                                                                                                        [
+                                                                                                                                            {
+                                                                                                                                                "type": "string",
+                                                                                                                                                "code": "null"
+                                                                                                                                            }
+                                                                                                                                        ]
+                                                                                                                            }
+                                                                                                                        ]
+                                                                                                            }
+                                                                                                            ,
+                                                                                                            {
+                                                                                                                "type": "NULL"
+                                                                                                            }
+                                                                                                        ]
+                                                                                            }
+                                                                                        ]
+                                                                            }
+                                                                        ]
+                                                            }
+                                                            ,
+                                                            {
+                                                                "type": "AST_METHOD",
+                                                                "flags": ["MODIFIER_PROTECTED"],
+                                                                "children":
+                                                                        [
+                                                                            {
+                                                                                "type": "string",
+                                                                                "code": "__clone"
+                                                                            }
+                                                                            ,
+                                                                            {
+                                                                                "type": "string",
+                                                                                "code": "/**\n    * clone\n    *\n    * Kopieren der Instanz von aussen ebenfalls verbieten\n    */"
+                                                                            }
+                                                                            ,
+                                                                            {
+                                                                                "type": "AST_PARAM_LIST"
+                                                                            }
+                                                                            ,
+                                                                            {
+                                                                                "type": "AST_STMT_LIST"
+                                                                            }
+                                                                            ,
+                                                                            {
+                                                                                "type": "NULL"
+                                                                            }
+                                                                            ,
+                                                                            {
+                                                                                "type": "integer",
+                                                                                "code": "0"
+                                                                            }
+                                                                        ]
+                                                            }
+                                                            ,
+                                                            {
+                                                                "type": "AST_METHOD",
+                                                                "flags": ["MODIFIER_PROTECTED"],
+                                                                "children":
+                                                                        [
+                                                                            {
+                                                                                "type": "string",
+                                                                                "code": "__construct"
+                                                                            }
+                                                                            ,
+                                                                            {
+                                                                                "type": "string",
+                                                                                "code": "/**\n     * constructor\n     *\n     * externe Instanzierung verbieten\n     */"
+                                                                            }
+                                                                            ,
+                                                                            {
+                                                                                "type": "AST_PARAM_LIST"
+                                                                            }
+                                                                            ,
+                                                                            {
+                                                                                "type": "AST_STMT_LIST"
+                                                                            }
+                                                                            ,
+                                                                            {
+                                                                                "type": "NULL"
+                                                                            }
+                                                                            ,
+                                                                            {
+                                                                                "type": "integer",
+                                                                                "code": "1"
+                                                                            }
+                                                                        ]
+                                                            }
+                                                            ,
+                                                            {
+                                                                "type": "AST_METHOD",
+                                                                "flags": ["MODIFIER_PUBLIC,MODIFIER_STATIC"],
+                                                                "children":
+                                                                        [
+                                                                            {
+                                                                                "type": "string",
+                                                                                "code": "getInstance"
+                                                                            }
+                                                                            ,
+                                                                            {
+                                                                                "type": "NULL"
+                                                                            }
+                                                                            ,
+                                                                            {
+                                                                                "type": "AST_PARAM_LIST"
+                                                                            }
+                                                                            ,
+                                                                            {
+                                                                                "type": "AST_STMT_LIST",
+                                                                                "children":
+                                                                                        [
+                                                                                            {
+                                                                                                "type": "AST_IF",
+                                                                                                "children":
+                                                                                                        [
+                                                                                                            {
+                                                                                                                "type": "AST_IF_ELEM",
+                                                                                                                "children":
+                                                                                                                        [
+                                                                                                                            {
+                                                                                                                                "type": "AST_BINARY_OP",
+                                                                                                                                "flags": ["BINARY_IS_IDENTICAL"],
+                                                                                                                                "children":
+                                                                                                                                        [
+                                                                                                                                            {
+                                                                                                                                                "type": "AST_CONST",
+                                                                                                                                                "children":
+                                                                                                                                                        [
+                                                                                                                                                            {
+                                                                                                                                                                "type": "AST_NAME",
+                                                                                                                                                                "flags": ["NAME_NOT_FQ"],
+                                                                                                                                                                "children":
+                                                                                                                                                                        [
+                                                                                                                                                                            {
+                                                                                                                                                                                "type": "string",
+                                                                                                                                                                                "code": "null"
+                                                                                                                                                                            }
+                                                                                                                                                                        ]
+                                                                                                                                                            }
+                                                                                                                                                        ]
+                                                                                                                                            }
+                                                                                                                                            ,
+                                                                                                                                            {
+                                                                                                                                                "type": "AST_STATIC_PROP",
+                                                                                                                                                "children":
+                                                                                                                                                        [
+                                                                                                                                                            {
+                                                                                                                                                                "type": "AST_NAME",
+                                                                                                                                                                "flags": ["NAME_NOT_FQ"],
+                                                                                                                                                                "children":
+                                                                                                                                                                        [
+                                                                                                                                                                            {
+                                                                                                                                                                                "type": "string",
+                                                                                                                                                                                "code": "self"
+                                                                                                                                                                            }
+                                                                                                                                                                        ]
+                                                                                                                                                            }
+                                                                                                                                                            ,
+                                                                                                                                                            {
+                                                                                                                                                                "type": "string",
+                                                                                                                                                                "code": "_instance"
+                                                                                                                                                            }
+                                                                                                                                                        ]
+                                                                                                                                            }
+                                                                                                                                        ]
+                                                                                                                            }
+                                                                                                                            ,
+                                                                                                                            {
+                                                                                                                                "type": "AST_STMT_LIST",
+                                                                                                                                "children":
+                                                                                                                                        [
+                                                                                                                                            {
+                                                                                                                                                "type": "AST_ASSIGN",
+                                                                                                                                                "children":
+                                                                                                                                                        [
+                                                                                                                                                            {
+                                                                                                                                                                "type": "AST_STATIC_PROP",
+                                                                                                                                                                "children":
+                                                                                                                                                                        [
+                                                                                                                                                                            {
+                                                                                                                                                                                "type": "AST_NAME",
+                                                                                                                                                                                "flags": ["NAME_NOT_FQ"],
+                                                                                                                                                                                "children":
+                                                                                                                                                                                        [
+                                                                                                                                                                                            {
+                                                                                                                                                                                                "type": "string",
+                                                                                                                                                                                                "code": "self"
+                                                                                                                                                                                            }
+                                                                                                                                                                                        ]
+                                                                                                                                                                            }
+                                                                                                                                                                            ,
+                                                                                                                                                                            {
+                                                                                                                                                                                "type": "string",
+                                                                                                                                                                                "code": "_instance"
+                                                                                                                                                                            }
+                                                                                                                                                                        ]
+                                                                                                                                                            }
+                                                                                                                                                            ,
+                                                                                                                                                            {
+                                                                                                                                                                "type": "AST_NEW",
+                                                                                                                                                                "children":
+                                                                                                                                                                        [
+                                                                                                                                                                            {
+                                                                                                                                                                                "type": "AST_NAME",
+                                                                                                                                                                                "flags": ["NAME_NOT_FQ"],
+                                                                                                                                                                                "children":
+                                                                                                                                                                                        [
+                                                                                                                                                                                            {
+                                                                                                                                                                                                "type": "string",
+                                                                                                                                                                                                "code": "self"
+                                                                                                                                                                                            }
+                                                                                                                                                                                        ]
+                                                                                                                                                                            }
+                                                                                                                                                                            ,
+                                                                                                                                                                            {
+                                                                                                                                                                                "type": "AST_ARG_LIST"
+                                                                                                                                                                            }
+                                                                                                                                                                        ]
+                                                                                                                                                            }
+                                                                                                                                                        ]
+                                                                                                                                            }
+                                                                                                                                        ]
+                                                                                                                            }
+                                                                                                                        ]
+                                                                                                            }
+                                                                                                        ]
+                                                                                            }
+                                                                                            ,
+                                                                                            {
+                                                                                                "type": "AST_RETURN",
+                                                                                                "children":
+                                                                                                        [
+                                                                                                            {
+                                                                                                                "type": "AST_STATIC_PROP",
+                                                                                                                "children":
+                                                                                                                        [
+                                                                                                                            {
+                                                                                                                                "type": "AST_NAME",
+                                                                                                                                "flags": ["NAME_NOT_FQ"],
+                                                                                                                                "children":
+                                                                                                                                        [
+                                                                                                                                            {
+                                                                                                                                                "type": "string",
+                                                                                                                                                "code": "self"
+                                                                                                                                            }
+                                                                                                                                        ]
+                                                                                                                            }
+                                                                                                                            ,
+                                                                                                                            {
+                                                                                                                                "type": "string",
+                                                                                                                                "code": "_instance"
+                                                                                                                            }
+                                                                                                                        ]
+                                                                                                            }
+                                                                                                        ]
+                                                                                            }
+                                                                                        ]
+                                                                            }
+                                                                            ,
+                                                                            {
+                                                                                "type": "NULL"
+                                                                            }
+                                                                            ,
+                                                                            {
+                                                                                "type": "integer",
+                                                                                "code": "2"
+                                                                            }
+                                                                        ]
+                                                            }
+                                                            ,
+                                                            {
+                                                                "type": "AST_METHOD",
+                                                                "flags": ["MODIFIER_PUBLIC"],
+                                                                "children":
+                                                                        [
+                                                                            {
+                                                                                "type": "string",
+                                                                                "code": "setParam"
+                                                                            }
+                                                                            ,
+                                                                            {
+                                                                                "type": "NULL"
+                                                                            }
+                                                                            ,
+                                                                            {
+                                                                                "type": "AST_PARAM_LIST",
+                                                                                "children":
+                                                                                        [
+                                                                                            {
+                                                                                                "type": "AST_PARAM",
+                                                                                                "children":
+                                                                                                        [
+                                                                                                            {
+                                                                                                                "type": "NULL"
+                                                                                                            }
+                                                                                                            ,
+                                                                                                            {
+                                                                                                                "type": "string",
+                                                                                                                "code": "par"
+                                                                                                            }
+                                                                                                            ,
+                                                                                                            {
+                                                                                                                "type": "NULL"
+                                                                                                            }
+                                                                                                        ]
+                                                                                            }
+                                                                                        ]
+                                                                            }
+                                                                            ,
+                                                                            {
+                                                                                "type": "AST_STMT_LIST",
+                                                                                "children":
+                                                                                        [
+                                                                                            {
+                                                                                                "type": "AST_ASSIGN",
+                                                                                                "children":
+                                                                                                        [
+                                                                                                            {
+                                                                                                                "type": "AST_PROP",
+                                                                                                                "children":
+                                                                                                                        [
+                                                                                                                            {
+                                                                                                                                "type": "AST_VAR",
+                                                                                                                                "children":
+                                                                                                                                        [
+                                                                                                                                            {
+                                                                                                                                                "type": "string",
+                                                                                                                                                "code": "this"
+                                                                                                                                            }
+                                                                                                                                        ]
+                                                                                                                            }
+                                                                                                                            ,
+                                                                                                                            {
+                                                                                                                                "type": "string",
+                                                                                                                                "code": "variable"
+                                                                                                                            }
+                                                                                                                        ]
+                                                                                                            }
+                                                                                                            ,
+                                                                                                            {
+                                                                                                                "type": "AST_VAR",
+                                                                                                                "children":
+                                                                                                                        [
+                                                                                                                            {
+                                                                                                                                "type": "string",
+                                                                                                                                "code": "par"
+                                                                                                                            }
+                                                                                                                        ]
+                                                                                                            }
+                                                                                                        ]
+                                                                                            }
+                                                                                        ]
+                                                                            }
+                                                                            ,
+                                                                            {
+                                                                                "type": "NULL"
+                                                                            }
+                                                                            ,
+                                                                            {
+                                                                                "type": "integer",
+                                                                                "code": "3"
+                                                                            }
+                                                                        ]
+                                                            }
+                                                            ,
+                                                            {
+                                                                "type": "AST_METHOD",
+                                                                "flags": ["MODIFIER_PUBLIC"],
+                                                                "children":
+                                                                        [
+                                                                            {
+                                                                                "type": "string",
+                                                                                "code": "getParam"
+                                                                            }
+                                                                            ,
+                                                                            {
+                                                                                "type": "NULL"
+                                                                            }
+                                                                            ,
+                                                                            {
+                                                                                "type": "AST_PARAM_LIST"
+                                                                            }
+                                                                            ,
+                                                                            {
+                                                                                "type": "AST_STMT_LIST",
+                                                                                "children":
+                                                                                        [
+                                                                                            {
+                                                                                                "type": "AST_RETURN",
+                                                                                                "children":
+                                                                                                        [
+                                                                                                            {
+                                                                                                                "type": "AST_PROP",
+                                                                                                                "children":
+                                                                                                                        [
+                                                                                                                            {
+                                                                                                                                "type": "AST_VAR",
+                                                                                                                                "children":
+                                                                                                                                        [
+                                                                                                                                            {
+                                                                                                                                                "type": "string",
+                                                                                                                                                "code": "this"
+                                                                                                                                            }
+                                                                                                                                        ]
+                                                                                                                            }
+                                                                                                                            ,
+                                                                                                                            {
+                                                                                                                                "type": "string",
+                                                                                                                                "code": "variable"
+                                                                                                                            }
+                                                                                                                        ]
+                                                                                                            }
+                                                                                                        ]
+                                                                                            }
+                                                                                        ]
+                                                                            }
+                                                                            ,
+                                                                            {
+                                                                                "type": "NULL"
+                                                                            }
+                                                                            ,
+                                                                            {
+                                                                                "type": "integer",
+                                                                                "code": "4"
+                                                                            }
+                                                                        ]
+                                                            }
+                                                        ]
+                                            }
+                                        ]
+                            }
+                            ,
+                            {
+                                "type": "integer",
+                                "code": "5"
+                            }
+                        ]
+            }
+}

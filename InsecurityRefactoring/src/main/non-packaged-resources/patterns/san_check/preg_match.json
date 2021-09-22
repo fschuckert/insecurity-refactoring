@@ -1,22 +1,36 @@
 {
-	"name":"preg_match",	
-	"type":"sanitize",
-    
-        "pattern_type": "expression",    
-        
-        "input_type" : "expression",
-        "output_type": "expression",
-        "output_return":false,
-        "passthrough":false,
-    
-        "data_input":"String",
-        "data_output":"Boolean",
-    
-        
-    
-        "code":
-        [
-            "<call>(preg_match, <any>(), %input, <any>()?...)"
-        ]
+    "name": "preg_match",	
+    "type": "sanitize",
 
+    "pattern_type": "expression",    
+
+    "input_type": "expression",
+    "output_type": "expression",
+    "output_return": true,
+    "passthrough": false,
+
+    "data_input": "String",
+    "data_output": "Boolean",
+
+    "filters": ["specials", "letters", "numbers"],
+
+    "generates": [
+        { 
+            "params": ["<s>(/^[A-Za-z]*$/)"], 
+            "filters": ["specials", "numbers"]
+        },
+        { 
+            "params": ["<s>(/[0-9]/)"], 
+            "filters": []
+        },
+        { 
+            "params": ["<s>(/^[0-9]*$/)"], 
+            "filters": ["specials", "letters"]
+        }
+    ],
+
+    "code":
+            [
+                "<call>(preg_match, <any>(), %input, <any>()?...)"
+            ]
 }

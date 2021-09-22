@@ -1,0 +1,30 @@
+{
+    "name": "mysqli_real_escape_string",	
+    "type": "sanitize",
+
+    "pattern_type": "expression",    
+
+    "input_type": "expression",
+    "output_type": "expression",
+    "output_return": true,
+    "passthrough": true,
+
+    "data_input": "String",
+    "data_output": "String",
+
+
+    "filters": ["escape(\\):'\"\\\n\r"],
+    "adds_enclosing": "apostrophe",
+
+    "generates": [
+        { 
+            "params": ["<$>(db)"],             
+            "depends_on":["init_mysql"]
+        }
+    ],
+
+    "code":
+            [
+                "<call>(mysqli_real_escape_string, <any>(), %input)"
+            ]
+}

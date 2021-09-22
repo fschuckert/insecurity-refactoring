@@ -10,6 +10,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -26,12 +28,14 @@ import org.json.simple.JSONObject;
 public class SarifExporter {
     
     
-    String submissionDate = "2021-02-01 TODO";
+    String submissionDate =new SimpleDateFormat("yyyy-MM-dd").format(new Date()); //"2021-02-01 TODO";
     String author = "Felix Schuckert";
     String description = "TODO";
     boolean vulnerable;
     
-    String vulnType = "xss"; // TODO
+    String testSuiteVersion = "1.0.1";
+    
+    String vulnType = "xss";
     
     
     String path = "/home/blubbomat/Development/Pattern_Gen_Sample/sample";
@@ -40,15 +44,12 @@ public class SarifExporter {
 //    Map<String, String> files = new HashMap<>();
     LinkedList<String> files = new LinkedList<>();
 
-    public SarifExporter(String vulnType, String path, SourceLocation sink, boolean vulnerable) {
-        // TODO
-        //        files.put("src/sample.php", "<?php echo($a); ?>");
-//        files.add("src/sample.php");
-//        sink = new SourceLocation("src/sample.php:23");
+    public SarifExporter(String vulnType, String path, SourceLocation sink, boolean vulnerable, String description) {
         this.vulnType = vulnType;
         this.path = path;
         this.sink = sink;
         this.vulnerable = vulnerable;
+        this.description = description;
     }
     
     
@@ -90,7 +91,7 @@ public class SarifExporter {
         JSONObject properties = new JSONObject();    
         run.put("properties", properties);
         properties.put("id", -1);
-        properties.put("version", "1.0.0");
+        properties.put("version", testSuiteVersion);
         properties.put("type", "source code");
         properties.put("status", "candidate");
         properties.put("submissionDate", submissionDate);
@@ -108,7 +109,7 @@ public class SarifExporter {
         run.put("taxonomies", createTaxonomies());
         run.put("results", createResults());
 
-        return format(base.toString());        
+        return Util.formatJSON(base.toString()).replace("\\u0027", "'");        
     }
     
     private JSONObject createTool(){
@@ -134,12 +135,7 @@ public class SarifExporter {
         return tool;
     }
     
-    private String format(String unformated){
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        JsonParser jp = new JsonParser();
-        JsonElement je = jp.parse(unformated);
-        return gson.toJson(je);
-    }
+    
 
     private JSONArray createArtifacts() {
         JSONArray artifacts = new JSONArray();
@@ -158,9 +154,7 @@ public class SarifExporter {
             
             JSONObject hashes = new JSONObject();
             artifact.put("hashes", hashes);
-            hashes.put("sha-1", Util.sha1FromFile(fullPath));
-            //TODO: add sha-1
-            
+            hashes.put("sha-1", Util.sha1FromFile(fullPath));            
         }
         
         
@@ -176,8 +170,8 @@ public class SarifExporter {
         taxonomies.add(cwe);
         
         cwe.put("name", "CWE");
-        cwe.put("informationUri", "https://cwe.mitre.org/data/published/cwe_latest.pdf");
-        cwe.put("downloadUri", "https://cwe.mitre.org/data/xml/cwec_latest.xml.zip");
+        cwe.put("informationUri", "https://cwe.mitre.org/data/published/cwe_v4.4.pdf");
+        cwe.put("downloadUri", "https://cwe.mitre.org/data/xml/cwec_v4.4.xml.zip");
         cwe.put("organization", "MITRE");
         
         JSONObject shortDescription = new JSONObject();
@@ -193,6 +187,8 @@ public class SarifExporter {
         taxa.add(tax);
         tax.put("id", cweId());
         tax.put("name", cweDescription());
+        
+        tax.put("version", "4.4");
         
         
         return taxonomies;
@@ -260,6 +256,7 @@ public class SarifExporter {
         JSONObject region = new JSONObject();
         physicalLocation.put("region", region);
         region.put("startLine", sink.getLineNumber());
+//        region.put("endLine", sink.getLineNumber());
         
         
         

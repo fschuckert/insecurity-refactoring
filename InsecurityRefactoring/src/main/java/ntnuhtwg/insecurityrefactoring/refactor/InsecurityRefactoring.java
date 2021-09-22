@@ -27,12 +27,10 @@ import ntnuhtwg.insecurityrefactoring.base.patterns.PassthroughPattern;
 import ntnuhtwg.insecurityrefactoring.base.patterns.Pattern;
 import ntnuhtwg.insecurityrefactoring.base.patterns.impl.DataflowIdentifyPattern;
 import ntnuhtwg.insecurityrefactoring.base.patterns.impl.DataflowPattern;
-import ntnuhtwg.insecurityrefactoring.base.patterns.impl.FailedSanitizePattern;
-import ntnuhtwg.insecurityrefactoring.base.patterns.impl.InsecureSourcePattern;
 import ntnuhtwg.insecurityrefactoring.base.patterns.impl.SanitizePattern;
 import ntnuhtwg.insecurityrefactoring.base.patterns.impl.SourcePattern;
 import ntnuhtwg.insecurityrefactoring.base.patterns.PatternStorage;
-import ntnuhtwg.insecurityrefactoring.base.print.PrintAST;
+import ntnuhtwg.insecurityrefactoring.print.PrintAST;
 import org.apache.commons.lang3.StringUtils;
 import org.javatuples.Pair;
 import org.javatuples.Triplet;
@@ -73,14 +71,14 @@ public class InsecurityRefactoring {
     
     
     
-    public List<RefactoredCode> refactor(List<Triplet<DFATreeNode, SanitizePattern, SanitizePattern>> refactorTargets, List< Pair<DFATreeNode, DataflowPattern> > dataflowRefactors, Pair<DFATreeNode, InsecureSourcePattern> sourceExchange) throws TimeoutException{
+    public List<RefactoredCode> refactor(List<Triplet<DFATreeNode, SanitizePattern, SanitizePattern>> refactorTargets, List< Pair<DFATreeNode, DataflowPattern> > dataflowRefactors, Pair<DFATreeNode, SourcePattern> sourceExchange) throws TimeoutException{
         
         modifiedFiles.clear();
         
         if(sourceExchange != null){
             DFATreeNode node = sourceExchange.getValue0();
             SourcePattern secureSource = sourceExchange.getValue0().getSourcePattern();
-            InsecureSourcePattern insecureSource =  sourceExchange.getValue1();          
+            SourcePattern insecureSource =  sourceExchange.getValue1();          
             long topLevelId = addToModifiedGetId(node);
             
             refactorPattern(topLevelId, node, secureSource, insecureSource);  

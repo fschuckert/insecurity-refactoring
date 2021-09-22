@@ -29,6 +29,7 @@ import ntnuhtwg.insecurityrefactoring.base.ASTNodeTypes;
 import ntnuhtwg.insecurityrefactoring.base.Util;
 import ntnuhtwg.insecurityrefactoring.base.ast.ASTFactory;
 import ntnuhtwg.insecurityrefactoring.base.ast.impl.AstVar;
+import ntnuhtwg.insecurityrefactoring.base.context.SufficientFilter;
 import ntnuhtwg.insecurityrefactoring.base.exception.TimeoutException;
 import ntnuhtwg.insecurityrefactoring.base.tree.DFATreeNode;
 import ntnuhtwg.insecurityrefactoring.base.tree.TreeNode;
@@ -36,23 +37,14 @@ import ntnuhtwg.insecurityrefactoring.base.db.neo4j.Neo4jDB;
 import ntnuhtwg.insecurityrefactoring.base.db.neo4j.dsl.cypher.DataflowDSL;
 import ntnuhtwg.insecurityrefactoring.base.db.neo4j.node.INode;
 import ntnuhtwg.insecurityrefactoring.base.info.ContextInfo;
-import ntnuhtwg.insecurityrefactoring.base.patternparser.ListPatternParser;
+import ntnuhtwg.insecurityrefactoring.base.patternpersist.ListPatternParser;
 import ntnuhtwg.insecurityrefactoring.base.patterns.PassthroughPattern;
 import ntnuhtwg.insecurityrefactoring.base.patterns.Pattern;
 import ntnuhtwg.insecurityrefactoring.base.patterns.impl.ConcatPattern;
 import ntnuhtwg.insecurityrefactoring.base.patterns.impl.DataflowIdentifyPattern;
-import ntnuhtwg.insecurityrefactoring.base.patterns.impl.FailedSanitizePattern;
-import ntnuhtwg.insecurityrefactoring.base.patterns.impl.InsecureSourcePattern;
-import ntnuhtwg.insecurityrefactoring.base.patternparser.JsonPatternParser;
+import ntnuhtwg.insecurityrefactoring.base.patternpersist.JsonPatternParser;
 import ntnuhtwg.insecurityrefactoring.base.patterns.impl.ContextPattern;
-import ntnuhtwg.insecurityrefactoring.base.patterns.impl.sufficient.Sufficient;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-import org.neo4j.cypher.internal.v4_0.frontend.phases.Transformer;
-import ntnuhtwg.insecurityrefactoring.base.print.PrintAST;
-import ntnuhtwg.insecurityrefactoring.refactor.base.TempPattern;
+import ntnuhtwg.insecurityrefactoring.refactor.temppattern.TempPattern;
 
 /**
  *
@@ -72,8 +64,7 @@ public class PatternStorage {
     
     // S_{san}
     private Map< String, SanitizePattern> sanitizations = new HashMap<>();    
-    // T_{san}
-    private Map< String, FailedSanitizePattern> failedSan = new HashMap<>();    
+    
     // S_{pass}
     private Map< String, PassthroughPattern> passthroughs = new HashMap<>();
     
@@ -84,7 +75,6 @@ public class PatternStorage {
     
     
     private Map< String, LanguagePattern> languagePatterns = new HashMap<>();
-    private Map< String, InsecureSourcePattern> insecureSourcesPattern = new HashMap<>();
     
     
     private Map< String, ContextPattern> contexts = new HashMap<>();   
@@ -95,7 +85,7 @@ public class PatternStorage {
     
     private void parsePattern(File file){
         try {
-            System.out.println("Parsing pattern: " + file);
+//            System.out.println("Parsing pattern: " + file);
             
             if(file.getAbsolutePath().endsWith(".json")){ 
                 try {
@@ -122,11 +112,11 @@ public class PatternStorage {
                 
                 List<Pattern> patterns = new ListPatternParser().parsePatterns(file.getAbsolutePath(), patternType);
                 for(Pattern pattern : patterns){
-                    System.out.print("\n   ---->" + pattern.getName());
+//                    System.out.print("\n   ---->" + pattern.getName());
                     pattern.setPatternStorage(this);
                     addToPatterns(pattern);
                 }
-                System.out.println("\nFinished");
+//                System.out.println("\nFinished");
             }
             
         } catch (IOException ex) {
@@ -180,26 +170,12 @@ public class PatternStorage {
                 }
                 sanitizations.put(pattern.getName(), (SanitizePattern)pattern);
                 break;
-            case "failed_sanitize":
-                if (failedSan.containsKey(pattern.getName())) {
-                    System.out.println(" <<< FAILED >>> pattern already load: " + pattern.getName());
-                    return true;
-                }
-                failedSan.put(pattern.getName(), (FailedSanitizePattern)pattern);
-                break;
             case "dataflow_identify":
                 if (dataflowIdentifies.containsKey(pattern.getName())) {
                     System.out.println(" <<< FAILED >>> pattern already load: " + pattern.getName());
                     return true;
                 }
                 dataflowIdentifies.put(pattern.getName(), (DataflowIdentifyPattern)pattern);
-                break;
-            case "source_insecure":
-                if (insecureSourcesPattern.containsKey(pattern.getName())) {
-                    System.out.println(" <<< FAILED >>> pattern already load: " + pattern.getName());
-                    return true;
-                }
-                insecureSourcesPattern.put(pattern.getName(), (InsecureSourcePattern)pattern);
                 break;
             case "context":
                 if (contexts.containsKey(pattern.getName())) {
@@ -210,7 +186,7 @@ public class PatternStorage {
                 break;
         }
         if(pattern instanceof PassthroughPattern){
-            if(((PassthroughPattern) pattern).isPassthrough()){
+            if(((PassthroughPattern) pattern).isPassthrough() && !pattern.isForGenerate()) {
                 passthroughs.put(pattern.getName(), (PassthroughPattern)pattern);
             }
         }
@@ -233,7 +209,6 @@ public class PatternStorage {
         sources.clear();
 //        dataflows.clear();
         sanitizations.clear();
-        failedSan.clear();
         languagePatterns.clear();
         parseAllPatterns(new File(folder));
     }
@@ -255,10 +230,6 @@ public class PatternStorage {
 
     public Collection<SanitizePattern> getSanitizations() {
         return sanitizations.values();
-    }
-
-    public Collection<FailedSanitizePattern> getFailedSan() {
-        return failedSan.values();
     }
 
     public Collection<PassthroughPattern> getPassthroughs() {
@@ -288,13 +259,26 @@ public class PatternStorage {
         return dataflowIdentifies.values();
     }
     
-    
-    public Collection<InsecureSourcePattern> getInsecureSources() {
-        return insecureSourcesPattern.values();
-    }
-    
     public Collection<ContextPattern> getContexts(){
         return contexts.values();
+    }
+    
+    public List<SourcePattern> getInsecureSources(SourcePattern sourcePattern, DFATreeNode source, ContextInfo contextInfo){
+        List<SourcePattern> insecureSources = new LinkedList<>();
+        for(SourcePattern sourcePatternToCheck : getSources()){
+            if(!sourcePattern.isReplacableWith(sourcePatternToCheck)){
+                continue;
+            }
+            
+            
+            if(!SufficientFilter.isSufficient(sourcePatternToCheck.getCharsAllowed(), contextInfo, sourcePatternToCheck.getAddsEnclosure()).isExploitable()){
+                continue;
+            }
+            
+            insecureSources.add(sourcePatternToCheck);
+        }
+        
+        return insecureSources;
     }
     
     
@@ -306,41 +290,31 @@ public class PatternStorage {
         for(SanitizePattern potentialFailedSan : getSanitizations()){
             if(!potentialFailedSan.isReplaceableWithIgnoreDatatype(sanitizePattern)){
                 continue;
-            }           
+            }      
+            
+            if(potentialFailedSan.containsAny()){
+                continue;
+            }
             
             if(sanitizePattern.isCheckMethod() != potentialFailedSan.isCheckMethod()){
                 continue;
             }
             
-            if(Sufficient.isSufficient(potentialFailedSan, contextInfo)){
+            if(!SufficientFilter.isSufficient(potentialFailedSan.getCharsAllowed(), contextInfo, potentialFailedSan.getAddsEnclosure()).isExploitable()){
                 continue;
             }
             
+//            if(Sufficient.isSufficient(potentialFailedSan, contextInfo)){
+//                continue;
+//            }
+            
             retval.add(potentialFailedSan);
         }
-        for(FailedSanitizePattern failedSanitizePattern : getFailedSan()){
-            if(failedSanitizePattern.isReplaceableWith(sanitizePattern)){
-                System.out.println("refctorable: " + failedSanitizePattern.getName());
-                retval.add(failedSanitizePattern);
-            }
-        }
+
         
         return retval;
     }
     
-    public List<InsecureSourcePattern> getPossibleInsecureSource(SourcePattern sourcePattern){
-        List<InsecureSourcePattern> insecureSource = new LinkedList<>();
-        
-        System.out.println("Searching for insecure sources for: " + sourcePattern);
-        for(InsecureSourcePattern insecurePattern : getInsecureSources()){
-            if(insecurePattern.isRefactorable(sourcePattern)){
-                insecureSource.add(insecurePattern);
-                System.out.println("Found: " + insecurePattern);
-            }
-        }
-        
-        return insecureSource;
-    }
     
     public DataflowPattern getDataflow(String name) {
         return dataflows.get(name);
@@ -392,6 +366,9 @@ public class PatternStorage {
 
     public boolean isSanitize(DFATreeNode node, Neo4jDB db) throws TimeoutException {
         for(SanitizePattern sanitizePattern : sanitizations.values()){
+            if(sanitizePattern.isForGenerate()){
+                continue;
+            }
             if(sanitizePattern.equalsPattern(node.getObj(), db)){
                 return true;
             }

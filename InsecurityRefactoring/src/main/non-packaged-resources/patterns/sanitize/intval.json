@@ -12,6 +12,7 @@
         "data_input":"String",
         "data_output":"Integer",
     
+        "filters":["letters", "specials"],
         
     
         "code":

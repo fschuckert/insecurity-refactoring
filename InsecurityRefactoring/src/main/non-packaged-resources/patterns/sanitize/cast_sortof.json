@@ -1,0 +1,32 @@
+{
+    "name": "cast_sortof",	
+    "type": "sanitize",
+
+    "pattern_type": "expression",    
+
+    "input_type": "expression",
+    "output_type": "expression",
+    "output_return": true,
+    "passthrough": true,
+
+    "data_input": "String",
+    "data_output": "Integer",
+
+    "filters": ["letters", "specials"],
+
+    "generates": [
+        { 
+            "params": ["<i>(0)"], 
+            "filters": ["letters", "specials"]
+        },
+        { 
+            "params": ["<i>(0.0)"], 
+            "filters": ["letters", "specials"]
+        }
+    ],
+
+    "code":
+            [
+                "<con_b_add>(%input, <any>())"
+            ]
+}

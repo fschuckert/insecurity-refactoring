@@ -12,7 +12,14 @@
         "data_input":"String",
         "data_output":"String",
     
-        
+        "filters": ["numbers", "letters", "specials"],
+
+        "generates": [
+            { 
+                "params": ["<s>(md5)", "<s>(salt)"], 
+                "filters": ["numbers", "letters", "specials"]
+            }
+        ],
     
         "code":
         [

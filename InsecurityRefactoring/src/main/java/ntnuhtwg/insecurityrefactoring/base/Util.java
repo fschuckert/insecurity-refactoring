@@ -6,11 +6,17 @@
 package ntnuhtwg.insecurityrefactoring.base;
 
 import com.google.common.collect.Lists;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.io.Reader;
+import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -20,12 +26,17 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.StringJoiner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
 import java.util.stream.Stream;
+import javax.swing.JOptionPane;
+import ntnuhtwg.insecurityrefactoring.Framework;
+import ntnuhtwg.insecurityrefactoring.base.ast.ASTFactory;
 import ntnuhtwg.insecurityrefactoring.base.exception.TimeoutException;
 import ntnuhtwg.insecurityrefactoring.base.tree.TreeNode;
 import ntnuhtwg.insecurityrefactoring.base.db.neo4j.dsl.cypher.DataflowDSL;
@@ -33,6 +44,10 @@ import ntnuhtwg.insecurityrefactoring.base.db.neo4j.Neo4JConnector;
 import ntnuhtwg.insecurityrefactoring.base.db.neo4j.Neo4jDB;
 import ntnuhtwg.insecurityrefactoring.base.db.neo4j.node.INode;
 import ntnuhtwg.insecurityrefactoring.base.patterns.PatternStorage;
+import ntnuhtwg.insecurityrefactoring.base.patterns.impl.DataflowPattern;
+import ntnuhtwg.insecurityrefactoring.base.tree.DFATreeNode;
+import ntnuhtwg.insecurityrefactoring.print.PrintAST;
+import org.apache.commons.io.FileUtils;
 import org.neo4j.driver.Record;
 import org.neo4j.driver.Values;
 import org.neo4j.driver.internal.value.NodeValue;
@@ -44,6 +59,68 @@ import scala.NotImplementedError;
  * @author blubbomat
  */
 public class Util {
+    
+    public static void printSourceCodeRec(Neo4jDB db, DFATreeNode node, SourceLocation lastPrinted) {
+        if (node == null) {
+            return;
+        }
+
+        if (node.getObj() != null) {
+            SourceLocation location = Util.codeLocation(db, node.getObj());
+            if (location != null && !location.equals(lastPrinted)) {
+                System.out.println(Util.codeLocation(db, node.getObj()).codeSnippet(true));
+                lastPrinted = location;
+            }
+        }
+        printSourceCodeRec(db, node.getParent_(), lastPrinted);
+    }
+
+    public static <T> boolean isLastIndex(T[] array, int index) {
+        return index + 1 == array.length;
+    }
+
+    public static String joinStr(String[] array, String decimator) {
+        StringJoiner joiner = new StringJoiner(decimator);
+        for (String str : array) {
+            joiner.add(str);
+        }
+
+        return joiner.toString();
+    }
+
+    public static String formatJSON(String unformated) {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        JsonParser jp = new JsonParser();
+        JsonElement je = jp.parse(unformated);
+        return gson.toJson(je);
+    }
+
+    public static String joinStr(Collection<String> array, String decimator) {
+        StringJoiner joiner = new StringJoiner(decimator);
+        for (String str : array) {
+            joiner.add(str);
+        }
+
+        return joiner.toString();
+    }
+    
+    public static List<String> splitOnLines(String str, String regexOnSplitLine){
+        List<String> retval = new LinkedList<>();
+        StringJoiner joiner = new StringJoiner("\n");
+        for(String line : str.split("\n")){            
+            if(line.matches(regexOnSplitLine)){
+                retval.add(joiner.toString());
+                joiner = new StringJoiner("\n");
+                continue;
+            }
+            
+            joiner.add(line);
+        }
+        
+        retval.add(joiner.toString());
+        
+        return retval;
+    }
 
     public static boolean isType(INode node, String type) {
         return node != null && type.equals(node.getString("type"));
@@ -140,24 +217,24 @@ public class Util {
         }
     }
 
-    public static String sha1FromFile(String pathStr){
+    public static String sha1FromFile(String pathStr) {
         Path path = Path.of(pathStr);
-        
+
         try {
             String input = Files.readString(path);
-        
+
             MessageDigest mDigest = MessageDigest.getInstance("SHA1");
             byte[] result = mDigest.digest(input.getBytes());
             StringBuffer sb = new StringBuffer();
             for (int i = 0; i < result.length; i++) {
                 sb.append(Integer.toString((result[i] & 0xff) + 0x100, 16).substring(1));
             }
-            
+
             return sb.toString();
         } catch (Exception ex) {
             Logger.getLogger(Util.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         return "sha1 not found!";
     }
 
@@ -229,6 +306,27 @@ public class Util {
         }
         return false;
     }
+    
+    public static void runCommandOnBashDANGEROES(String command, File folder) throws IOException, InterruptedException{
+        File out = new File("output.txt"); // File to write stdout to
+        File err = new File("output.txt"); // File to write stderr to
+        ProcessBuilder builder = new ProcessBuilder("/bin/sh", "-c", command);
+        builder.directory(folder);
+//        builder.
+        builder.redirectOutput(out); // Redirect stdout to file
+        if (out == err) {
+            builder.redirectErrorStream(true); // Combine stderr into stdout
+        } else {
+            builder.redirectError(err); // Redirect stderr to file
+        }
+        System.out.println("[" + folder.getAbsolutePath() + "]: " + command);
+        Process process = builder.start();
+        System.out.println("Wait for");
+        process.waitFor();
+        String output = readLineByLineJava8("output.txt");
+        System.out.println(output);
+        System.out.println("Finished");
+    }
 
     public static void runCommand(String command, File folder) throws IOException, InterruptedException {
         File out = new File("output.txt"); // File to write stdout to
@@ -250,38 +348,6 @@ public class Util {
         String output = readLineByLineJava8("output.txt");
         System.out.println(output);
         System.out.println("Finished");
-
-//        String line;
-//        System.out.println("[" + folder.getAbsolutePath() + "]: " + command);
-//        Process process = Runtime.getRuntime().exec(command, null, folder);        
-//        
-//        Reader r = new InputStreamReader(process.getInputStream());
-//        BufferedReader in = new BufferedReader(r);   
-//        Reader rError = new InputStreamReader(process.getErrorStream());
-//        BufferedReader error = new BufferedReader(rError);
-//        
-//        boolean read = false;
-//        while(true){
-//            if((line = in.readLine()) != null){
-//                System.out.println(line);
-//                read = true;
-//            }
-//            
-//            if((line = error.readLine()) != null){
-//                System.out.println(line);
-//                read = true;
-//            }
-//            
-//            if(!read){
-//                break;
-//            }
-//            read = false;            
-//        }
-////        while((line = in.readLine()) != null) System.out.println(line);
-//        process.waitFor();
-//        System.out.println("Command finished");
-//        
-//        while((line = error.readLine()) != null) ;
     }
 
     public static String codeSnippet(Neo4jDB db, INode child) {
@@ -290,5 +356,44 @@ public class Util {
             return loc.codeSnippet();
         }
         return "No snippet for: " + child;
+    }
+
+    public static TreeNode<INode> previewAST(PatternStorage patternStorage, List<String> codeLines) throws Exception {
+        DataflowPattern dataflowPattern = new DataflowPattern(true, DataType.String(), DataType.String(), "id", 0.0, 0.0, 0.0);
+        dataflowPattern.setCodeLines(codeLines);
+
+        Map<String, TreeNode<INode>> subtrees = new HashMap<>();
+        subtrees.put("%input", ASTFactory.createVar("inputVar"));
+        subtrees.put("%output", ASTFactory.createVar("outputVar"));
+
+        List<TreeNode<INode>> ASTs = dataflowPattern.generateAst(subtrees, patternStorage);
+
+        TreeNode<INode> finalAST = null;
+        TreeNode<INode> statementList = ASTFactory.createStatementList();
+        for (TreeNode<INode> statement : ASTs) {
+            statementList.addChild(statement);
+        }
+        finalAST = statementList;
+
+        return finalAST;
+    }
+
+    public static String previewCode(PatternStorage patternStorage, List<String> codeLines) throws Exception {
+        PrintAST printAST = new PrintAST();
+        TreeNode<INode> finalAST = previewAST(patternStorage, codeLines);
+
+        return printAST.prettyPrint(finalAST);
+    }
+
+    public static void deleteFolder(String path) throws IOException {
+        FileUtils.deleteDirectory(new File(path));
+    }
+    
+    public static <E> List<E> list(E... elements){
+        LinkedList<E> list = new LinkedList<>();
+        for(E elem : elements){
+            list.add(elem);
+        }
+        return list;
     }
 }

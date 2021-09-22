@@ -1,0 +1,40 @@
+{
+    "name": "gettype_check",	
+    "type": "sanitize",
+
+    "pattern_type": "expression",    
+
+    "input_type": "expression",
+    "output_type": "expression",
+    "output_return": true,
+    "passthrough": false,
+
+    "data_input": "String",
+    "data_output": "Boolean",
+
+    "filters": [],
+
+    "code":
+            [
+                "<==>(<call>(gettype, %input), <any>())"
+            ],
+
+    "generates": [
+        { 
+            "params": ["<s>(double)"], 
+            "filters": ["specials", "letters"]
+        },
+        { 
+            "params": ["<s>(integer)"], 
+            "filters": ["specials", "letters"]
+        },
+        { 
+            "params": ["<s>(string)"], 
+            "filters": []
+        },
+        { 
+            "params": ["<s>(boolean)"], 
+            "filters": ["specials", "letters", "numbers"]
+        }
+    ]
+}

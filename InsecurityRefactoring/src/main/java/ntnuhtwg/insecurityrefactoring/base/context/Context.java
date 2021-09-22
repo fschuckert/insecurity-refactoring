@@ -5,29 +5,40 @@
  */
 package ntnuhtwg.insecurityrefactoring.base.context;
 
-import java.util.HashMap;
-import ntnuhtwg.insecurityrefactoring.base.DataType;
 import ntnuhtwg.insecurityrefactoring.base.info.ContextInfo;
-import ntnuhtwg.insecurityrefactoring.base.context.contextimpl.ContextApostroph;
-import ntnuhtwg.insecurityrefactoring.base.context.contextimpl.ContextHTMLAttribute;
-import ntnuhtwg.insecurityrefactoring.base.context.contextimpl.ContextJavascript;
-import ntnuhtwg.insecurityrefactoring.base.context.contextimpl.ContextQuotes;
-import ntnuhtwg.insecurityrefactoring.base.tree.DFATreeNode;
 
 /**
  *
  * @author blubbomat
  */
 public abstract class Context {
+    private Context inside;
     
-    public static HashMap<String, Context> knownRequirements = new HashMap<>() {{
-            put("context(apostrophe)".toLowerCase(), new ContextApostroph());
-            put("context(quotes)".toLowerCase(), new ContextQuotes());
-            put("context(javascript)".toLowerCase(), new ContextJavascript());
-            put("context(attribute)".toLowerCase(), new ContextHTMLAttribute());
-    }};;
+    private String inbetween;
+    
+    boolean isInbetweenEmpty(){
+        return this.getInbetween() == null || this.getInbetween().strip().equals("");
+    }
+
+    public String getInbetween() {
+        return inbetween;
+    }
+
+    public void setInbetween(String inbetween) {
+        this.inbetween = inbetween;
+    }
+
+    public Context getInside() {
+        return inside;
+    }
+
+    public void setInside(Context inside) {
+        this.inside = inside;
+    }
+
+    public abstract boolean isExploitable(ContextInfo contextInfo, CharsAllowed charsAllowed, VulnerabilityDescription description);
+
+    public abstract boolean isEscapable(ContextInfo contextInfo, CharsAllowed charsAllowed, VulnerabilityDescription description);
     
     
-    
-    public abstract boolean fullfillsRequirement(ContextInfo context); 
 }

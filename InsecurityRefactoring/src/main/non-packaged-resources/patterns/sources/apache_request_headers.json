@@ -2,6 +2,7 @@
 	"name":"apache_request_headers",	
 	"type":"source",
         "secure":true,
+        "filters": [],
     
         "pattern_type":"expression",
         "output_type":"expression",

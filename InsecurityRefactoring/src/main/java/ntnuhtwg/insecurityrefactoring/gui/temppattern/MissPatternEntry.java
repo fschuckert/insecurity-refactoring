@@ -13,8 +13,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import ntnuhtwg.insecurityrefactoring.base.DataType;
-import ntnuhtwg.insecurityrefactoring.refactor.base.MissingCall;
-import ntnuhtwg.insecurityrefactoring.refactor.base.TempPattern;
+import ntnuhtwg.insecurityrefactoring.refactor.temppattern.MissingCall;
+import ntnuhtwg.insecurityrefactoring.refactor.temppattern.TempPattern;
 
 /**
  *

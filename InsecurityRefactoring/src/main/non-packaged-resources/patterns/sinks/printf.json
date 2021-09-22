@@ -1,13 +1,1 @@
-{
-	"name":"printf_func",
-	"type":"sink",
-	"vuln":"xss",
-    
-        "pattern_type":"statement",
-        "input_type":"expression",
-    
-        "code":[
-            "<call>(printf, <any>(), %input...)"
-        ]
-
-}
+{"init":[],"code":["<call>(printf, <any>(), %input...)"],"pattern_type":"statement","generates":[{"params":["<s>(Print this: %s)"]},{"safe":true,"params":["<s>(Print this: %d)"]}],"generate_files":[{"docker-compose.yml":["version: '2'","services:","  website:","    container_name: apache_php","    image: php:7.3-apache","    volumes:","      - .\/src:\/var\/www\/html\/","    ports:","      - 8000:80"]}],"sufficient_escapes":[],"vuln":"xss","name":"printf_func","input_type":"expression","type":"sink","output_return":false}

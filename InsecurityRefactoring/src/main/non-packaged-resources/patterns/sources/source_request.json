@@ -6,6 +6,7 @@
         "pattern_type":"expression",
         "output_type":"expression",
         "output_return":true,
+        "filters": [],
     
         "data_output":"Array(String)",
     

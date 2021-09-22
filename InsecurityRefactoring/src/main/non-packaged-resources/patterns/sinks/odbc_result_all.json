@@ -1,13 +1,18 @@
 {
-	"name":"odbc_result_all",
-	"type":"sink",
-	"vuln":"xss",
-    
-        "pattern_type":"statement",
-        "input_type":"expression",
-    
-        "code":[
-            "<call>(odbc_result_all, %input, <any>()?...)"
-        ]
-
+    "init": [],
+    "code": ["<call>(odbc_result_all,%input,<any>()?...)"],
+    "pattern_type": "statement",
+    "generate_files": [{
+            "docker-compose.yml": ["version: '2'", "services:", "  website:", "    container_name: apache_php", "    image: apache:php", "    build:", "      context: .\/", "    volumes:", "      - .\/src:\/var\/www\/html\/", "    ports:", "      - 8000:80"]
+        }, {
+            "Dockerfile": ["FROM php:7.3-apache", "# To build the ibm_db2 extension, the DB2 application development header files and libraries must be installed on your system. ", "# DB2 does not install these by default, so you may have to return to your DB2 installer and add this option. ", "# The header files are included with the DB2 Application Development Client freely available for download from ", "# the IBM DB2 Universal Database » support site: https:\/\/www.ibm.com\/developerworks\/downloads\/im\/db2express\/index.html", "", "# https:\/\/github.com\/php\/pecl-database-ibm_db2", "# Download linuxx64_odbc_cli.tar.gz from https:\/\/public.dhe.ibm.com\/ibmdl\/export\/pub\/software\/data\/db2\/drivers\/odbc_cli\/", "", "## add header files and libraries", "RUN mkdir -p \/opt\/ibm\/ && curl https:\/\/public.dhe.ibm.com\/ibmdl\/export\/pub\/software\/data\/db2\/drivers\/odbc_cli\/linuxx64_odbc_cli.tar.gz | tar -xz -C \/opt\/ibm\/", "", "", "## set env vars needed for PECL install", "ENV IBM_DB_HOME=\/opt\/ibm\/clidriver", "ENV LD_LIBRARY_PATH=\/opt\/ibm\/clidriver\/lib", "", "## install ibm_db2 drivers", "RUN pecl install ibm_db2", "", "RUN docker-php-ext-enable ibm_db2", "", "#RUN docker-php-ext-install pdo ibm_db2", "", "RUN apt-get update -y && apt-get install -y build-essential curl libssl1.0.0 libssl-dev gnupg2 software-properties-common dirmngr apt-transport-https apt-utils lsb-release ca-certificates", "RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9", "RUN add-apt-repository 'deb https:\/\/cloud.r-project.org\/bin\/linux\/ubuntu bionic-cran35\/'", "RUN apt-get update -y && apt-get install -y r-base", "", "# See about installing ODBC drivers here: https:\/\/docs.microsoft.com\/en-us\/sql\/connect\/odbc\/linux-mac\/installing-the-microsoft-odbc-driver-for-sql-server?view=sql-server-2017", "# Note that the driver version installed needs to match the version used in the code", "# In this case for Ubuntu 18.04: ODBC SQL driver 17", "RUN curl https:\/\/packages.microsoft.com\/keys\/microsoft.asc | apt-key add -", "RUN curl https:\/\/packages.microsoft.com\/config\/ubuntu\/18.04\/prod.list > \/etc\/apt\/sources.list.d\/mssql-release.list", "RUN apt-get update -y", "RUN ACCEPT_EULA=Y apt-get install -y msodbcsql17 unixodbc-dev mssql-tools", "", "RUN a2enmod rewrite", "COPY src\/ \/var\/www\/html\/", "EXPOSE 80"]
+        }, {
+            "Filename": ["Content"]
+        }],
+    "sufficient_escapes": [],
+    "vuln": "xss",
+    "name": "odbc_result_all",
+    "input_type": "expression",
+    "type": "sink",
+    "output_return": false
 }

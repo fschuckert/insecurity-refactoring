@@ -16,7 +16,8 @@ import ntnuhtwg.insecurityrefactoring.base.tree.DFATreeNode;
 import ntnuhtwg.insecurityrefactoring.base.db.neo4j.dsl.cypher.DataflowDSL;
 import ntnuhtwg.insecurityrefactoring.base.db.neo4j.Neo4jDB;
 import ntnuhtwg.insecurityrefactoring.base.info.ContextInfo;
-import ntnuhtwg.insecurityrefactoring.base.info.PipInformation;
+import ntnuhtwg.insecurityrefactoring.base.info.ACIDTree;
+import ntnuhtwg.insecurityrefactoring.base.info.DataflowPathInfo;
 import ntnuhtwg.insecurityrefactoring.base.patterns.PassthroughPattern;
 import ntnuhtwg.insecurityrefactoring.base.patterns.impl.DataflowPattern;
 import ntnuhtwg.insecurityrefactoring.base.patterns.impl.SanitizePattern;
@@ -62,7 +63,7 @@ public class ACIDAnalyzer {
     
     
     
-    public void analyse(PipInformation pipInformation, DFATreeNode sourceNode, List<Pair<SanitizePattern, DFATreeNode>> sanitizeNodes) throws TimeoutException{
+    public void analyse(ACIDTree pipInformation, DataflowPathInfo sourceNode) throws TimeoutException{
         DFATreeNode tree = pipInformation.getSink();
         System.out.println("Analyzing: " + tree + " source: " + sourceNode);
         // reset old data
@@ -72,12 +73,14 @@ public class ACIDAnalyzer {
         new ACIDDataflowTypeAnalyzer(patternStorage, db).analyzeDataflowType(sourceNode);
         
         // Context
-        ContextInfo context = new ACIDContextAnalyzer().analyzeContext(sourceNode, tree.getSinkPattern().getVulnType());
-        pipInformation.setContextInfo(context);
+        ContextInfo context = new ACIDContextAnalyzer().analyzeContext(sourceNode, tree.getSinkPattern());
+        sourceNode.setContextInfo(context);
         
-        // Patterns
-        sanitizeNodes.clear();
-        new ACIDPatternAnalyzer(patternStorage, dsl).findSanitizeNodesRec(sourceNode, sanitizeNodes);       
+        // Patterns        
+        sourceNode.getSanitizeNodes().clear();
+        new ACIDPatternAnalyzer(patternStorage, dsl).findSanitizeNodesRec(sourceNode.getSource(), sourceNode.getSanitizeNodes());    
+        
+        
     }
     
     

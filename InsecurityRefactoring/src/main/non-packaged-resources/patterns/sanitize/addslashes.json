@@ -11,26 +11,9 @@
 
     "data_input": "String",
     "data_output": "String",
+    
+    "filters":["escape(\\):'\"\\"],
 
-    "sufficient": 
-            [
-                {
-                    "type": "xss",
-                    "requirements": 
-                    [
-                        ["context(apostrophe)", "!context(attribute)"],
-                        ["context(quotes)", "!context(attribute)"]
-                    ]
-                }, 
-                {
-                    "type": "sqli",
-                    "requirements": 
-                    [
-                        ["context(apostrophe)"],
-                        ["context(quotes)"]
-                    ]
-                }
-            ],
 
     "code":
             [

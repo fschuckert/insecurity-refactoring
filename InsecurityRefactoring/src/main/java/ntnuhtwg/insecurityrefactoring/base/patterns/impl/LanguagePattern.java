@@ -53,23 +53,22 @@ public class LanguagePattern extends Pattern {
 
             if (astPhp.containsKey("code")) {
                 String code = (String) astPhp.get("code");
-                if(code.contains("%p")){
+                if (code.contains("%p")) {
                     int inputIndex = getInputIndex((String) astPhp.get("code"));
-                    TreeNode<INode> node = inputs.get(inputIndex);
-                    if (node.getObj() instanceof FixedNode && !((FixedNode)node.getObj()).isCheck()) {
-                        FixedNode fixedNode = (FixedNode) node.getObj();
-                        baseNode.addProperty("code", fixedNode.getFixedValue());
-                    } 
-                    else if(node.getObj() instanceof BaseNode && "any".equals(node.getObj().get("type"))){
-                        
+                    if (inputIndex < inputs.size()) {
+                        TreeNode<INode> node = inputs.get(inputIndex);
+                        if (node.getObj() instanceof FixedNode && !((FixedNode) node.getObj()).isCheck()) {
+                            FixedNode fixedNode = (FixedNode) node.getObj();
+                            baseNode.addProperty("code", fixedNode.getFixedValue());
+                        } else if (node.getObj() instanceof BaseNode && "any".equals(node.getObj().get("type"))) {
+
+                        } else {
+                            baseNode.addProperty("code", inputs.get(inputIndex).getObj().getString("code"));
+                            // TODO: improve to actually just providing a string!
+                            //                    throw new NotImplementedError("Pattern incorrect. Probably syntax error requires a fixed value! For: " + type + " value:" + node.getObj());
+                        }
                     }
-                    else {
-                        baseNode.addProperty("code", inputs.get(inputIndex).getObj().getString("code"));
-                        // TODO: improve to actually just providing a string!
-    //                    throw new NotImplementedError("Pattern incorrect. Probably syntax error requires a fixed value! For: " + type + " value:" + node.getObj());
-                    }
-                }
-                else{
+                } else {
                     baseNode.addProperty("code", code);
                 }
 
@@ -85,11 +84,9 @@ public class LanguagePattern extends Pattern {
                         if (node.getObj() instanceof FixedNode) {
                             FixedNode fixedNode = (FixedNode) node.getObj();
                             baseNode.addFlag(fixedNode.getFixedValue());
-                        } 
-                        else if(node.getObj() instanceof BaseNode && "any".equals(node.getObj().get("type"))){
+                        } else if (node.getObj() instanceof BaseNode && "any".equals(node.getObj().get("type"))) {
                             // do nothing
-                        }
-                        else {
+                        } else {
                             throw new NotImplementedError("Pattern incorrect. Probably syntax error requires a fixed value! For: " + type + " flag:" + node.getObj());
                         }
                     } else {
@@ -131,27 +128,26 @@ public class LanguagePattern extends Pattern {
 //                System.out.println("id: " + id);
 
             // setting the index for ... parameters
-            if(inputs.size() <= inputIndex){
-                TreeNode<INode> inode = inputs.get(inputs.size()-1);
-                if(inode.getObj() instanceof BaseNode){
-                    BaseNode inputNode = (BaseNode)inode.getObj();
-                  
-                    if(inputNode.containsKey("...")){
-                        inputIndex = inputs.size()-1;
+            if (inputs.size() <= inputIndex) {
+                TreeNode<INode> inode = inputs.get(inputs.size() - 1);
+                if (inode.getObj() instanceof BaseNode) {
+                    BaseNode inputNode = (BaseNode) inode.getObj();
+
+                    if (inputNode.containsKey("...")) {
+                        inputIndex = inputs.size() - 1;
                     }
                 }
-                
-                if(inode.getObj() instanceof FixedNode){
-                    FixedNode fixedNode = (FixedNode)inode.getObj();
-                    if(fixedNode.isDots()){
-                        inputIndex = inputs.size()-1;
+
+                if (inode.getObj() instanceof FixedNode) {
+                    FixedNode fixedNode = (FixedNode) inode.getObj();
+                    if (fixedNode.isDots()) {
+                        inputIndex = inputs.size() - 1;
                     }
                 }
             }
-            
+
             INode node = inputs.get(inputIndex).getObj(); // TODO crash on binary_op paramIndex 1. Using input...
-            
-            
+
             if (node instanceof FixedNode && ((FixedNode) node).isCheck()) {
                 throw new NotImplementedError("Pattern incorrect. Probably syntax error requires a generated value! For: " + id + " " + inputs.get(inputIndex).getObj());
             }
@@ -166,5 +162,12 @@ public class LanguagePattern extends Pattern {
 //        System.out.println("Input for" + paramId + " " + this.getId());
         return Integer.valueOf(paramId.split("%p")[1]);
     }
+
+    @Override
+    public String toString() {
+        return "<" + id + ">(" + Util.joinStr(params, ",") + ')';
+    }
+    
+    
 
 }

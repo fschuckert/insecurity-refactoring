@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<theme name="MyBB Master Style" version="1600">
+
+<template name="target" version="123"><![CDATA[
+<h1>$tainted</h1>
+]]></template>
+
+</theme>

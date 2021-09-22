@@ -33,7 +33,11 @@ public class BaseNode implements INode{
 
     @Override
     public String getString(String property) {
-        return String.valueOf(get(property));
+        Object value = get(property);
+        if(value == null){
+            return null;
+        }
+        return String.valueOf(value);
     }
 
     @Override

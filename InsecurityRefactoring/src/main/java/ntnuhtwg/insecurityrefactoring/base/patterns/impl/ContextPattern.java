@@ -5,7 +5,9 @@
  */
 package ntnuhtwg.insecurityrefactoring.base.patterns.impl;
 
+import java.util.Set;
 import ntnuhtwg.insecurityrefactoring.base.DataType;
+import ntnuhtwg.insecurityrefactoring.base.context.EscapeChar;
 import ntnuhtwg.insecurityrefactoring.base.info.ContextInfo;
 import ntnuhtwg.insecurityrefactoring.base.patterns.Pattern;
 
@@ -39,8 +41,8 @@ public class ContextPattern extends Pattern{
         return post;
     }
 
-    public ContextInfo getContextInfo() {
-        return new ContextInfo(vulnType, pre, post);
+    public ContextInfo getContextInfo(Set<EscapeChar> sufficientEscapes) {
+        return new ContextInfo(vulnType, sufficientEscapes, pre, post);
     }
 
     

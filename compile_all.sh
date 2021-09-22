@@ -8,3 +8,7 @@ cd phpjoern
 gradle build
 cd ..
 
+cd InsecurityRefactoring
+mvn package
+cd ..
+

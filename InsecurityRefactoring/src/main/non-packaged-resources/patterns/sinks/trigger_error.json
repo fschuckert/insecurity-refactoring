@@ -1,13 +1,1 @@
-{
-	"name":"trigger_error",
-	"type":"sink",
-	"vuln":"xss",
-    
-        "pattern_type":"statement",
-        "input_type":"expression",
-    
-        "code":[
-            "<call>(trigger_error, %input, <any>()?...)"
-        ]
-
-}
+{"init":[],"code":["<call>(trigger_error, %input, <any>()?...)"],"pattern_type":"statement","generates":[{"params":["<c>(E_USER_ERROR)"]}],"generate_files":[{"docker-compose.yml":["version: '2'","services:","  website:","    container_name: apache_php","    image: php:7.3-apache","    volumes:","      - .\/src:\/var\/www\/html\/","    ports:","      - 8000:80"]}],"sufficient_escapes":[],"vuln":"xss","name":"trigger_error","input_type":"expression","type":"sink","output_return":false}

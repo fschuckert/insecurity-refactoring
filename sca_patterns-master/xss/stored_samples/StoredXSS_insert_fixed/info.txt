@@ -1,0 +1,4 @@
+source insert.php:10
+source_db database.php:25
+
+sink vuln.php:19

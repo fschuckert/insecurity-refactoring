@@ -33,6 +33,8 @@ public class ACIDTreeRules {
     private final PatternStorage patternReader;
     private final DataflowDSL dsl;
     private final boolean doConditionCheck;
+    private int resolveCount = 0;
+    private final int maxResolveCount = 500;
 
     public ACIDTreeRules(PatternStorage patternReader, DataflowDSL dsl, boolean doConditionCheck) {
         this.patternReader = patternReader;
@@ -41,6 +43,10 @@ public class ACIDTreeRules {
     }
 
     public void resolveExpression(DFATreeNode expression, Set<SourceLocation> isInCall) throws ResultTreeToLarge, TimeoutException {
+
+        if(resolveCount++ > maxResolveCount){
+            throw new ResultTreeToLarge("To many resolves: " + resolveCount);
+        }
         ConcatPattern concatPattern = null;
         List<DFATreeNode> expressions = new LinkedList<>();
 
@@ -56,7 +62,7 @@ public class ACIDTreeRules {
 
         // Rekursive call
         for (DFATreeNode subExpression : expressions) {
-            if (alreadyReachedNodeRec(subExpression.getParent_(), subExpression.getObj().id())) {
+            if (subExpression != null && subExpression.getObj() != null && alreadyReachedNodeRec(subExpression.getParent_(), subExpression.getObj().id())) {
                 new DFATreeNode(subExpression, "rekursive skip", null);
             } else {
                 resolveExpression(subExpression, isInCall);
@@ -104,6 +110,7 @@ public class ACIDTreeRules {
     private List<DFATreeNode> conditionCheck(DFATreeNode variable, INode stmtVc2, String variableName) throws TimeoutException {
         List<DFATreeNode> nodesAfterCondition = new LinkedList(Arrays.asList(variable));
         if(this.doConditionCheck){
+            System.out.println("Checking for condition");
             nodesAfterCondition = ACIDTreeConditionsRules.resolveControlInBetween(variable, stmtVc2, variableName, dsl);
         }
         return nodesAfterCondition;

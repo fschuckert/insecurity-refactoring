@@ -6,8 +6,11 @@
 package ntnuhtwg.insecurityrefactoring.base.db.neo4j.dsl.cypher;
 
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import ntnuhtwg.insecurityrefactoring.base.ASTNodeTypes;
 import ntnuhtwg.insecurityrefactoring.base.ASTType;
 import ntnuhtwg.insecurityrefactoring.base.SourceLocation;
@@ -25,7 +28,14 @@ import ntnuhtwg.insecurityrefactoring.base.patterns.impl.SinkPattern;
  * @author blubbomat
  */
 public class DataflowDSL {
+    
+    private static Map<ControlStatementsQuery, List<INode>> cachedControlStmtResults = new HashMap<>();
+    
     private Neo4jDB db;
+    
+    public static void clearCache(){
+        cachedControlStmtResults.clear();
+    }
 
     public DataflowDSL(Neo4jDB neo4JConnector) {
         this.db = neo4JConnector;
@@ -258,23 +268,30 @@ public class DataflowDSL {
     }
 
     public List<INode> getControlStatements(INode fromNode, INode toNode, String variableName)  throws TimeoutException{
-//        System.out.println("from " + fromNode.id());
-//        System.out.println("to " + toNode.id());
-//        System.out.println("Var " + variableName);
-//        List<INode> retval = new LinkedList<>();
-//        List<INode> reachesTo = db.findAll("match (a)-[:REACHES{var:$varName}]->(between)  WHERE id(a)=$from RETURN between", 
-//                "from", fromNode.id(), 
-//                "varName", variableName);
-//        
-//        for(INode reach : reachesTo){
-//            
-//        }
+        ControlStatementsQuery ctrl = new ControlStatementsQuery(fromNode.id(), toNode.id(), variableName);
         
-        return db.findAll("match (a)-[:FLOWS_TO*]->(between)-[:FLOWS_TO*]->(b), (a)-[:REACHES{var:$varName}]->(between) WHERE id(a)=$fromNodeId AND id(b)=$toNodeId RETURN between", 
-                "fromNodeId", fromNode.id(),
-                "toNodeId", toNode.id(),
-                "varName", variableName
-                );
+        if(cachedControlStmtResults.containsKey(ctrl)){
+            List<INode> results = cachedControlStmtResults.get(ctrl);
+            if(results == null){
+                throw new TimeoutException("Cached timeout");
+            }
+            return results;
+        }
+        
+        try{
+            List<INode> result = db.findAll("match (a)-[:FLOWS_TO*]->(between)-[:FLOWS_TO*]->(b), (a)-[:REACHES{var:$varName}]->(between) WHERE id(a)=$fromNodeId AND id(b)=$toNodeId RETURN between", 
+                    "fromNodeId", fromNode.id(),
+                    "toNodeId", toNode.id(),
+                    "varName", variableName
+                    );
+            
+            cachedControlStmtResults.put(ctrl, result);
+            return result;
+            
+        } catch(TimeoutException ex){
+            cachedControlStmtResults.put(ctrl, null);
+            throw ex;
+        }
     }
 
     public boolean isIfStatementExpression(INode controlStatement)  throws TimeoutException{

@@ -1,0 +1,1 @@
+{"init":[],"requirements":[],"code":["<call>(putenv,<con>(<s>(IMPORTANT_VARIABLE=),%input))","<=>(%output,<call>(getenv,<s>(IMPORTANT_VARIABLE)))"],"pattern_type":"statement","output_type":"variable","input_type":"expression","data_output":"Any","type":"dataflow","data_input":"Any","name":"environment_var","passthrough":false,"identify_pattern":"assignment","output_return":false}

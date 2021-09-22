@@ -97,7 +97,7 @@ public class DataType {
 
     @Override
     public String toString() {
-        return type + ( arraySubType != null ? "(" + arraySubType + ")" : "" );
+        return type + ( arraySubType != null ? "(" + arraySubType.toString() + ")" : "" );
     }
 
     public boolean isArray() {
@@ -112,6 +112,14 @@ public class DataType {
     public boolean equalsAny(DataType other) {        
         if(this.equals(Any())){
             return true;
+        }
+        
+        if(other.equals(Any())){
+            return true;
+        }
+        
+        if(this.isArray() && other.isArray()){
+            return this.arraySubType.equalsAny(other.getArraySubType());
         }
         
         return this.equals(other);

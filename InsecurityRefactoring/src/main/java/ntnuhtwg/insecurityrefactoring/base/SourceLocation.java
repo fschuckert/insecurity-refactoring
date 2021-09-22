@@ -71,6 +71,12 @@ public class SourceLocation {
     }
     
     public String getPath(){
+        if(directory.endsWith("/") && file.startsWith("/")){
+            return directory.substring(0, directory.length()-1) + file;
+        }
+        if(directory.endsWith("/") || file.startsWith("/")){
+            return directory + file;
+        }
         return directory + "/" + file;
     }
 
@@ -138,6 +144,14 @@ public class SourceLocation {
         }
         return codeSnippet;
         
+    }
+    
+    public String shortName(){
+        String name = toString();
+        String[] split = name.split("/");
+        name = split[split.length-1];
+        
+        return name;
     }
     
     public String codeSnippet(long from, long until){

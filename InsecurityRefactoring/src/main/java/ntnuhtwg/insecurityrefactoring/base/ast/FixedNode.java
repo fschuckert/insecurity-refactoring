@@ -84,7 +84,7 @@ public class FixedNode implements INode{
     @Override
     public String getString(String property) {
         System.out.println("Trying to get a property: " + property + " for: " + toString());
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Trying to get a property: " + property + " for: " + toString()); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override

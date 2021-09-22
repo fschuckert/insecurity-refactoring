@@ -1,0 +1,25 @@
+{
+	"name":"nosanitization",	
+	"type":"sanitize",
+    
+        "pattern_type": "expression",    
+        
+        "input_type" : "expression",
+        "output_type": "expression",
+        "output_return":true,
+        "passthrough":false,
+        "no_detection":true,
+    
+        "data_input":"String",
+        "data_output":"Any",
+    
+        "filters": [],
+    
+      
+    
+        "code":
+        [
+            "%input"
+        ]
+
+}

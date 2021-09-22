@@ -12,7 +12,14 @@
         "data_input":"String",
         "data_output":"Array(String)",
     
-        
+        "filters": [],
+    
+        "generates": [
+            { 
+                "params": [],
+                "filters": [","]
+            }
+        ],
     
         "code":
         [

@@ -12,8 +12,8 @@
         "data_input":"String",
         "data_output":"Integer",
     
-        
-    
+        "filters": ["numbers", "letters", "specials"],
+
         "code":
         [
             "<call>(hexdec, %input)"

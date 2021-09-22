@@ -1,0 +1,59 @@
+{
+    "name": "filter_var",	
+    "type": "sanitize",
+
+    "pattern_type": "expression",    
+
+    "input_type": "expression",
+    "output_type": "expression",
+    "output_return": true,
+    "passthrough": true,
+
+    "data_input": "String",
+    "data_output": "String",
+
+    "sufficient": [        
+    ],
+
+    "filters": [],
+
+    "generates": [
+        { 
+            "params": ["<c>(FILTER_SANITIZE_EMAIL)"], 
+            "filters": ["allowed_specials:!#$%&'*+-=?^_`{|}~@.[]"]
+        },
+        { 
+            "params": ["<c>(FILTER_SANITIZE_FULL_SPECIAL_CHARS)"], 
+            "filters": ["<>'\"&"]
+        },
+        { 
+            "params": ["<c>(FILTER_SANITIZE_ADD_SLASHES)"], 
+            "filters": ["escape(\\):'\"\\"]
+        },
+        { 
+            "params": ["<c>(FILTER_SANITIZE_NUMBER_FLOAT)"], 
+            "filters": ["letters", "specials"]
+        },
+        { 
+            "params": ["<c>(FILTER_SANITIZE_NUMBER_INT)"], 
+            "filters": ["letters", "specials"]
+        },
+        { 
+            "params": ["<c>(FILTER_SANITIZE_SPECIAL_CHARS)"], 
+            "filters": ["'\"<>&"]
+        },        
+        { 
+            "params": ["<c>(FILTER_SANITIZE_URL)"], 
+            "filters": ["allowed_specials:$-_.+!*'(),{}|\\^~[]`<>#%\";/?:@&="]
+        },
+        { 
+            "params": ["<c>(FILTER_UNSAFE_RAW)"], 
+            "filters": []
+        }
+    ],
+
+    "code":
+            [
+                "<call>(filter_var, %input, <any>()?...)"
+            ]
+}

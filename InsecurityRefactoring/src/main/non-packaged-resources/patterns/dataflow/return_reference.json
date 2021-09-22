@@ -1,0 +1,14 @@
+{
+    "requirements": [],
+    "code": ["<def_func>(sanitize,<param_list>(<param>(var_in),<param&>(var_out)),<stmtlist>(<=>(<$>(var_out),<$>(var_in))))", "<call>(sanitize,%input,%output)"],
+    "pattern_type": "statement",
+    "output_type": "variable",
+    "name": "return_reference",
+    "input_type": "expression",
+    "passthrough": false,
+    "data_output": "Any",
+    "identify_pattern": "assignment",
+    "type": "dataflow",
+    "output_return": false,
+    "data_input": "Any"
+}

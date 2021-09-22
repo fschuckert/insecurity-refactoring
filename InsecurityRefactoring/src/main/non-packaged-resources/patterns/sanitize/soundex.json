@@ -12,7 +12,7 @@
         "data_input":"String",
         "data_output":"String",
     
-        
+        "filters": ["numbers", "letters", "specials"],
     
         "code":
         [

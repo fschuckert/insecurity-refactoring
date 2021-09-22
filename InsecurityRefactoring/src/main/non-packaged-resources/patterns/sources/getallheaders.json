@@ -2,6 +2,7 @@
 	"name":"getallheaders",	
 	"type":"source",
         "secure":true,
+        "filters": [],
     
         "pattern_type":"expression",
         "output_type":"expression",

@@ -1,0 +1,33 @@
+{
+    "name": "global_variable",
+    "type": "dataflow",
+
+    "pattern_type": "statement",
+
+    "diff_man": 0.0,
+    "diff_sca": 0.0,
+    "diff_dyn": 0.0,
+
+    "input_type": "expression",
+    "output_type": "variable",
+
+    "output_return": false,
+    "passthrough": false,
+
+    "data_input": "Any",
+    "data_output": "Any",
+
+    "identify_pattern": "assignment",
+
+    "requirements":
+            [
+            ],
+
+    "code": 
+            [
+                "<def_func>(setGlobal, <param_list>(<$>(var)), <stmtlist>(<global>(<$>(g)), <=>(<$>(g), <$>(var))))",
+                "<def_func>(getGlobal, <param_list>(), <stmtlist>(<global>(<$>(g)), <return>(<$>(g))))",
+                "<call>(setGlobal, %input)",
+                "<=>(%output, <call>(getGlobal))"
+            ]
+}

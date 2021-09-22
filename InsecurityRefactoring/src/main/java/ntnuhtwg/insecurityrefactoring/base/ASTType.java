@@ -13,4 +13,21 @@ public enum ASTType {
     variable,
     statement,
     expression;
+
+    @Override
+    public String toString() {
+        switch(this){
+            case variable:
+                return "variable";
+            case statement:
+                return "statement";
+            case expression:
+                return "expression";
+        }
+        
+        return "";
+    }
+    
+    
+    
 }

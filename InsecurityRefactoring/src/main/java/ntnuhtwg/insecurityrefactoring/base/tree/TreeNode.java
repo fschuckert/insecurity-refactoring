@@ -23,6 +23,18 @@ public class TreeNode<E> {
     private TreeNode<E> parent = null;
     
     private E obj;
+    
+    private String special;
+
+    public String getSpecial() {
+        return special;
+    }
+
+    public void setSpecial(String special) {
+        this.special = special;
+    }
+    
+    
 
     public TreeNode(E obj) {
         this.obj = obj;

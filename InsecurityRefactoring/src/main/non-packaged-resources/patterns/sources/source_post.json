@@ -2,6 +2,7 @@
 	"name":"_POST",	
 	"type":"source",
         "secure":false,
+        "filters": [],
     
         "pattern_type":"expression",
         "output_type":"expression",

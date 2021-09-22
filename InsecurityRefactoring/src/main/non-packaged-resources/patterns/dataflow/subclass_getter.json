@@ -1,0 +1,14 @@
+{
+    "requirements": [],
+    "code": ["<class>(Component,<def_meth_pub>(__get,<param_list>(<$>(property)),<stmtlist>(<=>(<$>(getter),<con>(<s>(get),<$>(property))),<if>(<call>(method_exists,<$>(this),<$>(getter)),<stmtlist>(<return>(<call_method_ast>(<$>(this),<$>(getter))))))))", "<class_extends>(Application,Component,<stmtlist>(<prop_group>(<prop_element>(value,<s>())),<def_meth_pub>(getvalue,<param_list>(),<stmtlist>(<return>(<prop>(<$>(this),<s>(value))))),<def_meth_pub>(setter,<param_list>(<$>(val)),<stmtlist>(<=>(<prop>(<$>(this),<s>(value)),<$>(val))))))", "<=>(<$>(getset),<new>(Application))", "<call_method>(<$>(getset),setter,%input)", "<=>(%output,<prop>(<$>(getset),<s>(value)))"],
+    "pattern_type": "statement",
+    "output_type": "variable",
+    "name": "subclass_getter",
+    "input_type": "expression",
+    "passthrough": false,
+    "data_output": "Any",
+    "identify_pattern": "assignment",
+    "type": "dataflow",
+    "output_return": false,
+    "data_input": "Any"
+}

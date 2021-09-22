@@ -1,0 +1,32 @@
+{
+    "name": "pdo_quote",	
+    "type": "sanitize",
+
+    "pattern_type": "expression",    
+
+    "input_type": "expression",
+    "output_type": "expression",
+    "output_return": true,
+    "passthrough": true,
+
+    "data_input": "String",
+    "data_output": "String",
+
+    "filters": ["numbers", "specials", "letters"],
+
+    "adds_enclosing": "apostrophe",
+
+    "generates": [
+        { 
+            "params": ["<$>(pdo)"], 
+            "filters": ["'"],
+            "depends_on" : ["pdo"]
+            
+        }
+    ],
+
+    "code":
+            [
+                "<call_method>(<any>(), quote, %input, <any>()?)"
+            ]
+}

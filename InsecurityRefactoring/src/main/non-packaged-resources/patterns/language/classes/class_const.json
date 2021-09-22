@@ -1,0 +1,31 @@
+{
+    "name": "class_const",
+    "type": "language",
+
+    "pattern_type": "expression",
+    "pattern_language": "<class_const>[](%class, %const)",
+
+    "ast_php":
+            {
+                "type": "AST_CLASS_CONST",
+                "children":
+                        [
+                            {
+                                "type": "AST_NAME",
+                                "flags": ["NAME_NOT_FQ"],
+                                "children":
+                                        [
+                                            {
+                                                "type": "string",
+                                                "code": "%p0"
+                                            }
+                                        ]
+                            }
+                            ,
+                            {
+                                "type": "string",
+                                "code": "%p1"
+                            }
+                        ]
+            }
+}

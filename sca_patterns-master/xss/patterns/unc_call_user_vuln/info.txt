@@ -1,0 +1,3 @@
+sink vuln.php:11
+
+exploit localhost:9000/vuln.php/?input=<script>alert(1);</script>

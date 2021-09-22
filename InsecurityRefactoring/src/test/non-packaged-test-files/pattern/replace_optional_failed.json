@@ -1,0 +1,29 @@
+{
+	"name":"preg_match_all",	
+	"type":"sanitize",
+    
+        "pattern_type": "expression",    
+        
+        "input_type" : "expression",
+        "output_type": "expression",
+        "output_return":false,
+        "passthrough":false,
+    
+        "data_input":"String",
+        "data_output":"Boolean",
+    
+        "filters": ["specials", "letters", "numbers"],
+
+    "generates": [
+        { 
+            "params": ["first"], 
+            "filters": ["specials"]
+        }
+    ],
+    
+        "code":
+        [
+            "<s>(<any>(),test,<any>()...)"
+        ]
+
+}

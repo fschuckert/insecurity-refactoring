@@ -12,7 +12,18 @@
         "data_input":"String",
         "data_output":"String",
     
-        
+        "filters": [],
+    
+        "generates": [
+            { 
+                "params": ["<s>(bob)", "<i>(0)"],
+                "filters": ["numbers", "letters", "specials"]
+            },
+            { 
+                "params": ["<s>(bob)", "<i>(50)"],
+                "filters": []
+            }
+        ],
     
         "code":
         [

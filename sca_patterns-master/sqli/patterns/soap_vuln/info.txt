@@ -1,0 +1,4 @@
+source source_soap.php:6
+sink source_soap.php:13
+
+exploit http://localhost:7000/soap_client.php?id=1%20OR%201=1;--

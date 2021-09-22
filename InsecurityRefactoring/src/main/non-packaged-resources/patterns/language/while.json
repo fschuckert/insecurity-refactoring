@@ -1,0 +1,28 @@
+{
+    "name": "while",
+    "type": "language",
+
+    "pattern_type": "statement",
+    "pattern_language": "<while>[](%condition, %statements...)",
+
+    "ast_php":
+            {
+                "type": "AST_WHILE",
+                "children":
+                        [
+                            {
+                                "subtree": "%p0"
+                            }    
+                            ,
+                            {
+                                "type": "AST_STMT_LIST",
+                                "children":
+                                        [
+                                            {
+                                                "subtree_list": "%p1"
+                                            }    
+                                        ]
+                            }
+                        ]
+            }
+}

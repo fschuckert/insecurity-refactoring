@@ -5,7 +5,7 @@
  */
 package ntnuhtwg.insecurityrefactoring;
 
-import ntnuhtwg.insecurityrefactoring.refactor.base.PipPathInformation;
+import ntnuhtwg.insecurityrefactoring.base.info.DataflowPathInfo;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -18,10 +18,12 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import ntnuhtwg.insecurityrefactoring.base.info.ContextInfo;
 import ntnuhtwg.insecurityrefactoring.base.GlobalSettings;
-import ntnuhtwg.insecurityrefactoring.base.info.PipInformation;
+import ntnuhtwg.insecurityrefactoring.base.info.ACIDTree;
 import ntnuhtwg.insecurityrefactoring.base.RefactoredCode;
 import ntnuhtwg.insecurityrefactoring.base.SourceLocation;
+import ntnuhtwg.insecurityrefactoring.base.Util;
 import ntnuhtwg.insecurityrefactoring.base.ast.TimeoutNode;
+import ntnuhtwg.insecurityrefactoring.base.context.SufficientFilter;
 import ntnuhtwg.insecurityrefactoring.base.exception.TimeoutException;
 import ntnuhtwg.insecurityrefactoring.base.tree.DFATreeNode;
 import ntnuhtwg.insecurityrefactoring.base.db.joern.Prepare;
@@ -29,11 +31,10 @@ import ntnuhtwg.insecurityrefactoring.base.db.neo4j.Neo4JConnector;
 import ntnuhtwg.insecurityrefactoring.base.db.neo4j.Neo4jDB;
 import ntnuhtwg.insecurityrefactoring.base.db.neo4j.dsl.cypher.DataflowDSL;
 import ntnuhtwg.insecurityrefactoring.base.patterns.impl.DataflowPattern;
-import ntnuhtwg.insecurityrefactoring.base.patterns.impl.FailedSanitizePattern;
-import ntnuhtwg.insecurityrefactoring.base.patterns.impl.InsecureSourcePattern;
 import ntnuhtwg.insecurityrefactoring.base.patterns.impl.SanitizePattern;
 import ntnuhtwg.insecurityrefactoring.base.patterns.impl.SinkPattern;
 import ntnuhtwg.insecurityrefactoring.base.patterns.PatternStorage;
+import ntnuhtwg.insecurityrefactoring.base.patterns.impl.SourcePattern;
 import ntnuhtwg.insecurityrefactoring.refactor.analyze.ACIDAnalyzer;
 import ntnuhtwg.insecurityrefactoring.refactor.acid.ACIDTreeCreator;
 import ntnuhtwg.insecurityrefactoring.base.tools.CodeFormatter;
@@ -41,9 +42,9 @@ import ntnuhtwg.insecurityrefactoring.base.tools.GitUtil;
 import ntnuhtwg.insecurityrefactoring.refactor.analyze.ACIDContextAnalyzer;
 import ntnuhtwg.insecurityrefactoring.refactor.InsecurityRefactoring;
 import ntnuhtwg.insecurityrefactoring.refactor.PIPFinder;
-import ntnuhtwg.insecurityrefactoring.refactor.base.ScanProgress;
-import ntnuhtwg.insecurityrefactoring.refactor.base.MissingCall;
-import ntnuhtwg.insecurityrefactoring.refactor.base.TempPattern;
+import ntnuhtwg.insecurityrefactoring.refactor.temppattern.ScanProgress;
+import ntnuhtwg.insecurityrefactoring.refactor.temppattern.MissingCall;
+import ntnuhtwg.insecurityrefactoring.refactor.temppattern.TempPattern;
 import org.javatuples.Pair;
 import org.javatuples.Triplet;
 
@@ -59,8 +60,8 @@ public class Framework {
 
     private InsecurityRefactoring refactoring;
     private PIPFinder pipFinder;
-     List<RefactoredCode> refactoredFiles = new LinkedList<>();
-     private String path = null;
+    List<RefactoredCode> refactoredFiles = new LinkedList<>();
+    private String path = null;
 
 //    private List<DFATreeNode> pips = new LinkedList<>();
     private Neo4jDB db;
@@ -71,9 +72,13 @@ public class Framework {
         pipFinder = new PIPFinder();
     }
 
-    public void close() {
+    public void closeDB() {
         try {
-            db.close();
+            if (db != null) {
+                System.out.println("Closing db...");
+                db.close();
+                db = null;
+            }
         } catch (Exception ex) {
             System.out.println("Cannot close db:" + ex.getMessage());
         }
@@ -84,9 +89,12 @@ public class Framework {
         this.path = path;
         try {
             if (prepareDB) {
-                prepare.prepareDatabase(path, scanProgress);
-            }
-            else{
+                boolean databasePrepared = prepare.prepareDatabase(path, scanProgress);
+                if (!databasePrepared) {
+                    System.out.println("Unable to prepare database. Probably a JOERN ERROR");
+                    return;
+                }
+            } else {
                 scanProgress.joernScanned();
                 scanProgress.joernImported();
             }
@@ -97,17 +105,14 @@ public class Framework {
             ex.printStackTrace();
         }
     }
-    
-    public List<Pair<SanitizePattern, DFATreeNode>> analyze(PipInformation pipInformation, DFATreeNode source) {
+
+    public void analyze(ACIDTree pipInformation, DataflowPathInfo source) {
         ACIDAnalyzer analyzer = new ACIDAnalyzer(patternStorage, db);
-        LinkedList<Pair<SanitizePattern, DFATreeNode>> sanitiziations = new LinkedList<>();
         try {
-            analyzer.analyse(pipInformation, source, sanitiziations);            
+            analyzer.analyse(pipInformation, source);
         } catch (TimeoutException ex) {
             Logger.getLogger(Framework.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        return sanitiziations;
     }
 
     public void findPips(List<String> specificPatterns, ScanProgress scanProgress, boolean controlFlowCheck, SourceLocation specificLocation) {
@@ -127,19 +132,19 @@ public class Framework {
         return pipFinder.getPips(db, requiresSanitize, debugAddAll);
     }
 
-    public List<PipInformation> getPipInformation() {
-        List<PipInformation> retval = new LinkedList<>();
+    public List<ACIDTree> getPipInformation() {
+        List<ACIDTree> retval = new LinkedList<>();
 
         List<DFATreeNode> pips = getPips(false, false);
 
         for (DFATreeNode sink : pips) {
-            PipInformation pipInformation = new PipInformation(sink);
+            ACIDTree pipInformation = new ACIDTree(sink);
             for (DFATreeNode source : sink.getAllLeafs_()) {
                 try {
                     if (!patternStorage.isSource(source, db)) {
                         continue;
                     }
-                    PipPathInformation pathInformation = getPipPathInformation(source);
+                    DataflowPathInfo pathInformation = getPipPathInformation(source);
                     pipInformation.addPossibleSource(pathInformation);
                 } catch (TimeoutException ex) {
                     Logger.getLogger(Framework.class.getName()).log(Level.SEVERE, null, ex);
@@ -168,18 +173,18 @@ public class Framework {
     public DataflowDSL getDSL() {
         return new DataflowDSL(db);
     }
-    
-    public void commitAndPush(String commitMsg){
+
+    public void commitAndPush(String commitMsg) {
         File path = new File(this.path);
         String folderPath = this.path;
-        if(!path.isDirectory()){
+        if (!path.isDirectory()) {
             folderPath = path.getParentFile().getAbsolutePath();
         }
-        
+
         GitUtil.commitAndPush(commitMsg, folderPath);
     }
-    
-    public void selectedRefactoring(List<Triplet<DFATreeNode, SanitizePattern, SanitizePattern>> refactorTargets, List< Pair<DFATreeNode, DataflowPattern> > dataflowRefactors, Pair<DFATreeNode, InsecureSourcePattern> sourceExchange) throws TimeoutException{
+
+    public void selectedRefactoring(List<Triplet<DFATreeNode, SanitizePattern, SanitizePattern>> refactorTargets, List< Pair<DFATreeNode, DataflowPattern>> dataflowRefactors, Pair<DFATreeNode, SourcePattern> sourceExchange) throws TimeoutException {
         this.refactoredFiles = refactoring.refactor(refactorTargets, dataflowRefactors, sourceExchange);
     }
 
@@ -210,33 +215,23 @@ public class Framework {
         }
     }
 
-    private void safeDBClose() {
-        try {
-            if (db != null) {
-                db.close();
-            }
-        } catch (Exception ex1) {
-            Logger.getLogger(Framework.class.getName()).log(Level.SEVERE, null, ex1);
-        }
-    }
-
     private Neo4jDB waitForDB() {
         while (true) {
+            System.out.println("Waiting for db");
             try {
-                System.out.println("Waiting for db");
                 Thread.sleep(1000);
-                safeDBClose();
-                Neo4JConnector db = new Neo4JConnector("bolt://localhost:7687", "neo4j", "admin");
-                db.checkConnection();
+            } catch (InterruptedException ex) {
+//                Logger.getLogger(Framework.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            closeDB();
+            db = new Neo4JConnector("bolt://localhost:7687", "neo4j", "admin");
+            if (db.checkConnection()) {
                 return db;
-            } catch (Exception ex) {
-                System.out.println("DB still not up...");
-
             }
         }
     }
 
-    public List<DFATreeNode> getSourceNodes(DFATreeNode dfaRootNode) {
+    public List<DataflowPathInfo> getSourceNodes(DFATreeNode dfaRootNode) {
         try {
             return ACIDTreeCreator.getSourceNodes(dfaRootNode, patternStorage, db);
         } catch (TimeoutException ex) {
@@ -246,6 +241,13 @@ public class Framework {
     }
 
     public void connectDB() {
+        try {
+            prepare.startDB();
+        } catch (IOException ex) {
+            Logger.getLogger(Framework.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Framework.class.getName()).log(Level.SEVERE, null, ex);
+        }
         db = waitForDB();
     }
 
@@ -273,11 +275,10 @@ public class Framework {
         return retval;
     }
 
-    private PipPathInformation getPipPathInformation(DFATreeNode source) throws TimeoutException {
+    private DataflowPathInfo getPipPathInformation(DFATreeNode source) throws TimeoutException {
 //        Analyze analyze = new Analyze(patternStorage, db);
 
         boolean containsTimeout = false;
-        boolean containsSanitize = false;
         DFATreeNode toCheck = source;
 
         while (toCheck != null) {
@@ -285,18 +286,10 @@ public class Framework {
                 containsTimeout = true;
             }
 
-            if (!containsSanitize) {
-                for (SanitizePattern sanitizePattern : patternStorage.getSanitizations()) {
-                    if (sanitizePattern.equalsPattern(toCheck.getObj(), db)) {
-                        containsSanitize = true;
-                    }
-                }
-            }
-            
             toCheck = toCheck.getParent_();
         }
 
-        return new PipPathInformation(source, containsTimeout, containsSanitize);
+        return new DataflowPathInfo(source, containsTimeout);
     }
 
     private void printPatternInfo() {
@@ -309,7 +302,7 @@ public class Framework {
         System.out.println("Sinks (unserialize): " + patternStorage.getSinks().stream().filter(s -> "unserialize".equals(s.getVulnType())).collect(Collectors.toList()).size());
         System.out.println("Sanitization:" + patternStorage.getSanitizations().size());
         System.out.println("Passthrought: " + patternStorage.getPassthroughs().size());
-        
+
         System.out.println("Specific: ");
         ;
     }
@@ -319,10 +312,10 @@ public class Framework {
     }
 
     public void writeToDisk(boolean backupFiles) {
-        if(backupFiles){
+        if (backupFiles) {
             // todo
         }
-        for(RefactoredCode refactoredCode : refactoredFiles){
+        for (RefactoredCode refactoredCode : refactoredFiles) {
             try {
                 String path = refactoredCode.getSourceLocation().getPath();
                 System.out.println("Writing file: " + path);
@@ -331,7 +324,7 @@ public class Framework {
                 fileWriter.write(refactoredCode.getCode());
                 fileWriter.flush();
                 fileWriter.close();
-                
+
             } catch (IOException ex) {
                 Logger.getLogger(Framework.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -339,8 +332,34 @@ public class Framework {
     }
 
     public void formatCode() {
-        CodeFormatter.formatFolder(path);        
+        CodeFormatter.formatFolder(path);
     }
-    
-    
+
+    public void stop() {
+        closeDB();
+        shutdownDB();
+    }
+
+    private void shutdownDB() {
+        File rootFolder = new File(GlobalSettings.rootFolder);
+        String execute = "./stop_neo4j.sh";
+
+        System.out.println("Shutting down Neo4j...");
+        try {
+            Util.runCommand(execute, rootFolder);
+        } catch (IOException ex) {
+            Logger.getLogger(Framework.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Framework.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public boolean isDBRunning() {
+        try {
+            return db != null && db.checkConnection();
+        } catch (Exception ex) {
+            return false;
+        }
+    }
+
 }

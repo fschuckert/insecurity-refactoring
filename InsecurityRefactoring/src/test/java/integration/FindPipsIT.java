@@ -9,7 +9,7 @@ import java.io.File;
 import java.util.LinkedList;
 import ntnuhtwg.insecurityrefactoring.Framework;
 import ntnuhtwg.insecurityrefactoring.base.SourceLocation;
-import ntnuhtwg.insecurityrefactoring.refactor.base.ScanProgress;
+import ntnuhtwg.insecurityrefactoring.refactor.temppattern.ScanProgress;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -37,7 +37,7 @@ public class FindPipsIT {
         }
         
         
-        framework.close();
+        framework.closeDB();
     }
     
     @Test
