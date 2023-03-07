@@ -18,17 +18,24 @@ public class StringCounter {
     private HashMap<String, Integer> counter = new HashMap<>();
     
     public void countString(String str){
+        countString(str, 1);
+    }
+    
+    public void countString(String str, int amount){
         if(!counter.containsKey(str)){
             counter.put(str, 0);           
         }
         
-        counter.put(str, counter.get(str) + 1);
+        counter.put(str, counter.get(str) + amount);
     }
     
     public void prettyPrint(String prePrint){
+        int sum = 0;
         for(Map.Entry<String, Integer> entry : counter.entrySet()){
             System.out.println(prePrint + " " + entry.getKey() + ":" + entry.getValue());
+            sum += entry.getValue();
         }
+        System.out.println("Sum: " + sum);
             
     }
 }

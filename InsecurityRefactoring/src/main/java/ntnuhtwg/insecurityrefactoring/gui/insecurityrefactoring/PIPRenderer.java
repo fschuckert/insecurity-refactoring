@@ -89,7 +89,8 @@ public class PIPRenderer extends JPanel{
     private JButton findPip = new JButton("Find PIPs");
     
 //    private JTextField prePath = new JTextField(GlobalSettings.prePath);
-    private JTextField scanPath = new JTextField("/home/blubbomat/Development/simple");
+//    private JTextField scanPath = new JTextField("/home/blubbomat/Development/simple");
+    private JTextField scanPath = new JTextField("/path/that/will/be/scanned/");
     private JTextField specificPath = new JTextField("");
 //    private JFileChooser scanPath = new JFileChooser("/home/blubbomat/Development/simple");
     private JButton chooseFile = new JButton("Choose File");

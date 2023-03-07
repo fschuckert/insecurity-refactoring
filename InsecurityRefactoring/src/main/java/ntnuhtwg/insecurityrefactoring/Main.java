@@ -7,8 +7,10 @@ package ntnuhtwg.insecurityrefactoring;
 
 import ntnuhtwg.insecurityrefactoring.base.info.DataflowPathInfo;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import ntnuhtwg.insecurityrefactoring.base.ASTType;
 import ntnuhtwg.insecurityrefactoring.base.SourceLocation;
 import ntnuhtwg.insecurityrefactoring.base.Util;
@@ -49,40 +51,40 @@ public class Main {
 
         Framework framework = new Framework();
         framework.init();
-        
-        if(!cmd.hasOption("g")&& cmd.hasOption("generate_samples")){
+
+        if (!cmd.hasOption("g") && cmd.hasOption("generate_samples")) {
             String pathToGen = cmd.getOptionValue("generate_samples");
             CodeSampleCreator codeSampleCreator = new CodeSampleCreator(framework.getPatternStorage());
-            if(cmd.hasOption("no_docker")){
+            if (cmd.hasOption("no_docker")) {
                 codeSampleCreator.setCreateGenerateFiles(false);
             }
-            if(cmd.hasOption("no_manifest")){
+            if (cmd.hasOption("no_manifest")) {
                 codeSampleCreator.setCreateManifest(false);
             }
-            if(cmd.hasOption("split_by")){
+            if (cmd.hasOption("split_by")) {
                 String splitBy = cmd.getOptionValue("split_by");
                 codeSampleCreator.setSplitBy(splitBy);
             }
 //            options.addOption("genFiles", false, "This parameter is required to actually generate files. Otherwise just a dry run will count the sample size!");
 //        options.addOption("onlyPattern", true, "Only generates with specific pattern. [patternType:patternName]. E.g. [dataflow:assignment]");
 
-            if(cmd.hasOption("genFiles")){
+            if (cmd.hasOption("genFiles")) {
                 codeSampleCreator.setOnlyCount(false);
             }
-            
-            if(cmd.hasOption("onlyPattern")){
-                for(String onlyPattern : cmd.getOptionValues("onlyPattern")){
+
+            if (cmd.hasOption("onlyPattern")) {
+                for (String onlyPattern : cmd.getOptionValues("onlyPattern")) {
                     String[] splitted = onlyPattern.split(":");
-                    if(splitted.length != 2){
+                    if (splitted.length != 2) {
                         System.err.println("A only pattern parameter is incorrect formated It needs to be: patternType:patternName " + onlyPattern);
                         continue;
                     }
-                    
+
                     codeSampleCreator.addGenerateOnlyPattern(splitted[0], splitted[1]);
                 }
-                
+
             }
-            
+
             codeSampleCreator.createAllPossibleSamples(pathToGen);
             return;
         }
@@ -96,17 +98,19 @@ public class Main {
         }
 
         if (cmd.hasOption("g")) {
+            boolean development = cmd.hasOption("e");
             GuiDocking gui = new GuiDocking();
-            gui.init(framework);
+            gui.init(framework, development);
         } else if (cmd.hasOption("p")) {
             SourceLocation specificLocation = null;
-            if(cmd.hasOption("specific-sink")){
+            if (cmd.hasOption("specific-sink")) {
                 String sinkPath = cmd.getOptionValue("specific-sink");
                 specificLocation = new SourceLocation(sinkPath);
             }
             String path = cmd.getOptionValue("p");
             ScanProgress scanProgress = new ScanProgress();
             framework.scan(path, !cmd.hasOption("n"), specificPattern, scanProgress, cmd.hasOption("c"), specificLocation);
+
             List<ACIDTree> pipInformation = framework.getPipInformation();
 
             if (cmd.hasOption("o")) {
@@ -118,8 +122,7 @@ public class Main {
                             Util.printSourceCodeRec(framework.getDb(), pathInfo.getSource(), null);
                             System.out.println("####################################################################################################################################\n");
                             break;
-                        }
-                        else{
+                        } else {
                             System.out.println("\nPIP sink: " + pip.getSink().getObj());
                             System.out.println("PIP location: " + Util.codeLocation(framework.getDb(), pip.getSink().getObj()));
                             System.out.println("####################################################################################################################################");
@@ -144,48 +147,48 @@ public class Main {
             pipTypes.prettyPrint("PIP TYPE ");
             pipSpecific.prettyPrint("PIP SPECIFIC ");
 
-            int paths = 0;
-            int vulns = 0;
-            int timeouts = 0;
-            int vulnerabilities = 0;
-            for (ACIDTree pipInfo : pipInformation) {
-                boolean vulnerable = false;
-                for (DataflowPathInfo pathInfo : pipInfo.getPossibleSources()) {
-                    paths++;
-                    if (pathInfo.getVulnerabilityInfo().isVulnerable()) {
-                        vulns++;
-                        vulnerable = true;
-                    }
-                    if (pathInfo.isContainsTimeout()) {
-                        timeouts++;
-                    }
-                }
-                if (vulnerable) {
-                    vulnerabilities++;
-                }
-            }
+//            int paths = 0;
+//            int vulns = 0;
+//            int timeouts = 0;
+//            int vulnerabilities = 0;
+//            for (ACIDTree pipInfo : pipInformation) {
+//                boolean vulnerable = false;
+//                for (DataflowPathInfo pathInfo : pipInfo.getPossibleSources()) {
+//                    paths++;
+//                    if (pathInfo.getVulnerabilityInfo().isVulnerable()) {
+//                        vulns++;
+//                        vulnerable = true;
+//                    }
+//                    if (pathInfo.isContainsTimeout()) {
+//                        timeouts++;
+//                    }
+//                }
+//                if (vulnerable) {
+//                    vulnerabilities++;
+//                }
+//            }
+//
+//            System.out.println("");
+//            System.out.println("##### Paths info #####");
+//            System.out.println("Path Amount: " + paths);
+//            System.out.println("Path Vulns: " + vulns);
+//            System.out.println("Path Timeouts: " + timeouts);
+//
+//            System.out.println("");
+//            System.out.println("##### Summary #####");
+//            System.out.println("FOUND PIPs: " + framework.getPips(requiresSanitize, false).size());
+//            System.out.println("Vulnerable: " + vulnerabilities);
 
-            System.out.println("");
-            System.out.println("##### Paths info #####");
-            System.out.println("Path Amount: " + paths);
-            System.out.println("Path Vulns: " + vulns);
-            System.out.println("Path Timeouts: " + timeouts);
-
-            System.out.println("");
-            System.out.println("##### Summary #####");
-            System.out.println("FOUND PIPs: " + framework.getPips(requiresSanitize, false).size());
-            System.out.println("Vulnerable: " + vulnerabilities);
+           
         } else if (cmd.hasOption("s")) {
             String path = cmd.getOptionValue("s");
             framework.scanSubFolders(path, specificPattern, requiresSanitize, new ScanProgress(), cmd.hasOption("c"));
 
-        }
-        else if(cmd.hasOption("f")){
+        } else if (cmd.hasOption("f")) {
             String path = cmd.getOptionValue("f");
             framework.scan(path, false, specificPattern, new ScanProgress(), cmd.hasOption("c"), null);
             framework.formatCode();
-        }
-        else {
+        } else {
             printHelp();
         }
 
@@ -196,8 +199,6 @@ public class Main {
 
 //        cmd.
     }
-
-    
 
     private static void printHelp() {
         HelpFormatter helpFormatter = new HelpFormatter();
@@ -211,6 +212,7 @@ public class Main {
         options.addOption("s", "subprojects", true, "Scan the subfolder and store results in txt files.");
 
         options.addOption("g", "gui", false, "Launch the User interface to view the results and do refactoring choices. Only works in combination with analyzing one project");
+        options.addOption("e", "dev", false, "Gui will include development and experimental options");
         options.addOption("n", "skip-neo4j-prepare", false, "Skip the preparing of neo4jdb");
 
         options.addOption("v", "vuln", true, "Specific sink (category currently not supported)");
@@ -218,10 +220,11 @@ public class Main {
 
         options.addOption("o", "output vulns", false, "Outsputs a vulnerable path for each vulnerability");
         options.addOption("f", "format", true, "Formats the folder");
-        
+        options.addOption("d", "details", false, "Print more details");
+
         options.addOption("c", "control-check", false, "Do a check for control functions. Takes a lot of time!");
         options.addOption("specificsink", false, "specific sink code location: provided like following path:linenumber");
-        
+
         options.addOption("generate_samples", true, "Generate samples into the given folder. To generate the files the -genFiles parameter is required");
         options.addOption("no_docker", false, "Will not generate docker files");
         options.addOption("no_manifest", false, "Will not generate manifest files");

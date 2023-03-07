@@ -32,6 +32,8 @@ import ntnuhtwg.insecurityrefactoring.base.db.neo4j.node.INode;
 import ntnuhtwg.insecurityrefactoring.base.patterns.impl.SanitizePattern;
 import ntnuhtwg.insecurityrefactoring.base.patterns.impl.SinkPattern;
 import ntnuhtwg.insecurityrefactoring.base.patterns.PatternStorage;
+import ntnuhtwg.insecurityrefactoring.base.patterns.impl.SourcePattern;
+import ntnuhtwg.insecurityrefactoring.base.stats.StringCounter;
 import ntnuhtwg.insecurityrefactoring.refactor.temppattern.MissingCall;
 import ntnuhtwg.insecurityrefactoring.refactor.temppattern.TempPattern;
 import scala.NotImplementedError;
@@ -131,6 +133,21 @@ public class PIPFinder {
         sinkCount.clear();
         DataflowDSL dsl = new DataflowDSL(db);
         this.patternStorage = patternStorage;
+        StringCounter sinkStats = new StringCounter();
+        StringCounter sourceStats = new StringCounter();
+        
+        
+        Collection<SourcePattern> sourcePatterns = patternStorage.getSources();
+        System.out.println("Search for sources...");
+        
+        for(SourcePattern sourcePattern : sourcePatterns){
+            try {
+                List<INode> sources = db.findAll(sourcePattern.findQuery());
+                sourceStats.countString(sourcePattern.getName(), sources.size());
+            } catch (TimeoutException ex) {
+                Logger.getLogger(PIPFinder.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         
         Collection<SinkPattern> toScan = patternStorage.getSinks();
         
@@ -154,6 +171,7 @@ public class PIPFinder {
             List<INode> sinks = List.of();
             try {
                 sinks = db.findAll(pattern.findQuery());
+                sinkStats.countString(pattern.getName(), sinks.size());
             } catch (TimeoutException ex) {
                 ex.printErrorMessage("Too many sinks?? " + pattern);
                 
@@ -180,33 +198,44 @@ public class PIPFinder {
             allResults.add(backwardDataflow.getResultTree());
         }
         
-        System.out.println("Scanned : " + allResults.size());
+        System.out.println("Scanned (Sinks): " + allResults.size());
         
-        System.out.println("Checking missing methods/functions");
-        for(DFATreeNode result : allResults){
-            for(LabeledTreeNode leaflabeled : result.getAllLeafs()){
-                try{
-                    DFATreeNode leaf = (DFATreeNode)leaflabeled;
-                    if(Util.isAnyCall(leaf.getObj())){
-                        int paramCount = dsl.getCallParameters(leaf.getObj()).size();
-                        MissingCall missingCall = new MissingCall(leaf.getObj().getString("type"), dsl.getCallName(leaf.getObj(), false), paramCount);
-                        if(!missingCalls.containsKey(missingCall)){
-                            missingCalls.put(missingCall, 1);
-                        }
-                        else{
-                            missingCalls.put(missingCall, missingCalls.get(missingCall) + 1);
-                        }
-                    }
-                }catch(TimeoutException ex){
-                    ex.printErrorMessage("Resolving missing function leafs");
-                }
-            }
-        }
+//        System.out.println("Checking missing methods/functions");
+//        for(DFATreeNode result : allResults){
+//            for(LabeledTreeNode leaflabeled : result.getAllLeafs()){
+//                try{
+//                    DFATreeNode leaf = (DFATreeNode)leaflabeled;
+//                    if(Util.isAnyCall(leaf.getObj())){
+//                        int paramCount = dsl.getCallParameters(leaf.getObj()).size();
+//                        MissingCall missingCall = new MissingCall(leaf.getObj().getString("type"), dsl.getCallName(leaf.getObj(), false), paramCount);
+//                        if(!missingCalls.containsKey(missingCall)){
+//                            missingCalls.put(missingCall, 1);
+//                        }
+//                        else{
+//                            missingCalls.put(missingCall, missingCalls.get(missingCall) + 1);
+//                        }
+//                    }
+//                }catch(TimeoutException ex){
+//                    ex.printErrorMessage("Resolving missing function leafs");
+//                }
+//            }
+//        }
+//        
+//        
+//        for(Entry<MissingCall, Integer> entry : missingCalls.entrySet()){
+//            System.out.println( entry.getKey() + ":" + entry.getValue());
+//        }
         
+        System.out.println("### FINAL STATS ###");
+        System.out.println("# Sinks");
+        sinkStats.prettyPrint("Sink: ");
+        System.out.println("");
         
-        for(Entry<MissingCall, Integer> entry : missingCalls.entrySet()){
-            System.out.println( entry.getKey() + ":" + entry.getValue());
-        }
+        System.out.println("# Sources");
+        sourceStats.prettyPrint("Source: ");
+        System.out.println("");
+        
+        System.out.println("# PIPs: ... TODO");
     }
     
     public void setTempPatterns(List<TempPattern> tempPatterns){

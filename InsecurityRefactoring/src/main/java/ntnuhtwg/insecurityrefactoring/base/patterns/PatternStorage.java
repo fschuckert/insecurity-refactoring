@@ -290,7 +290,11 @@ public class PatternStorage {
         for(SanitizePattern potentialFailedSan : getSanitizations()){
             if(!potentialFailedSan.isReplaceableWithIgnoreDatatype(sanitizePattern)){
                 continue;
-            }      
+            }  
+            
+//            if(!potentialFailedSan.isReplaceableWith(sanitizePattern)){
+//                continue;
+//            }   
             
             if(potentialFailedSan.containsAny()){
                 continue;

@@ -46,9 +46,12 @@ import ntnuhtwg.insecurityrefactoring.gui.patterntester.PatternTesterPanel;
  * @author blubbomat
  */
 public class GuiDocking {
+    
+    public static boolean development = false;
 
-    public void init(Framework framework) {
+    public void init(Framework framework, boolean development) {
         // init frame
+        this.development = development;
         JFrame frame = new JFrame("Insecurity Refactoring");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setBounds(20, 20, 400, 400);
@@ -114,9 +117,11 @@ public class GuiDocking {
 //        refactoring.setVisible(true);
         CGrid grid = new CGrid(control);
         grid.add(0, 0, 1, 2, createDockable("PIP finder", Color.WHITE, pIPRenderer));
-        grid.add(1, 0, 1, 1, createDockable("Edit patterns", Color.GREEN, new PatternEditor()));
-        grid.add(1, 1, 1, 1, createDockable("AST", Color.GREEN, new ASTRenderer(framework)));
-        grid.add(1, 1, 1, 1, createDockable("Code Tester", Color.GREEN, new PatternTesterPanel(framework.getPatternStorage(), "")));
+        if(development){
+            grid.add(1, 0, 1, 1, createDockable("Edit patterns", Color.GREEN, new PatternEditor()));
+            grid.add(1, 1, 1, 1, createDockable("AST", Color.GREEN, new ASTRenderer(framework)));
+            grid.add(1, 1, 1, 1, createDockable("Code Tester", Color.GREEN, new PatternTesterPanel(framework.getPatternStorage(), "")));
+        }
 
         control.getContentArea().deploy(grid);
 

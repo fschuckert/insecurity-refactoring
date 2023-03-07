@@ -10,9 +10,11 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -86,6 +88,7 @@ public class Framework {
     }
 
     public void scan(String path, boolean prepareDB, List<String> specificPatterns, ScanProgress scanProgress, boolean controlFlowCheck, SourceLocation specificLocation) {
+
         this.path = path;
         try {
             if (prepareDB) {
@@ -100,6 +103,7 @@ public class Framework {
             }
             printPatternInfo();
             findPips(specificPatterns, scanProgress, controlFlowCheck, specificLocation);
+
         } catch (Exception ex) {
             System.out.println("Something went wrong...");
             ex.printStackTrace();
@@ -116,11 +120,33 @@ public class Framework {
     }
 
     public void findPips(List<String> specificPatterns, ScanProgress scanProgress, boolean controlFlowCheck, SourceLocation specificLocation) {
+
         connectDB();
         patternStorage.setTempPatterns(Collections.EMPTY_LIST);
         pipFinder.findPips(db, patternStorage, specificPatterns, scanProgress, controlFlowCheck, specificLocation);
 
         refactoring = new InsecurityRefactoring(getDSL(), patternStorage);
+
+        List<ACIDTree> pipInformation = getPipInformation();
+
+        int uniqueSourceSink = 0;
+        int nonUniqueSourceSink = 0;
+
+        for (ACIDTree pip : pipInformation) {
+            Set<Long> unique = new HashSet();
+
+            List<DataflowPathInfo> sourceNodes = getSourceNodes(pip.getSink());
+
+            for (DataflowPathInfo sourceNode : sourceNodes) {
+                unique.add(sourceNode.getSource().getObj().id());
+                nonUniqueSourceSink++;
+            }
+            uniqueSourceSink += unique.size();
+        }
+
+        System.out.println("Unique Source Sink: " + uniqueSourceSink);
+        System.out.println("Non unique Source Sink: " + nonUniqueSourceSink);
+        System.out.println("PIPs: " + pipInformation.size());
     }
 
     public boolean isFoundPip(boolean requiresSanitize, boolean debugAddAll) {

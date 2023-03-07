@@ -20,6 +20,7 @@ import ntnuhtwg.insecurityrefactoring.base.Util;
 import ntnuhtwg.insecurityrefactoring.base.tree.DFATreeNode;
 import ntnuhtwg.insecurityrefactoring.base.db.neo4j.dsl.cypher.DataflowDSL;
 import ntnuhtwg.insecurityrefactoring.base.patterns.impl.DataflowPattern;
+import ntnuhtwg.insecurityrefactoring.gui.insecurityrefactoring.RefactoringRenderer;
 import org.javatuples.Pair;
 
 /**
@@ -33,23 +34,25 @@ public class DataFlowRefactorPanel extends JPanel{
     private JComboBox<DataflowPattern> selectedRefactorPattern = new JComboBox<>();
     private NoneDataFlowPattern none = new NoneDataFlowPattern();
 
-    public DataFlowRefactorPanel(DFATreeNode node, DataflowDSL dsl) {        
+    public DataFlowRefactorPanel(DFATreeNode node, DataflowDSL dsl, Dimension dimension) {        
         this.node = node;
         
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         
         SourceLocation location = Util.codeLocation(dsl.getDb(), node.getObj());
-        this.add(new Label("Dataflow"));
-        this.add(new Label(location.toString()));
+//        this.add(new JLabel("Dataflow"));
+        this.add(new JLabel(location.shortName() + " -> "));
+//        this.add(new JLabel())
 //        this.add(new JLabel(node.toString()));
         
         selectedRefactorPattern.addItem(none);
-        selectedRefactorPattern.setMaximumSize(new Dimension(500, 50));
+        selectedRefactorPattern.setMaximumSize(dimension);
+        selectedRefactorPattern.setPreferredSize(dimension);
         
         for(DataflowPattern dataflowPattern : node.getPossibleDataflowReplacements()){
             selectedRefactorPattern.addItem(dataflowPattern);
         }
-        this.add(selectedRefactorPattern);
+        this.add(RefactoringRenderer.leftJustify(selectedRefactorPattern));
     }
 
     public Pair<DFATreeNode, DataflowPattern> getSelectedDataflowPattern() {

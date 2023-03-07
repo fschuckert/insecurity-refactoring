@@ -34,19 +34,21 @@ public class RefactorPanel extends JPanel{
     private JComboBox<SourcePattern> refactorSource = new JComboBox<>();
     private NoRefactoring none = new NoRefactoring();
 
-    public RefactorPanel(DFATreeNode node, DataflowDSL dsl, List<SourcePattern> replacements) {        
+    public RefactorPanel(DFATreeNode node, DataflowDSL dsl, List<SourcePattern> replacements, Dimension dimension, String patternName) {        
         this.node = node;
         
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         
         SourceLocation location = Util.codeLocation(dsl.getDb(), node.getObj());
         
-        this.add(new Label("Insecure source"));
-        this.add(new Label(location.toString()));
+
+        this.add(new JLabel(location.shortName() + " // "));
+        this.add(new JLabel(patternName + " -> "));
 //        this.add(new JLabel(node.toString()));
         
         refactorSource.addItem(none);
-        refactorSource.setMaximumSize(new Dimension(500, 50));
+        refactorSource.setMaximumSize(dimension);
+        refactorSource.setPreferredSize(dimension);
         
         for(SourcePattern dataflowPattern : replacements){
             refactorSource.addItem(dataflowPattern);
